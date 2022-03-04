@@ -1,0 +1,17 @@
+{
+    "version": 0.0,
+    "Resources": [
+      {
+        "TargetService": {
+          "Type": "AWS::ECS::Service",
+          "Properties": {
+            "TaskDefinition": "arn:aws:ecs:ap-northeast-2:<ACCOUNT_ID>:task-definition/AppStackecsstackdaasbetaprivateapiecstask2B1E8F32",
+            "LoadBalancerInfo": {
+              "ContainerName": "nginx",
+              "ContainerPort": 80
+            }
+          }
+        }
+      }
+    ]
+  }

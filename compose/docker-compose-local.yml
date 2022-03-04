@@ -1,0 +1,72 @@
+# File structure version
+version: '3'
+
+services:
+  # Our django application
+  # Build from remote dockerfile
+  # Connect local app folder with image folder, so changes will be pushed to image instantly
+  # Open port 8000
+  app:
+    build:
+      context: ../ #root dir
+      dockerfile: config/docker/Dockerfile_local
+    hostname: app
+    volumes:
+      - ../majestic-monolith-django:/majestic-monolith-django
+    expose:
+      - "8000"
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_DEFAULT_REGION
+      - SECRET_KEY=123123123123
+      - ENV=local
+      - DJANGO_SETTINGS_MODULE=settings.local
+      - DB_PASSWORD=password
+      - DB_HOST=db
+      - REDIS_HOST
+      - S3_BUCKET
+      - SLACK_TOKEN
+    depends_on:
+      - db
+    logging:
+      options:
+        max-size: 50m
+  db:
+    image: mysql:5.7
+    ports:
+      - '3306:3306'
+    expose:
+      - "3306"
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=mmd
+      - MYSQL_ROOT_HOST="%"
+    logging:
+      driver: none
+  nginx:
+    image: nginx
+    hostname: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ../config/nginx/app_local.conf:/etc/nginx/conf.d/app_local.conf
+    depends_on:
+      - app
+#    logging:
+#      driver: none
+
+  redis:
+    image: redis:5.0.5
+    expose:
+      - "6379"
+    restart: always
+    logging:
+      driver: none
+volumes:
+    db_data: {}

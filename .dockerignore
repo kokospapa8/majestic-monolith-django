@@ -1,0 +1,7 @@
+.git
+.gitignore
+venv
+/daas/.coverage
+**/.idea/vcs.xml
+**/.idea/daas-server.iml
+**/.idea/misc.xml

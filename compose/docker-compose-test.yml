@@ -1,0 +1,63 @@
+# File structure version
+version: '3'
+
+services:
+  # Our django application
+  # Build from remote dockerfile
+  # Connect local app folder with image folder, so changes will be pushed to image instantly
+  # Open port 8000
+  test:
+    build:
+      context: ../ #root dir
+      dockerfile: config/docker/Dockerfile_test
+    hostname: app
+    volumes:
+      - ../majestic-monolith-django:/majestic-monolith-django
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_DEFAULT_REGION=ap-northeast-2
+      - SECRET_KEY=123123123123
+      - ENV=test
+      - DJANGO_SETTINGS_MODULE=settings.test
+      - DB_HOST=db
+      - REDIS_HOST=redis
+      - DB_PASSWORD=password
+      - TEST_DB_DATABASE_NAME=daas_test
+      - TEST_DB_HOST=db
+      - TEST_DB_PASSWORD=password
+      - TEST_DB_USER=test
+      - TEST_REDIS_HOST=redis
+      - S3_BUCKET
+      - SLACK_TOKEN
+    depends_on:
+      - db
+    logging:
+      options:
+        max-size: 50m
+  db:
+    image: mysql:5.7
+    ports:
+      - '3306:3306'
+    expose:
+      - "3306"
+    restart: always
+#    volumes:
+#      - db_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=daas_test
+      - MYSQL_ROOT_HOST="%"
+#      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci', '--explicit_defaults_for_timestamp']
+  redis:
+    image: redis:5.0.5
+    expose:
+      - "6379"
+    restart: always
+    logging:
+      driver: none
+#volumes:
+#    db_data: {}

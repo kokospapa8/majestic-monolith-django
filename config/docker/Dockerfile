@@ -1,0 +1,37 @@
+# Creating image based on official python3 image
+FROM python:3.8.10
+
+# Your contacts, so people blame you afterwards
+MAINTAINER Jinwook Baek <kokos.papa8@gmail.com>
+
+# Sets dumping log messages directly to stream instead of buffering
+ENV PYTHONFAULTHANDLER=1 \
+  PYTHONUNBUFFERED=1 \
+  PYTHONHASHSEED=random \
+  PIP_NO_CACHE_DIR=off \
+  PIP_DISABLE_PIP_VERSION_CHECK=on \
+  PIP_DEFAULT_TIMEOUT=100 \
+  POETRY_VERSION=1.1.5
+
+# Creating and putting configurations
+RUN mkdir /config
+ADD config/app /config/
+WORKDIR /config
+
+#install poetry and dependency
+RUN pip3 install "poetry==$POETRY_VERSION"
+ENV PATH="/root/.poetry/bin:${PATH}"
+RUN poetry config virtualenvs.create false &&\
+poetry install --no-dev --no-interaction --no-ansi
+
+# Open port 8000 to outside world
+EXPOSE 8000
+
+RUN mkdir /majestic-monolith-django
+WORKDIR /majestic-monolith-django
+ADD majestic-monolith-django /majestic-monolith-django/
+ADD static /static/
+
+# When container starts, this script will be executed.
+# Note that it is NOT executed during building
+CMD ["sh", "/config/django.sh"]

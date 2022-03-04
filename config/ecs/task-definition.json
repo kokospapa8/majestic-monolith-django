@@ -1,0 +1,214 @@
+{
+  "ipcMode": null,
+  "executionRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/EcsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "dnsSearchDomains": null,
+      "environmentFiles": null,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "secretOptions": null,
+        "options": {
+          "awslogs-group": "/ecs/api",
+          "awslogs-region": "ap-northeast-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "entryPoint": null,
+      "portMappings": [
+        {
+          "hostPort": 8000,
+          "protocol": "tcp",
+          "containerPort": 8000
+        }
+      ],
+      "command": null,
+      "linuxParameters": null,
+      "cpu": 0,
+      "environment": [
+        {
+          "name": "AWS_DEFAULT_REGION",
+          "value": "ap-northeast-2"
+        },
+        {
+          "name": "DJANGO_SETTINGS_MODULE",
+          "value": "settings.dev"
+        },
+        {
+          "name": "ENV",
+          "value": "dev"
+        },
+        {
+          "name": "APP",
+          "value": "api"
+        }
+      ],
+      "resourceRequirements": null,
+      "ulimits": null,
+      "dnsServers": null,
+      "mountPoints": [],
+      "workingDirectory": null,
+      "secrets": [
+        {
+          "valueFrom": "arn:aws:ssm:ap-northeast-2:<ACCOUNT_ID>:parameter/mmd/server/DB_HOST",
+          "name": "DB_HOST"
+        },
+        {
+          "valueFrom": "arn:aws:ssm:ap-northeast-2:<ACCOUNT_ID>:parameter/mmd/server/DB_PASSWORD",
+          "name": "DB_PASSWORD"
+        },
+        {
+          "valueFrom": "arn:aws:ssm:ap-northeast-2:<ACCOUNT_ID>:parameter/mmd/server/REDIS_HOST",
+          "name": "REDIS_HOST"
+        },
+        {
+          "valueFrom": "arn:aws:ssm:ap-northeast-2:<ACCOUNT_ID>:parameter/mmd/server/SECRET_KEY",
+          "name": "SECRET_KEY"
+        },
+        {
+          "valueFrom": "arn:aws:ssm:ap-northeast-2:<ACCOUNT_ID>:parameter/mmd/server/S3_BUCKET",
+          "name": "S3_BUCKET"
+        },
+        {
+          "valueFrom": "arn:aws:ssm:ap-northeast-2:<ACCOUNT_ID>:parameter/mmd/server/SLACK_TOKEN",
+          "name": "SLACK_TOKEN"
+        }
+
+      ],
+      "dockerSecurityOptions": null,
+      "memory": null,
+      "memoryReservation": 1024,
+      "volumesFrom": [],
+      "stopTimeout": null,
+      "image": "<ACCOUNT_ID>.dkr.ecr.ap-northeast-2.amazonaws.com/mmd-server:latest",
+      "startTimeout": null,
+      "firelensConfiguration": null,
+      "dependsOn": null,
+      "disableNetworking": null,
+      "interactive": null,
+      "healthCheck": {
+        "retries": 5,
+        "command": [
+          "CMD-SHELL",
+          "python manage.py check"
+        ],
+        "timeout": 10,
+        "interval": 30,
+        "startPeriod": null
+      },
+      "essential": true,
+      "links": [],
+      "hostname": null,
+      "extraHosts": null,
+      "pseudoTerminal": null,
+      "user": null,
+      "readonlyRootFilesystem": null,
+      "dockerLabels": {
+        "name": "api",
+        "env": "dev"
+      },
+      "systemControls": null,
+      "privileged": null,
+      "name": "api"
+    },
+    {
+      "dnsSearchDomains": null,
+      "environmentFiles": null,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "secretOptions": null,
+        "options": {
+          "awslogs-group": "/ecs/nginx",
+          "awslogs-region": "ap-northeast-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "entryPoint": [],
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "protocol": "tcp",
+          "containerPort": 80
+        }
+      ],
+      "command": [],
+      "linuxParameters": null,
+      "cpu": 0,
+      "environment": [],
+      "resourceRequirements": null,
+      "ulimits": null,
+      "dnsServers": null,
+      "mountPoints": [],
+      "workingDirectory": null,
+      "secrets": null,
+      "dockerSecurityOptions": null,
+      "memory": null,
+      "memoryReservation": 512,
+      "volumesFrom": [],
+      "stopTimeout": null,
+      "image": "<ACCOUNT_ID>.dkr.ecr.ap-northeast-2.amazonaws.com/nginx:latest",
+      "startTimeout": null,
+      "firelensConfiguration": null,
+      "dependsOn": [
+        {
+          "containerName": "api",
+          "condition": "HEALTHY"
+        }
+      ],
+      "disableNetworking": null,
+      "interactive": null,
+      "healthCheck": null,
+      "essential": true,
+      "links": [],
+      "hostname": null,
+      "extraHosts": null,
+      "pseudoTerminal": null,
+      "user": null,
+      "readonlyRootFilesystem": null,
+      "dockerLabels": null,
+      "systemControls": null,
+      "privileged": null,
+      "name": "nginx"
+    },
+    {
+      "name": "xray",
+      "image": "amazon/aws-xray-daemon",
+      "cpu": 32,
+      "memoryReservation": 256,
+      "portMappings" : [
+          {
+              "containerPort": 2000,
+              "protocol": "udp"
+          }
+       ],
+      "environment": [
+          {
+            "name" : "AWS_REGION",
+            "value" : "ap-northeast-2"
+          }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "secretOptions": null,
+        "options": {
+          "awslogs-group": "/daas/xray",
+          "awslogs-region": "ap-northeast-2",
+          "awslogs-stream-prefix": "xray"
+        }
+      }
+    }
+  ],
+  "placementConstraints": [],
+  "memory": "2048",
+  "taskRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/EcsServerTaskRole",
+  "family": "api",
+  "pidMode": null,
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "networkMode": "awsvpc",
+  "cpu": "1024",
+  "inferenceAccelerators": null,
+  "proxyConfiguration": null,
+  "volumes": []
+}

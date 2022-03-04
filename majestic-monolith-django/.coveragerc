@@ -1,0 +1,17 @@
+[run]
+branch = True
+omit =
+    */management/*
+    */migrations/*
+    */__init__.py
+    */test_*.py
+    */conftest.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    raise NotImplementedError
+    return NotImplemented
+
+[html]
+directory = coverage_html_report
