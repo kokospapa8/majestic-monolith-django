@@ -4,7 +4,7 @@ from .local import *
 # TEST_DB_USER = get_env_variable("TEST_DB_USER")  # root
 # TEST_DB_PASSWORD = get_env_variable("TEST_DB_PASSWORD")  # password
 # TEST_DB_HOST = get_env_variable("TEST_DB_HOST")  # db
-# TEST_DB_DATABASE_NAME = get_env_variable("TEST_DB_DATABASE_NAME")  # "daas_test"
+# TEST_DB_DATABASE_NAME = get_env_variable("TEST_DB_DATABASE_NAME")  # "mmd_test"
 # TEST_REDIS_HOST = get_env_variable("TEST_REDIS_HOST")
 # DATABASES = {
 #     "default": {
@@ -77,6 +77,6 @@ xray_recorder.configure(sampling=False)
 # STATIC
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATIC_URL = "/static/"
-STATIC_ROOT = "/Users/jinwookbaek/Project/daas-server/static"
+STATIC_ROOT = "/Users/jinwookbaek/Project/majestic-monolith-django/static"
 DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"

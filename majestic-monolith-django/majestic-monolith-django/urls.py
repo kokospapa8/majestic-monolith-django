@@ -11,10 +11,8 @@ from core.views import HealthCheckView
 # from shop.admin import seller_admin_site
 
 api_urlpatterns_v1 = [
-    path("", include("user.urls")),
+    path("user/", include("user.urls")),
     path("auth/", include("auth.urls")),
-    path("ops/", include("ops.urls")),
-    path("order/", include("order.urls")),
 
 ]
 

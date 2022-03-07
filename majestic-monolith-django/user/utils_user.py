@@ -1,39 +1,33 @@
 from django.contrib.auth import get_user_model
 
-from .models import UserGod, UserOrc, UserHuman, \
-    UserProfileGod, UserProfileHuman, UserProfileOrc
-from .serializers import UserProfileGodSerializer, \
-    UserProfileHumanSerializer, UserProfileOrcSerializer
+from .models import UserStaff, UserDriver, \
+    UserProfileStaff, UserProfileDriver
+from .serializers import UserProfileDriverSerializer, \
+    UserProfileStaffSerializer
 
 CustomUser = get_user_model()
 
 
 # TODO: use match-case for python 3.10 - https://www.python.org/dev/peps/pep-0634/
 def get_proxy_user_model(user):
-    if user.type == CustomUser.Types.GOD:
-        return UserGod
-    if user.type == CustomUser.Types.HUMAN:
-        return UserHuman
-    if user.type == CustomUser.Types.ORC:
-        return UserOrc
+    if user.type == CustomUser.Types.STAFF:
+        return UserStaff
+    if user.type == CustomUser.Types.DRIVER:
+        return UserDriver
 
 
 def get_proxy_userprofile_model(user):
-    if user.type == CustomUser.Types.GOD:
-        return UserProfileGod
-    if user.type == CustomUser.Types.HUMAN:
-        return UserProfileHuman
-    if user.type == CustomUser.Types.ORC:
-        return UserProfileOrc
+    if user.type == CustomUser.Types.STAFF:
+        return UserProfileStaff
+    if user.type == CustomUser.Types.DRIVER:
+        return UserProfileDriver
 
 
 def get_proxy_userprofile_serializer(user):
-    if user.type == CustomUser.Types.GOD:
-        return UserProfileGodSerializer
-    if user.type == CustomUser.Types.HUMAN:
-        return UserProfileHumanSerializer
-    if user.type == CustomUser.Types.ORC:
-        return UserProfileOrcSerializer
+    if user.type == CustomUser.Types.STAFF:
+        return UserProfileStaffSerializer
+    if user.type == CustomUser.Types.DRIVER:
+        return UserProfileDriverSerializer
 
 
 def delete_user_profile_cache(uuid):

@@ -7,7 +7,7 @@ from django.db.models import QuerySet
 from core.selector import Selector
 
 
-from .models import CustomUser, UserHuman, UserOrc, UserGod
+from .models import CustomUser, UserStaff, UserDriver
 
 User = get_user_model()
 
@@ -19,9 +19,14 @@ class UserDTO:
 class UserSelector(Selector):
 
     @staticmethod
-    def get_active_user_by_type(type: str) -> \
+    def get_active_user_by_type(user_type: str) -> \
             Union[QuerySet, List[CustomUser]]:
-        return CustomUser.objects.filter(is_active=True, type=type)
+        return CustomUser.objects.filter(is_active=True, type=user_type)
+
+    @staticmethod
+    def filter_users_by_phonenumber(phonenumber) -> list:
+        users = list(User.objects.filter(phonenumber=phonenumber))
+        return list(set(users))
 
 
 user_selector = UserSelector()

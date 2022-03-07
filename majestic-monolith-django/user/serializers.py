@@ -10,7 +10,7 @@ from rest_framework import serializers
 from core.serializers import ThumbnailSerializer
 from core.utils import convert_empty_string_to_none
 
-from .models import UserProfileOrc, UserProfileHuman, UserProfileGod
+from .models import UserProfileStaff, UserProfileDriver
 
 User = get_user_model()
 
@@ -70,12 +70,12 @@ class UserProfileBaseSerializer(serializers.ModelSerializer):
         return representation
 
 
-class UserProfileGodSerializer(UserProfileBaseSerializer):
+class UserProfileStaffSerializer(UserProfileBaseSerializer):
     image = ThumbnailSerializer()
     permission_group = serializers.SerializerMethodField()
 
     class Meta:
-        model = UserProfileGod
+        model = UserProfileStaff
         fields = [
             "user",
             "fullname",
@@ -87,24 +87,11 @@ class UserProfileGodSerializer(UserProfileBaseSerializer):
         return obj.user.groups.values_list('name', flat=True)
 
 
-class UserProfileHumanSerializer(UserProfileBaseSerializer):
+class UserProfileDriverSerializer(UserProfileBaseSerializer):
     image = ThumbnailSerializer()
 
     class Meta:
-        model = UserProfileHuman
-        fields = [
-            "user",
-            "fullname"
-            "dob",
-            "image"
-        ]
-
-
-class UserProfileOrcSerializer(UserProfileBaseSerializer):
-    image = ThumbnailSerializer()
-
-    class Meta:
-        model = UserProfileOrc
+        model = UserProfileDriver
         fields = [
             "user",
             "fullname"

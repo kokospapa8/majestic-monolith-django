@@ -15,16 +15,15 @@ from core.utils import UserPathAndRename
 
 from phonenumber_field.modelfields import PhoneNumberField
 
-from .managers import GodManager, HumanManager, OrcManager
+from .managers import StaffManager, DriverManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     class Types(models.TextChoices):
-        GOD = "GOD", "God"
-        HUMAN = "HUMAN", "Human"
-        ORC = "ORC", "Orc"
+        STAFF = "STAFF", "Staff"
+        DRIVER = "DRIVER", "Driver"
 
-    base_type = Types.HUMAN
+    base_type = Types.STAFF
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)
     phonenumber = PhoneNumberField(unique=True, blank=False, db_index=True, null=True)
@@ -43,7 +42,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
 
     type = models.CharField("Type", max_length=10,
-                            choices=Types.choices, default=Types.HUMAN)
+                            choices=Types.choices, default=Types.STAFF)
 
     email = models.EmailField(_("email address"), blank=True, unique=False, null=True)
     is_staff = models.BooleanField(
@@ -89,13 +88,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             self.type = self.base_type
 
         instance = super().save(*args, **kwargs)
-
-        if instance and instance.is_active:
-            from .utils_user import get_proxy_userprofile_model
-            proxy_profile = get_proxy_userprofile_model(self)
-            profile, created = proxy_profile.objects.select_related('user') \
-                .get_or_create(user__uuid=self.uuid, defaults={'user': self})
-
         return instance
 
     def __str__(self):
@@ -108,60 +100,48 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return f"0{self.phonenumber.national_number}"
 
 
-class UserGod(CustomUser):
-    base_type = CustomUser.Types.God
-    objects = GodManager()
+class UserStaff(CustomUser):
+    base_type = CustomUser.Types.STAFF
+    objects = StaffManager()
 
     class Meta:
         proxy = True
 
     @property
     def profile(self):
-        return self.userprofilegod
+        return self.userprofilestaff
 
 
-class UserHuman(CustomUser):
-    base_type = CustomUser.Types.HUMAN
-    objects = HumanManager()
-
-    class Meta:
-        proxy = True
-
-    @property
-    def profile(self):
-        return self.userprofilehuman
-
-
-class UserOrc(CustomUser):
-    base_type = CustomUser.Types.ORC
-    objects = OrcManager()
+class UserDriver(CustomUser):
+    base_type = CustomUser.Types.DRIVER
+    objects = DriverManager()
 
     class Meta:
         proxy = True
 
     @property
     def profile(self):
-        return self.userprofileorc
+        return self.userprofiledriver
 
 
-class UserProfileGod(models.Model):
+class UserProfileStaff(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=True)
     fullname = models.CharField(
         max_length=settings.USERPROFILE_FULLNAME_MAX_LENGTH,
         blank=True, default=""
     )
     image = ThumbnailerImageField(
-        upload_to=UserPathAndRename("images/user/god/"))
+        upload_to=UserPathAndRename("images/user/staff/"))
 
     class Meta:
         app_label = "user"
-        db_table = "user_profile_god"
+        db_table = "user_profile_staff"
 
     def __str__(self):
-        return f"[GOD]{self.user.username} - {self.fullname}"
+        return f"[Staff]{self.user.username} - {self.fullname}"
 
 
-class UserProfileHuman(models.Model):
+class UserProfileDriver(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=True)
     fullname = models.CharField(
         max_length=settings.USERPROFILE_FULLNAME_MAX_LENGTH,
@@ -169,29 +149,11 @@ class UserProfileHuman(models.Model):
     )
     dob = models.DateField(blank=True, null=True, default=None)
     image = ThumbnailerImageField(
-        upload_to=UserPathAndRename("images/user/human/"))
+        upload_to=UserPathAndRename("images/user/driver/"))
 
     class Meta:
         app_label = "user"
-        db_table = "user_profile_human"
+        db_table = "user_profile_driver"
 
     def __str__(self):
-        return f"[Human]{self.user.username} - {self.fullname}"
-
-
-class UserProfileOrc(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=True)
-    fullname = models.CharField(
-        max_length=settings.USERPROFILE_FULLNAME_MAX_LENGTH,
-        blank=True, default=""
-    )
-    dob = models.DateField(blank=True, null=True, default=None)
-    image = ThumbnailerImageField(
-        upload_to=UserPathAndRename("images/user/orc/"))
-
-    class Meta:
-        app_label = "user"
-        db_table = "user_profile_orc"
-
-    def __str__(self):
-        return f"[Orc]{self.user.username} - {self.fullname}"
+        return f"[Driver]{self.user.username} - {self.fullname}"

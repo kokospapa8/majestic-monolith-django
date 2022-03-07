@@ -58,10 +58,10 @@ event_param_set = {
 put_events = events.put_events(
     Entries=[
         {
-            "Source": "daas.api.order",
+            "Source": "mmd.api.order",
             "DetailType": "OrderCreated",
             "Detail": json.dumps(event_param_set),
-            "EventBusName": "daas-stage-events-pushops",
+            "EventBusName": "mmd-stage-events-pushops",
             "Resources": [],
         },
     ]

@@ -83,12 +83,6 @@ def create_random_string(max_length, letters=string.ascii_letters):
     return ''.join(random.choice(letters) for i in range(random.randint(1, max_length)))
 
 
-def filter_users_by_phonenumber(phonenumber):
-    User = get_user_model()
-    users = list(User.objects.filter(phonenumber=phonenumber))
-    return list(set(users))
-
-
 def get_distance(lat1, lat2, lng1, lng2):
     from math import sin, cos, sqrt, atan2, radians
     R = 6373.0

@@ -23,7 +23,7 @@ services:
       - DB_HOST=db
       - REDIS_HOST=redis
       - DB_PASSWORD=password
-      - TEST_DB_DATABASE_NAME=daas_test
+      - TEST_DB_DATABASE_NAME=mmd_test
       - TEST_DB_HOST=db
       - TEST_DB_PASSWORD=password
       - TEST_DB_USER=test
@@ -48,7 +48,7 @@ services:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_USER=test
       - MYSQL_PASSWORD=password
-      - MYSQL_DATABASE=daas_test
+      - MYSQL_DATABASE=mmd_test
       - MYSQL_ROOT_HOST="%"
 #      - MYSQL_RANDOM_ROOT_PASSWORD=yes
     command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci', '--explicit_defaults_for_timestamp']

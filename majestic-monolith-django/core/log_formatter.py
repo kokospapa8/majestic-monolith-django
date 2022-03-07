@@ -10,7 +10,7 @@ from urllib.parse import urlparse
 from kubi_ecs_logger import Logger
 from kubi_ecs_logger.models import Severity
 
-from .log_schema import DaasSchema
+from .log_schema import MMDSchema
 
 
 class ECSlogger(Logger):
@@ -18,7 +18,7 @@ class ECSlogger(Logger):
         super(ECSlogger, self).__init__(*args, **kwargs)
 
     def get_log_dict(self):
-        return DaasSchema().dump(self._base)
+        return MMDSchema().dump(self._base)
 
 
 class MMDECSRequestFormatter(ECSRequestFormatter):

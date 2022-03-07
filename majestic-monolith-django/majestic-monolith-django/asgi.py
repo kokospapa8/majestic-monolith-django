@@ -1,5 +1,5 @@
 """
-ASGI config for daas project.
+ASGI config for majestic-monolith-django project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

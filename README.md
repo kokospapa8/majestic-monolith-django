@@ -59,50 +59,25 @@ and many more...
 refer to [pyproject.toml](/config/app/pyproject.toml)
 
 ## pytest
-- 
 
-# environment setup 
-## prereq
-- python 3.8.10
-- [pyenv](https://github.com/pyenv/pyenv)
-```
-#after setup
-pyenv install 3.8.10
-```
-- [virtualenv](https://github.com/pyenv/pyenv-virtualenv)
-```
-#after setup
-pyenv virtualenv 3.8.10 majestic-monolith-django
-pyenv activate majestic-monolith-django
+# setup 
+[setup](setup.md) 
 
-```
-### Poetry
-```
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
-```
-
-To install or add packages,
-```
-cd <project_dir>/config/app/
-poetry install
-poetry add <packages> --dev # use --dev only for dev
-```
+# convention
+[convention](conventions.md)
 
 ## install precommit hook
 ```
 pre-commit install
 ```
 
-
 # Howto
 ## run docker-compose
 ## run pytest
 ## TODO
 - cookiecutter
-- (Guide)[guide.md]
 - architecure diagram 
-- slack exception backend -> events
-- type hint 
+- type hinting 
 
 ## Reference
 - [Majestic monolith](https://m.signalvnoise.com/the-majestic-monolith/)

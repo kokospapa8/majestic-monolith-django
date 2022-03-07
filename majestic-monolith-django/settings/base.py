@@ -8,13 +8,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 AUTH_USER_MODEL = "user.CustomUser"
 
-ADMINS = [('Jinwook', 'kokos.papa8@gmail.com')]
+ADMINS = [('Jinwook Baek', 'kokos.papa8@gmail.com')]
 MANAGERS = ADMINS
 
 INSTALLED_APPS = [
     "grappelli",
-    "django_mysql",
-    "corsheaders",
+
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -26,9 +25,12 @@ INSTALLED_APPS = [
     "auth.apps.AuthConfig",
     "user.apps.UserConfig",
 
+    "django_mysql",
+    "corsheaders",
+
     "rest_framework",
     "rest_framework_api_key",
-    'rest_framework_word_filter'
+    'rest_framework_word_filter',
 
     "drf_yasg",
     "allauth",
@@ -61,7 +63,7 @@ MIDDLEWARE = [
 
 ]
 
-ROOT_URLCONF = "daas.urls"
+ROOT_URLCONF = "majestic-monolith-django.urls"
 
 TEMPLATES = [
     {
@@ -184,3 +186,4 @@ SKIP_LOGGING_PATH = ['/api/healthcheck/']
 CORS_ALLOWED_ORIGIN_REGEXES = [
 ]
 EVENT_BUS_PUSHOPS = "mmd-event-bus"
+

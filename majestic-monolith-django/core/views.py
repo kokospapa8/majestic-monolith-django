@@ -73,7 +73,7 @@ class HealthCheckView(GenericAPIView):
         return Response({}, status=status.HTTP_200_OK)
 
 
-class DmmWebView(TemplateView):
+class DMMWebView(TemplateView):
     IS_MOBILE_ONLY = False
     MOBILE_REVERSE_FOR_PC = None
     IS_MOBILE_OG_FOR_WEB = False

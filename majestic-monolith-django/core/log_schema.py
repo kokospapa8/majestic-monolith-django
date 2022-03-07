@@ -6,7 +6,7 @@ from kubi_ecs_logger.models.fields.field_set import FieldSet, FieldSetSchema
 
 from marshmallow import fields
 
-DAAS_CUSTOM_INCLUDE_FIELDS = INCLUDE_FIELDS
+MMD_CUSTOM_INCLUDE_FIELDS = INCLUDE_FIELDS
 
 
 class User(FieldSet):
@@ -37,8 +37,8 @@ class CustomUserSchema(FieldSetSchema):
     uuid = fields.String()
 
 
-class DaasSchema(BaseSchema):
+class MMDSchema(BaseSchema):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        DAAS_CUSTOM_INCLUDE_FIELDS['user'] = fields.Nested(CustomUserSchema)
+        MMD_CUSTOM_INCLUDE_FIELDS['user'] = fields.Nested(CustomUserSchema)
         self.declared_fields.update(INCLUDE_FIELDS)

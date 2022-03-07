@@ -98,7 +98,7 @@ AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
 
 # LOCALStorages
 STATIC_URL = "/static/"
-STATIC_ROOT = "/Users/jinwookbaek/Project/daas-server/static"
+STATIC_ROOT = "/Users/jinwookbaek/Project/majestic-monolith-django/static"
 DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 

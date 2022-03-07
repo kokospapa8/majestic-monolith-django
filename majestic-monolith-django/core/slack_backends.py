@@ -1,10 +1,14 @@
 import boto3
 import json
+import logging
 
 from django.conf import settings
 from django_slack.utils import Backend
 
 from core.invoke_lambda import invoke_lambda
+
+logger = logging.getLogger("django.eventlogger")
+events = boto3.client("events")
 
 
 class LambdaBackend(Backend):
@@ -27,6 +31,37 @@ successful response
 '''
 
 
-class EventbridgeBackend(Backend):
+class EventBridgeBackend(Backend):
+    SOURCE = "mmd.slack_backend"
+    EVENT_BUS = settings.EVENT_BUS_PUSHOPS
+
     def send(self, url, message_data, **kwargs):
-        pass
+
+        payload = {
+            "env": settings.ENV_ALIAS,
+            "url": url,
+            "message_data": message_data
+        }
+        self.emit_eventbridge("slack", payload)
+
+    def emit_eventbridge(self, event_name, params):
+        if settings.ENV == "test":
+            return
+        try:
+            put_events = events.put_events(
+                Entries=[
+                    {
+                        "Source": self.SOURCE,
+                        "DetailType": event_name,
+                        "Detail": json.dumps({"params": params}),
+                        "EventBusName": self.EVENT_BUS,
+                        "Resources": [],
+                    },
+                ]
+            )
+            logger.info(f"Event emitted {put_events}")
+        except ClientError as e:
+            logger.error(f"error sending event error {e}")
+            logger.error(f"event_name: {event_name}")
+            logger.error(f"bus_name: {self.EVENT_BUS}")
+            logger.error(f"params: {params}")

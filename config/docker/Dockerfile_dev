@@ -27,7 +27,7 @@ poetry install --no-interaction --no-ansi
 # Open port 8000 to outside world
 EXPOSE 8000
 
-RUN mkdir /daas
+RUN mkdir /majestic-monolith-django
 WORKDIR /majestic-monolith-django
 ADD majestic-monolith-django /majestic-monolith-django/
 ADD static /static/

@@ -6,6 +6,6 @@ from .views import (
 )
 
 urlpatterns = [
-    path("users/self/", UserSelfView.as_view(), name="user_self"),
+    path("users/self/profile/", UserSelfView.as_view(), name="user_self"),
 
 ]

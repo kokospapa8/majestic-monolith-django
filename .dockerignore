@@ -1,7 +1,7 @@
 .git
 .gitignore
 venv
-/daas/.coverage
+/mmd/.coverage
 **/.idea/vcs.xml
-**/.idea/daas-server.iml
+**/.idea/mmd-server.iml
 **/.idea/misc.xml
