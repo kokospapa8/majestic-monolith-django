@@ -1,5 +1,6 @@
 # majestic-monolith-django
 
+[!image]()
 
 ## Introduction
 This is a starter repo for django project aiming to achieve majestic monolith architecture.
@@ -24,7 +25,9 @@ With code isolation, data isolation and some cloud architecture aid, majestic mo
 ## Sample app
 This repo provides sample user and auth app. 
 also another app another comment app to illustrate modular monolith architecture.
- 
+
+[!image]()
+
 
 ## Features
 - cache : REDIS
@@ -74,13 +77,20 @@ pre-commit install
 # Howto
 ## run docker-compose
 ## run pytest
+
 ## TODO
 - cookiecutter
 - architecure diagram 
 - type hinting 
+- async support
 
 ## Reference
 - [Majestic monolith](https://m.signalvnoise.com/the-majestic-monolith/)
 - [Majestic Modular Monoliths](https://lukashajdu.com/post/majestic-modular-monolith/)
 - [Two Scoops of Django 3.x](https://www.feldroy.com/books/two-scoops-of-django-3-x)
 - [cookie-cutter-django](https://github.com/cookiecutter/cookiecutter-django)
+
+# Release
+## version
+- 0.0.1 initial scaffolding
+- 

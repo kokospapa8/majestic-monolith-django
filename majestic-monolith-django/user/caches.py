@@ -11,7 +11,6 @@ from core.caches import ModelCacheBase, CacheBase, NewBadgeCache
 from .utils_user import get_proxy_userprofile_model, get_proxy_userprofile_serializer
 
 User = get_user_model()
-UserNewsCheck = apps.get_model('user', 'UserNewsCheck')
 
 
 class UserProfileCache(ModelCacheBase):

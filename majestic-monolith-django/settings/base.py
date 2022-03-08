@@ -24,6 +24,8 @@ INSTALLED_APPS = [
 
     "auth.apps.AuthConfig",
     "user.apps.UserConfig",
+    "distribution.apps.DistributionConfig",
+    "shipping.apps.ShippingConfig",
 
     "django_mysql",
     "corsheaders",

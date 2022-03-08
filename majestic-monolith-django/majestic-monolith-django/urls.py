@@ -13,6 +13,7 @@ from core.views import HealthCheckView
 api_urlpatterns_v1 = [
     path("user/", include("user.urls")),
     path("auth/", include("auth.urls")),
+    path("distribution/", include("distribution.urls")),
 
 ]
 
