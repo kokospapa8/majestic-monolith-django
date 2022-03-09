@@ -24,3 +24,8 @@ cd <project_dir>/config/app/
 poetry install
 poetry add <packages> --dev # use --dev only for dev
 ```
+
+## install precommit hook
+```
+pre-commit install
+```

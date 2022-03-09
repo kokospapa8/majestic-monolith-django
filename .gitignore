@@ -126,4 +126,4 @@ dmypy.json
 
 img/
 /static/
-/static/
+static/

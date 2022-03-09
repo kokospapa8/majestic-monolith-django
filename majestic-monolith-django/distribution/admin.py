@@ -14,6 +14,7 @@ class DistributionCenterAdmin(admin.ModelAdmin):
     readonly_fields = ['uuid']
 
     def staff_member_names(self, obj):
+        # TODO user API
         from user.caches import UserProfileCache
         users = []
         uuid_list = obj.staff_members.get('uuid', [])

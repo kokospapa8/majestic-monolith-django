@@ -69,20 +69,15 @@ refer to [pyproject.toml](/config/app/pyproject.toml)
 # convention
 [convention](conventions.md)
 
-## install precommit hook
-```
-pre-commit install
-```
+
 
 # Howto
 ## run docker-compose
 ## run pytest
+```python -m pytest --ds=settings.test```
 
 ## TODO
-- cookiecutter
-- architecure diagram 
-- type hinting 
-- async support
+[Projects](https://github.com/users/kokospapa8/projects/1/views/1)
 
 ## Reference
 - [Majestic monolith](https://m.signalvnoise.com/the-majestic-monolith/)

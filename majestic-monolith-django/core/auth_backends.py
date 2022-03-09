@@ -69,7 +69,9 @@ class PasswordlessAuthenticationBackend(AuthenticationBackend):
 
     def authenticate(self, request, phonenumber, verification_success: bool):
         if phonenumber and verification_success:
-            for user in filter_users_by_phonenumber(phonenumber):
+            from user.selectors import user_selector
+
+            for user in user_selector.filter_users_by_phonenumber(phonenumber):
                 if self.user_can_authenticate(user):
                     return user
         return None

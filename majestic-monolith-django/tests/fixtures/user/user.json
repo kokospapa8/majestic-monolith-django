@@ -1,0 +1,31 @@
+[
+  {
+    "model": "user.customuser",
+    "pk":2,
+    "fields": {
+      "password": "pbkdf2_sha256$150000$8pffCXCPqf0i$wVzR3ISo8UlPAalDfG4uma9LkqvYN+N1YtTL5uBGMCc=",
+      "last_login": "2020-08-18T10:41:38Z",
+      "is_superuser": false,
+      "uuid": "d916bff8-19b2-40c0-b8f7-46a35f60c511",
+      "username": "01012345556",
+      "email": "test_f1@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "banned": false,
+      "date_joined": "2020-08-18T10:39:51Z",
+      "locale": "en",
+      "phonenumber": "+821012345556",
+      "type": "STAFF",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "user.userprofilestaff",
+    "fields": {
+        "user": 2,
+        "fullname": "staff_fullname"
+    }
+  }
+
+]

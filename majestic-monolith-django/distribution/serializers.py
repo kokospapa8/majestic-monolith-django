@@ -15,6 +15,7 @@ class DistributionCenterSerializer(serializers.ModelSerializer):
         fields = ["uuid", "center_code", "name", "staff_names"]
 
     def get_staff_names(self, obj):
+        # TODO user API
         from user.caches import UserProfileCache
         users = []
         uuid_list = obj.staff_members.get('uuid', [])

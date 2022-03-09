@@ -51,7 +51,7 @@ class ShippingTransportAdmin(admin.ModelAdmin):
     list_display = ['uuid', 'completed',
                     'distribution_center_code_source',
                     'distribution_center_code_destination',
-                    'driver'
+                    'driver',
                     'timestamp_created',
                     'timestamp_departed',
                     'timestamp_arrived']
