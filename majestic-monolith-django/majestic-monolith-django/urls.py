@@ -14,6 +14,7 @@ api_urlpatterns_v1 = [
     path("user/", include("user.urls")),
     path("auth/", include("auth.urls")),
     path("distribution/", include("distribution.urls")),
+    path("shipping/", include("shipping.urls")),
 
 ]
 
@@ -23,6 +24,7 @@ api_urls = [
 ]
 
 urlpatterns = [
+    path('grappelli/', include('grappelli.urls')),
     path('nimda-saad/', admin.site.urls),
     path('api/', include(api_urls)),
     path("web/", include("web.urls")),

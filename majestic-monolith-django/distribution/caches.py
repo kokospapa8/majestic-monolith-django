@@ -13,7 +13,7 @@ class DistributionCenterCache(ModelCacheBase):
 
     def get_from_db(self, key, *args, **kwargs):
         try:
-            address = DistributionCenter.objects.get(uuid=key)
-            return address
+            center = DistributionCenter.objects.get(center_code=key)
+            return center
         except DistributionCenter.DoesNotExist:
             return None

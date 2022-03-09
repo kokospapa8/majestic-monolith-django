@@ -22,9 +22,10 @@ class ShippingItem(models.Model):
 
     shipping_batches = models.ManyToManyField(
         "shipping.ShippingBatch", blank=True, help_text='can assign multiple shipping batches')
-    current_distribution_center_code = models.IntegerField(blank=True, null=True,
-                                                           help_text="No FK since it's in different domain")
-    timestamp_created = models.DateTimeField(null=True, blank=True, db_index=True)
+    current_distribution_center_code = models.CharField(blank=True, null=True, max_length=16,
+                                                        help_text="No FK since it's in different domain")
+    timestamp_created = models.DateTimeField(null=True, blank=True,
+                                             db_index=True, auto_now_add=True)
     timestamp_completed = models.DateTimeField(null=True, blank=True)
 
     class Meta:
@@ -46,7 +47,8 @@ class ShippingBatch(models.Model):
     shipping_transport = models.ForeignKey("shipping.ShippingTransport", on_delete=models.PROTECT,
                                            null=True, blank=True, help_text="assigned to single batch")
 
-    timestamp_created = models.DateTimeField(null=True, blank=True, db_index=True)
+    timestamp_created = models.DateTimeField(null=True, blank=True,
+                                             db_index=True, auto_now_add=True)
     timestamp_completed = models.DateTimeField(null=True, blank=True)
 
     class Meta:
@@ -72,14 +74,17 @@ class ShippingTransport(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)
     completed = models.BooleanField(default=False, db_index=True)
 
-    distribution_center_code_source = models.IntegerField(blank=True, null=True,
-                                                          help_text="No FK since it's in different domain")
-    distribution_center_code_destination = models.IntegerField(blank=True, null=True,
-                                                               help_text="No FK since it's in different domain")
-    driver_id = models.IntegerField(blank=True, null=True,
+    distribution_center_code_source = models.CharField(blank=True, null=True,
+                                                       max_length=16,
+                                                       help_text="No FK since it's in different domain")
+    distribution_center_code_destination = models.CharField(blank=True, null=True,
+                                                            max_length=16,
+                                                            help_text="No FK since it's in different domain")
+    driver_uuid = models.UUIDField(blank=True, null=True,
                                     help_text="user_id, No FK since it's in different domain")
 
-    timestamp_created = models.DateTimeField(null=True, blank=True, db_index=True)
+    timestamp_created = models.DateTimeField(null=True, blank=True,
+                                             db_index=True, auto_now_add=True)
     timestamp_departed = models.DateTimeField(null=True, blank=True, db_index=True)
     timestamp_arrived = models.DateTimeField(null=True, blank=True, db_index=True)
 
@@ -101,6 +106,6 @@ class ShippingTransport(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"[ShippingTransport]{self.alias} " \
+        return f"[ShippingTransport]{self.uuid} " \
             f"{self.distribution_center_code_source} -> " \
             f"{self.distribution_center_code_destination}"

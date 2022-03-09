@@ -18,6 +18,7 @@ class IsProfileOwner(permissions.BasePermission):
         # Instance must have an attribute named `owner`.
         return obj.user == request.user
 
+
 class IsStaff(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.user.is_anonymous:

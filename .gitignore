@@ -127,3 +127,4 @@ dmypy.json
 img/
 /static/
 static/
+/.idea/
