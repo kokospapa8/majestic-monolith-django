@@ -11,5 +11,5 @@ def generate_tracking_number():
 
 def generate_batch_alias(max_length=10, letters=string.ascii_letters):
     a = str(datetime.date.today().strftime("%Y%m%d"))
-    b = ''.join(random.choice(letters) for i in range(random.randint(1, max_length)))
+    b = ''.join(random.choice(letters) for i in range(max_length))
     return f"{a}-{b}"
