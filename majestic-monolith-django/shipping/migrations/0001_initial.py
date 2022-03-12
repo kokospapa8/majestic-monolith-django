@@ -19,9 +19,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('uuid', models.UUIDField(db_index=True, default=uuid.uuid4, editable=False)),
-                ('alias', models.CharField(default=shipping.utils_shipping.generate_batch_alias, max_length=16, unique=True)),
+                ('alias', models.CharField(default=shipping.utils_shipping.generate_batch_alias, max_length=20, unique=True)),
                 ('completed', models.BooleanField(db_index=True, default=False)),
                 ('timestamp_created', models.DateTimeField(auto_now_add=True, db_index=True, null=True)),
+                ('timestamp_transport_assigned', models.DateTimeField(blank=True, null=True)),
                 ('timestamp_completed', models.DateTimeField(blank=True, null=True)),
             ],
             options={

@@ -154,7 +154,7 @@ class SigninTokenConfirmSerializer(LoginSerializer):
         phonenumber_check = PhonenumberCheck.objects.get(
             phonenumber=phonenumber)
         if phonenumber_check.is_expired():
-            raise serializers.ValidationError("전화번호의 유효시간이 지났습니다.")
+            raise serializers.ValidationError(_("phonenumber check expired."))
         if phonenumber_check.confirm_verification(token):
             PhonenumberVerificationCache().delete(str(phonenumber))
             return True
@@ -165,7 +165,8 @@ class SigninTokenConfirmSerializer(LoginSerializer):
             return phonenumber
         if not PhonenumberCheck.objects.filter(phonenumber=phonenumber, verified=False).exists():
             raise serializers.ValidationError(
-                "phonenumber verification has not been sent.")
+                _("phonenumber verification has not been sent.")
+            )
         return phonenumber
 
     def validate(self, attrs):

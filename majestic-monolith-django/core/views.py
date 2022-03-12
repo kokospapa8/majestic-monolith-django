@@ -65,6 +65,47 @@ class RetrieveCreateAPIView(
         return self.create(request, *args, **kwargs)
 
 
+class ListDataCreateAPIView(GenericAPIView):
+    serializer_class = None
+    data_key = None
+
+    def get_request_data(self):
+        request_data = self.request.data
+        return request_data if isinstance(request_data, list) else [request_data]
+
+    def get_extra_context(self):
+        return {}
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update(self.get_extra_context())
+        return context
+
+    def post(self, request, *args, **kwargs):
+        errors = []
+        serializers = []
+        items = []
+
+        post_data = self.get_request_data()
+        for data in post_data:
+            serializer = self.get_serializer(data=data,
+                    context=self.get_serializer_context()
+                                             )
+            if serializer.is_valid(raise_exception=False):
+                serializers.append(serializer)
+            else:
+                data_key = data.get(self.data_key, None)
+                error_dict = {data_key: serializer.errors}
+                errors.append(error_dict)
+        if len(errors) > 0:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            for serializer in serializers:
+                serializer.save()
+                items.append(serializer.data)
+        return Response(items, status=status.HTTP_200_OK)
+
+
 class HealthCheckView(GenericAPIView):
     permission_classes = [permissions.AllowAny]
     _ignore_model_permissions = True

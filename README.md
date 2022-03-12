@@ -88,4 +88,9 @@ refer to [pyproject.toml](/config/app/pyproject.toml)
 # Release
 ## version
 - 0.0.1 initial scaffolding
+## release plan
+- 0.1.0 initial application update with api
+- 0.1.1 service layer 
+- 0.2.0 cookie cutter
+- 0.3.0 async support
 - 

@@ -41,14 +41,15 @@ class ShippingItem(models.Model):
 
 class ShippingBatch(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)
-    alias = models.CharField(default=generate_batch_alias, unique=True, max_length=16)
+    alias = models.CharField(default=generate_batch_alias, unique=True, max_length=20)
     completed = models.BooleanField(default=False, db_index=True)
 
     shipping_transport = models.ForeignKey("shipping.ShippingTransport", on_delete=models.PROTECT,
-                                           null=True, blank=True, help_text="assigned to single batch")
+                                           null=True, blank=True, help_text="assigned to single transport")
 
     timestamp_created = models.DateTimeField(null=True, blank=True,
                                              db_index=True, auto_now_add=True)
+    timestamp_transport_assigned = models.DateTimeField(null=True, blank=True)
     timestamp_completed = models.DateTimeField(null=True, blank=True)
 
     class Meta:

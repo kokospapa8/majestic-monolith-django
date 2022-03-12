@@ -8,7 +8,12 @@ from .views import (
     ShippingItemViewSet,
 
     TransportBatchesView,
-    BatchShippingitemsView
+    TransportBatchesAddView,
+    TransportStartView,
+    TransportCompleteView,
+
+    BatchShippingitemsView,
+    BatchShippingitemsAddView
 )
 
 router_shippingitem = DefaultRouter()
@@ -21,12 +26,15 @@ router_transport = DefaultRouter()
 router_transport.register(r'transports', ShippingTransportViewSet, basename='transport')
 
 urlpatterns = [
-    # shppingitem add to batch
-    # shippingbatch add to transport
-
-    # transport / batches
+    # transport
     path("transports/<uuid:uuid>/batches/", TransportBatchesView.as_view(), name="transport_batches"),
+    path("transports/<uuid:uuid>/add/", TransportBatchesAddView.as_view(), name="transport_batches_add"),
+    path("transports/<uuid:uuid>/start/", TransportStartView.as_view(), name="transport_batches_complete"),
+    path("transports/<uuid:uuid>/complete/", TransportCompleteView.as_view(), name="transport_batches_complete"),
+
+    # batches
     path("batches/<str:alias>/shippingitems/", BatchShippingitemsView.as_view(), name="batch_shippingitems"),
+    path("batches/<str:alias>/add/", BatchShippingitemsAddView.as_view(), name="batch_shippingitem_add"),
 
 ]
 

@@ -20,7 +20,8 @@ class BaseEventsEmitter:
         pass
 
     def emit_eventbridge(self, event_name, params):
-        if settings.ENV == "test":
+        if settings.ENV in ["test", "local"]:
+            logger.info(f"eventbridge mock: {event_name} - {params} ")
             return
         try:
             put_events = events.put_events(
