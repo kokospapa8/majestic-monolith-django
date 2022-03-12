@@ -15,6 +15,7 @@ from .serializers import ShippingItemSerializer, ShippingBatchSerializer, \
     ShippingTransportSerializer, ShippingBatchAddSerializer, \
     ShippingItemAddSerializer, ShippingTransportStartSerializer, \
     ShippingTransportCompleteSerializer
+from .docs import doc_transport_batches, doc_batch_items
 
 
 class ShippingTransportViewSet(viewsets.ModelViewSet):
@@ -67,9 +68,9 @@ class TransportBatchesView(generics.ListAPIView):
                        'timestamp_completed']
     lookup_url_kwarg = 'uuid'
 
-    # @doc_transport_batches
-    # def get(self, request, *args, **kwargs):
-    #     return self.list(request, *args, **kwargs)
+    @doc_transport_batches
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
     def get_queryset(self):
         filter_kwargs = {'uuid': self.kwargs[self.lookup_url_kwarg]}
@@ -90,9 +91,9 @@ class BatchShippingitemsView(generics.ListAPIView):
                        'timestamp_completed']
     lookup_url_kwarg = 'alias'
 
-    # @doc_transport_batches
-    # def get(self, request, *args, **kwargs):
-    #     return self.list(request, *args, **kwargs)
+    @doc_batch_items
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
     def get_queryset(self):
         filter_kwargs = {'alias': self.kwargs[self.lookup_url_kwarg]}

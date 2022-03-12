@@ -51,8 +51,8 @@ doc_auth_singin = swagger_auto_schema(
     'Permission: '
     '  - AllowAny\n\n'
     'Link: ',
-    operation_summary="signin with password 패스워드 로그인",
-    tags=["auth signin 로그인"],
+    operation_summary="signin with password",
+    tags=["auth signin"],
     responses={
         200: "signin successful",
         400: 'invalid credential \n'
@@ -64,8 +64,8 @@ doc_auth_singin_token_request = swagger_auto_schema(
     operation_description='Call this on singin process, \n'
                           'if requested 5 times in 24 hours, request is blocked \n'
                           '01012341XXX bypass token creation in non-pord environment ',
-    operation_summary="signin token request 핸드폰 로그인 시도",
-    tags=["auth signin 로그인"],
+    operation_summary="signin token request",
+    tags=["auth signin"],
     responses={
         200: dict_response_schema({"timestamp_expires": "unix timestamp"}),
         400: "invalid phonenumber\n"
@@ -80,8 +80,8 @@ doc_auth_singin_token_confirm = swagger_auto_schema(
     operation_id='auth_signin_token_request',
     operation_description='Call this on singin process, \n'
                           'extra descritions....',
-    operation_summary="signin token confirm 핸드폰 문자 확인",
-    tags=["auth signin 로그인"],
+    operation_summary="signin token confirm",
+    tags=["auth signin"],
     responses={
         200: dict_response_schema(
             {

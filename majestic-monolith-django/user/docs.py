@@ -2,7 +2,7 @@ from drf_yasg.utils import swagger_auto_schema
 from core.docs import dict_response_schema, param, list_response_schema
 
 
-user_profile_response_response = {
+user_profile_response = {
     "dob": "1990-12-12",
     "fullname": "Jinwook Baek",
     "uuid": "0646681e-1b1b-4aa0-b924-b042fbf04901",
@@ -29,7 +29,7 @@ doc_user_self_get = swagger_auto_schema(
     tags=["profile"],
     responses={
         200: dict_response_schema(
-            user_profile_response_response
+            user_profile_response
         ),
     }
 )
@@ -43,7 +43,7 @@ doc_user_self_patch = swagger_auto_schema(
     tags=["profile"],
     responses={
         200: dict_response_schema(
-            user_profile_response_response
+            user_profile_response
         )
     }
 )

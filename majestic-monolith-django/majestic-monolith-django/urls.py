@@ -4,6 +4,7 @@ from django.urls import path
 from django.conf.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 
 from core.docs import get_schema_view_from_urlpatterns
 from core.views import HealthCheckView
@@ -35,23 +36,17 @@ urlpatterns = [
 
 
 if settings.ENV in ["local", "dev"]:
-    api_doc_view_v1 = get_schema_view_from_urlpatterns(
-        api_urlpatterns_v1,
-        "/api/v1/",
-    )
 
     urlpatterns += [
-        path('api/docs/swagger', api_doc_view_v1.with_ui('swagger', cache_timeout=0),
-             name='api_swagger_v1'),
 
-        path('api/docs/redoc', api_doc_view_v1.with_ui('redoc', cache_timeout=0),
-             name='api_redoc_v1'),
 
         path(r"raise500/", Raise500View.as_view()),
         path(r"logger_test/", LoggerTest.as_view()),
         path(r"flush_cache/", FlushCacheView.as_view()),
 
     ]
+    from .urls_doc import doc_urlpatterns
+    urlpatterns += doc_urlpatterns
 
     urlpatterns += [
         path('api-auth/', include("rest_framework.urls")),
