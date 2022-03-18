@@ -447,6 +447,18 @@ six = ">=1.9.0"
 with_social = ["django-allauth (>=0.25.0)"]
 
 [[package]]
+name = "django-slack"
+version = "5.17.6"
+description = "Provides easy-to-use integration between Django projects and the Slack group chat and IM tool."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+Django = ">=2"
+requests = "*"
+
+[[package]]
 name = "django-storages"
 version = "1.12.3"
 description = "Support for many storage backends in Django"
@@ -1578,7 +1590,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "3.8.10"
-content-hash = "27390eb1e20aae5c230c7221e8e303f328640fa7d38841b3eab629f5f341084b"
+content-hash = "aebcef2b5d9c4df1ea350c281b1889e2470d36b123bcb671b10f05d50b639f03"
 
 [metadata.files]
 asgiref = [
@@ -1850,6 +1862,9 @@ django-request-logging = [
 ]
 django-rest-auth = [
     {file = "django-rest-auth-0.9.5.tar.gz", hash = "sha256:f11e12175dafeed772f50d740d22caeab27e99a3caca24ec65e66a8d6de16571"},
+]
+django-slack = [
+    {file = "django-slack-5.17.6.tar.gz", hash = "sha256:829c0a13a05f5a5d65b37aa56e1729120cc10b53f580ebdc15371bb93454a731"},
 ]
 django-storages = [
     {file = "django-storages-1.12.3.tar.gz", hash = "sha256:a475edb2f0f04c4f7e548919a751ecd50117270833956ed5bd585c0575d2a5e7"},

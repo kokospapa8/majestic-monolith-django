@@ -26,7 +26,7 @@ api_urls = [
 
 urlpatterns = [
     path('grappelli/', include('grappelli.urls')),
-    path('nimda-saad/', admin.site.urls),
+    path('nimda/', admin.site.urls),
     path('api/', include(api_urls)),
     path("web/", include("web.urls")),
 

@@ -26,6 +26,7 @@ services:
       - DB_HOST=db
       - REDIS_HOST
       - S3_BUCKET
+      - DB_USERNAME
       - SLACK_TOKEN
     depends_on:
       - db

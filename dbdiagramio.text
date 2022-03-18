@@ -1,0 +1,119 @@
+// APP: User
+Enum USER_TYPE {
+  STAFF
+  DRIVER
+}
+
+Table CustomUser as U {
+  id int [pk, increment] // auto-increment
+  uuid uuid
+  phonenumber string
+  phonenumber_meta string
+  username string
+  type USER_TYPE
+
+  full_name varchar
+  created_at timestamp
+  country_code int
+}
+
+Table UserProfileStaff {
+  user_id int [ref: - U.id]
+  fullname string
+  image string
+ }
+
+Table UserProfileDriver {
+  user_id int [ref: - U.id]
+  fullname string
+  image string
+  dob date
+ }
+
+//----------------------------------------------//
+// APP: Auth
+Enum VERIFICATION_TYPE {
+  SIGNIN
+  SIGNUP
+}
+
+Table PhonenumberCheck {
+  id int [pk, increment] // auto-increment
+  verified boolean
+  timestamp_requested datetime
+  timestamp_verified datetime
+  token string
+
+  full_name varchar
+  created_at timestamp
+  country_code int
+}
+
+Table PhonenumberVerificationLog {
+  phonenumber string
+  type VERIFICATION_TYPE
+  timestamp datetime
+  success boolean
+}
+
+//----------------------------------------------//
+// APP: Distribution
+
+Table DistributionCenter {
+  uuid uuid
+  center_code string
+  name string
+  staff_members json
+}
+
+
+//----------------------------------------------//
+// APP: Shipping
+Enum SHIPPINGITEM_STATUS {
+  CREATED
+  MOVING
+  COMPLETED
+  DAMAGED
+  LOST
+}
+
+Table ShippingItem {
+  id int [pk, increment] // auto-increment
+  uuid uuid
+
+  tracking_number string
+  sku string
+  status SHIPPINGITEM_STATUS
+  shipping_batches int  [note: 'list batches'] // add column note
+}
+
+Table ShippingItem_Batches { //auto generated M2M table
+  id int [pk, increment] // auto-increment
+  shippingitem_id int [ref: > ShippingItem.id]
+  shippingbatch_id int [ref: > ShippingBatch.id]
+
+}
+Table ShippingBatch {
+  id int [pk, increment] // auto-increment
+  uuid uuid
+
+  alias string
+  completed boolean
+  shipping_transport int [ref: > ShippingTransport.id]
+  timestamp_created datetime
+  timestamp_transport_assigned datetime
+  timestamp_completed datetime
+}
+
+Table ShippingTransport {
+  id int [pk, increment] // auto-increment
+  uuid uuid
+
+  completed boolean
+  distribution_center_code_source string
+  distribution_center_code_destination string
+  driver_uuid uuid // U.uuid
+  timestamp_created datetime
+  timestamp_departed datetime
+  timestamp_arrived datetime
+}

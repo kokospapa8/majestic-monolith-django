@@ -68,12 +68,7 @@
         {
           "valueFrom": "arn:aws:ssm:ap-northeast-2:<ACCOUNT_ID>:parameter/mmd/server/S3_BUCKET",
           "name": "S3_BUCKET"
-        },
-        {
-          "valueFrom": "arn:aws:ssm:ap-northeast-2:<ACCOUNT_ID>:parameter/mmd/server/SLACK_TOKEN",
-          "name": "SLACK_TOKEN"
         }
-
       ],
       "dockerSecurityOptions": null,
       "memory": null,

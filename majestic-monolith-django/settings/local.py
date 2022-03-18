@@ -87,7 +87,9 @@ CACHES = {
 }
 
 # this only for development
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR.parent, "static"),  # docker
+                    # os.path.join(BASE_DIR, "static") # use this if collect static locally
+                    ]
 
 # if you don't already have this in settings
 DEFAULT_FROM_EMAIL = "server@exammple.com"
@@ -98,7 +100,7 @@ AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
 
 # LOCALStorages
 STATIC_URL = "/static/"
-STATIC_ROOT = "/Users/jinwookbaek/Project/majestic-monolith-django/static"
+STATIC_ROOT = f"{BASE_DIR}/static"
 DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 

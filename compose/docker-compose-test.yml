@@ -29,6 +29,7 @@ services:
       - TEST_DB_USER=test
       - TEST_REDIS_HOST=redis
       - S3_BUCKET
+      - DB_USERNAME
       - SLACK_TOKEN
     depends_on:
       - db

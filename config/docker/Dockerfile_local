@@ -28,6 +28,8 @@ poetry install --no-interaction --no-ansi
 EXPOSE 8000
 
 RUN mkdir /majestic-monolith-django
+RUN mkdir /majestic-monolith-django/static
+
 WORKDIR /majestic-monolith-django
 ADD majestic-monolith-django /majestic-monolith-django/
 ADD static /static/

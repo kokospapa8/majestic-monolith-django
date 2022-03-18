@@ -1,5 +1,5 @@
-# environment setup 
-## prereq
+# environment setup
+## Runtime
 - python 3.8.10
 - [pyenv](https://github.com/pyenv/pyenv)
 ```
@@ -13,7 +13,7 @@ pyenv virtualenv 3.8.10 majestic-monolith-django
 pyenv activate majestic-monolith-django
 
 ```
-### Poetry
+## Poetry
 ```
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
 ```
@@ -28,4 +28,28 @@ poetry add <packages> --dev # use --dev only for dev
 ## install precommit hook
 ```
 pre-commit install
+```
+
+## Environment setting
+```bash
+export SECRET_KEY=""
+export DB_USERNAME="" #only if needed
+export DB_PASSWORD="" #only if needed
+export DB_HOST="" #only if needed
+export REDIS_HOST="" #only if needed
+export S3_BUCKET="" #
+export SLACK_TOKEN="" #refer to https://django-slack.readthedocs.io/ for token config
+
+```
+## Run server
+### local
+access via `http://localhost:8000/api/v1/shipping/shippingitems/`
+```bash
+python majestic-monolith-django/manage.py runserver_plus
+```
+### docker-compose
+access via `http://localhost/api/v1/shipping/shippingitems/`
+
+```
+- docker-compose -f compose/docker-compose-local.yml up --build
 ```

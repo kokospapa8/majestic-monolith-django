@@ -57,7 +57,7 @@
           "valueFrom": "arn:aws:ssm:ap-northeast-2:<ACCOUNT_ID>:parameter/mmd/server/AWS_SECRET_ACCESS_KEY",
           "name": "AWS_SECRET_ACCESS_KEY"
         },
-        mmd,
+        {
           "valueFrom": "arn:aws:ssm:ap-northeast-2:<ACCOUNT_ID>:parameter/mmd/server/DB_HOST",
           "name": "DB_HOST"
         },
@@ -76,10 +76,6 @@
         {
           "valueFrom": "arn:aws:ssm:ap-northeast-2:<ACCOUNT_ID>:parameter/mmd/server/S3_BUCKET",
           "name": "S3_BUCKET"
-        },
-        {
-          "valueFrom": "arn:aws:ssm:ap-northeast-2:<ACCOUNT_ID>:parameter/mmd/server/SLACK_TOKEN",
-          "name": "SLACK_TOKEN"
         }
       ],
       "dockerSecurityOptions": null,
