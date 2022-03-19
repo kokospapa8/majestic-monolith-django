@@ -54,3 +54,9 @@ class ShippingTransportNoBatchException(CustomTextAPIException):
     status_code = status.HTTP_400_BAD_REQUEST
     default_detail = "No Batch assigned to transport."
     default_code = 'ShippingTransportNoBatch'
+
+
+class ShippingTransportNotDepartedException(CustomTextAPIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = "Shipping transport not departed yet."
+    default_code = 'ShippingTransportNotDeparted'

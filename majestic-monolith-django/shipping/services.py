@@ -8,6 +8,7 @@ from core.services import DomainService
 
 from .events import ShippingEventsEmitter
 from .models import ShippingItem, ShippingBatch, ShippingTransport
+from .choices import ShippingItemStatus
 
 
 @dataclass
@@ -41,11 +42,13 @@ class ShippingItemService(DomainService):
     def add_to_batch(self) -> ShippingItem:
         item = self.dto.item
         item.shipping_batches.add(self.dto.batch)
+        if item.status == ShippingItemStatus.CREATED:
+            item.status = ShippingItemStatus.MOVING
         item.save()
         ShippingEventsEmitter().item_added_to_batch({
-                "item_tracking_number": item.tracking_number,
-                "batch_alias": self.dto.batch.alias
-            }
+            "item_tracking_number": item.tracking_number,
+            "batch_alias": self.dto.batch.alias
+        }
         )
         return item
 
@@ -75,12 +78,10 @@ class TransportService(DomainService):
 
         ShippingEventsEmitter().transport_complete({
             "transport_uuid": transport.uuid.hex
-            }
+        }
         )
 
 
 batch_service = ShippingBatchService()
 shippingitem_service = ShippingItemService()
 transport_service = TransportService()
-
-

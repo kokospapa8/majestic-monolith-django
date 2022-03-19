@@ -23,12 +23,12 @@ DistributionCenter = apps.get_model('distribution', 'DistributionCenter')
 class TestDistributionViewSet:
     # test CRUD
 
-    def test_user_rider_profile_get_unauthorized(self, client):
+    def test_distribution_list_unauthorized(self, client):
         url = resolve_url('center-list')
         response = client.get(url)
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_distribution_list_empty(self, staff_user):
+    def test_distribution_list_initial(self, staff_user):
         url = resolve_url('center-list')
         client = CustomClient()
         client.force_login(staff_user)

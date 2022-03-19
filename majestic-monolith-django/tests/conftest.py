@@ -40,7 +40,7 @@ def django_db_setup(django_db_setup, django_db_blocker):
         for app in ['auth',
                     'user',
                     'distribution',
-                    # 'shipping'
+                    'shipping'
                     ]:
             dir_path = os.path.join(BASE_DIR, f'tests/fixtures/{app}')
             files = os.listdir(dir_path)

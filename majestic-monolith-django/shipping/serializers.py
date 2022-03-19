@@ -13,7 +13,7 @@ from .exceptions import ShippingTransportCompletedException, \
     ShippingBatchItemAddInvalidStatusException, \
     ShippingTransportDistributionNotConfiguredException, \
     ShippingTransportDriverNotConfiguredException, \
-    ShippingTransportNoBatchException
+    ShippingTransportNoBatchException, ShippingTransportNotDepartedException
 
 logger = logging.getLogger("django.eventlogger")
 
@@ -22,12 +22,16 @@ class ShippingTransportSerializer(serializers.ModelSerializer):
     distribution_center_source = serializers.SerializerMethodField()
     distribution_center_destination = serializers.SerializerMethodField()
     driver = serializers.SerializerMethodField()
+    distribution_center_code_source = serializers.CharField(write_only=True)
+    distribution_center_code_destination = serializers.CharField(write_only=True)
 
     class Meta:
         model = ShippingTransport
         fields = ["uuid", "completed", "batch_count",
                   "distribution_center_source",
                   "distribution_center_destination",
+                  "distribution_center_code_source",
+                  "distribution_center_code_destination",
                   "driver",
                   "timestamp_created",
                   "timestamp_departed",
@@ -50,7 +54,7 @@ class ShippingTransportSerializer(serializers.ModelSerializer):
 
 
 class ShippingBatchSerializer(serializers.ModelSerializer):
-    shipping_transport = ShippingTransportSerializer()
+    shipping_transport = ShippingTransportSerializer(required=False)
 
     class Meta:
         model = ShippingBatch
@@ -174,6 +178,8 @@ class ShippingTransportStartSerializer(serializers.Serializer):
 class ShippingTransportCompleteSerializer(serializers.Serializer):
     def validate(self, attrs):
         transport = self.context['transport']
+        if transport.timestamp_departed is None:
+            raise ShippingTransportNotDepartedException()
         if transport.completed:
             raise ShippingTransportCompletedException()
         return attrs

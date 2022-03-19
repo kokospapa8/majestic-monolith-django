@@ -74,7 +74,8 @@ class TransportBatchesView(generics.ListAPIView):
 
     def get_queryset(self):
         filter_kwargs = {'uuid': self.kwargs[self.lookup_url_kwarg]}
-        transport = generics.get_object_or_404(ShippingTransport.objects.all(), **filter_kwargs)
+        transport = generics.get_object_or_404(
+            ShippingTransport.objects.all(), **filter_kwargs)
 
         queryset = self.queryset.filter(shipping_transport=transport)
         return queryset
@@ -112,7 +113,8 @@ class TransportBatchesAddView(ListDataCreateAPIView):
 
     def get_extra_context(self):
         filter_kwargs = {'uuid': self.kwargs[self.lookup_url_kwarg]}
-        transport = generics.get_object_or_404(ShippingTransport.objects.all(), **filter_kwargs)
+        transport = generics.get_object_or_404(
+            ShippingTransport.objects.all(), **filter_kwargs)
         return {"transport": transport}
 
 
@@ -152,3 +154,27 @@ class BatchShippingitemsAddView(ListDataCreateAPIView):
         filter_kwargs = {'alias': self.kwargs[self.lookup_url_kwarg]}
         batch = generics.get_object_or_404(ShippingBatch.objects.all(), **filter_kwargs)
         return {"batch": batch}
+
+    def post(self, request, *args, **kwargs):
+        errors = []
+        serializers = []
+        items = []
+        print(self.request.data)
+        post_data = self.get_request_data()
+        for data in post_data:
+            serializer = self.get_serializer(data=data,
+                                             context=self.get_serializer_context()
+                                             )
+            if serializer.is_valid(raise_exception=False):
+                serializers.append(serializer)
+            else:
+                data_key = data.get(self.data_key, None)
+                error_dict = {data_key: serializer.errors}
+                errors.append(error_dict)
+        if len(errors) > 0:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            for serializer in serializers:
+                serializer.save()
+                items.append(serializer.data)
+        return Response(items, status=status.HTTP_200_OK)
