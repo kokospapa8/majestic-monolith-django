@@ -35,10 +35,11 @@ API doc can be accessed via (/api/docs/redoc) (you must login as staff)
 
 ## Infrastructure
 ![Infra](images/infra.png)
-I will provide base CDK template for deployment.
+I will provide base CDK template for deployment.(TBD)
+I recommend to use seperate repository for CDK.
 CDK incldues following modules
   - ECS cluster with django and nginx image
-  - EventBridege
+  - EventBridge
   - Aurora for Mysql
   - ALB
 
@@ -86,14 +87,14 @@ refer to [pyproject.toml](/config/app/pyproject.toml)
 
 
 # How to Setup
-[setup](setup.md)
+Refer to [setup](setup.md)
 
 # Convention (WIP)
-[convention](conventions.md)
+Refer to [convention](conventions.md)
 
-# Howto
+## TODO List
+Future updates are listed here.
 
-## TODO
 [Projects](https://github.com/users/kokospapa8/projects/1/views/1)
 
 ## Reference
@@ -109,4 +110,3 @@ refer to [pyproject.toml](/config/app/pyproject.toml)
 ## release plan
 - 0.2.0 cookie cutter
 - 0.3.0 async support
--

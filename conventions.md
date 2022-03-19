@@ -1,6 +1,6 @@
 # import
-- try to use local import for app model in side the method
-- import common library 
+- try to use local import for app model inside the method
+- import common library
 ```
 1. standard package
 2. django package
@@ -19,8 +19,10 @@
 # serializer usage
 - list params
 - context passing
-- validation 
+- validation
 - error api code pattern
 
 
-# decoupled join 
+# decoupled join
+
+# Serializer exception and error
