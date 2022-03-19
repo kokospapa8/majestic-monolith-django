@@ -128,3 +128,5 @@ img/
 /static/
 static/
 /.idea/
+
+!/static/
