@@ -26,3 +26,6 @@
 # decoupled join
 
 # Serializer exception and error
+- exception handler
+- exception with params and details
+-

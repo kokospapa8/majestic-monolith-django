@@ -8,7 +8,7 @@ logger = logging.getLogger("django.eventlogger")
 
 class DistributionCenter(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)
-    center_code = models.CharField(max_length=16, db_index=True)
+    center_code = models.CharField(max_length=16, db_index=True, unique=True)
     name = models.CharField(max_length=64, db_index=True)
     # use Arrayfield if using postgresql
     staff_members = models.JSONField(default=dict, blank=True, null=True,

@@ -13,6 +13,7 @@ class DistributionCenterViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['center_code', 'name']
+    lookup_field = 'uuid'
 
     def get_permissions(self):
         """

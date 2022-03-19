@@ -7,7 +7,7 @@ from .views import (
 )
 
 router_center = DefaultRouter()
-router_center.register(r'center', DistributionCenterViewSet, basename='center')
+router_center.register(r'centers', DistributionCenterViewSet, basename='center')
 
 
 urlpatterns = [

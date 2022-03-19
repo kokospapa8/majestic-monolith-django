@@ -39,7 +39,8 @@ def django_db_setup(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
         for app in ['auth',
                     'user',
-                    # 'distribution', 'shipping'
+                    'distribution',
+                    # 'shipping'
                     ]:
             dir_path = os.path.join(BASE_DIR, f'tests/fixtures/{app}')
             files = os.listdir(dir_path)
@@ -60,6 +61,12 @@ def user_1(db):
     user.raw_password = 'password'
     EmailAddress.objects.get_or_create(user=user, email=user.email, verified=True)
     user.save()
+    return user
+
+
+@pytest.fixture
+def staff_user():
+    user = CustomUser.objects.get(pk=2)
     return user
 
 
