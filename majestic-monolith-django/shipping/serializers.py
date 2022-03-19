@@ -6,6 +6,14 @@ from .models import ShippingItem, ShippingBatch, ShippingTransport
 from .services import ShippingDTO, ShippingBatchService, \
     ShippingItemService, TransportService
 from .choices import ShippingItemStatus
+from .exceptions import ShippingTransportCompletedException, \
+    ShippingTransportBatchNotExistException, \
+    ShippingTransportBatchAlreadyCompletedException, \
+    ShippingBatchCompletedException, ShippingBatchItemAlreadyExsitException, \
+    ShippingBatchItemAddInvalidStatusException, \
+    ShippingTransportDistributionNotConfiguredException, \
+    ShippingTransportDriverNotConfiguredException, \
+    ShippingTransportNoBatchException
 
 logger = logging.getLogger("django.eventlogger")
 
@@ -79,14 +87,14 @@ class ShippingBatchAddSerializer(serializers.Serializer):
         transport = self.context['transport']
 
         if transport.completed:
-            raise serializers.ValidationError("ShippingTransport already completed")
+            raise ShippingTransportCompletedException()
         try:
             batch = ShippingBatch.objects.get(alias=alias)
             self.context['batch'] = batch
         except ShippingBatch.DoesNotExist:
-            raise serializers.ValidationError("ShippingBatch does not exists")
+            raise ShippingTransportBatchNotExistException()
         if batch.completed:
-            raise serializers.ValidationError("ShippingBatch already completed")
+            raise ShippingTransportBatchAlreadyCompletedException()
         return attrs
 
     def save(self):
@@ -109,15 +117,15 @@ class ShippingItemAddSerializer(serializers.Serializer):
         batch = self.context['batch']
 
         if batch.completed:
-            raise serializers.ValidationError("ShippingBatch already completed.")
+            raise ShippingBatchCompletedException()
         try:
             shippingitem = ShippingItem.objects.get(tracking_number=tracking_number)
             self.context['shippingitem'] = shippingitem
         except ShippingItem.DoesNotExist:
-            raise serializers.ValidationError("ShippingItem does not exists")
+            raise ShippingBatchItemAlreadyExsitException()
         if shippingitem.status not in [ShippingItemStatus.CREATED,
                                        ShippingItemStatus.MOVING]:
-            raise serializers.ValidationError("ShippingItem in invalid status")
+            raise ShippingBatchItemAddInvalidStatusException()
         return attrs
 
     def save(self):
@@ -139,18 +147,22 @@ class ShippingTransportStartSerializer(serializers.Serializer):
         transport = self.context['transport']
         driver_uuid = attrs.get('driver_uuid', None)
         if transport.completed:
-            raise serializers.ValidationError("ShippingTransport already completed")
+            raise ShippingTransportCompletedException()
         if not (transport.distribution_center_code_source
                 and transport.distribution_center_code_destination):
-            raise serializers.ValidationError("ShippingTransport distribution center not assigned")
+            raise ShippingTransportDistributionNotConfiguredException()
+        if ShippingBatch.objects.filter(shipping_transport=transport).count() == 0:
+            raise ShippingTransportNoBatchException()
         if not transport.driver_uuid and not driver_uuid:
-            raise serializers.ValidationError("driver is not assigned.")
+            raise ShippingTransportDriverNotConfiguredException()
+
         return attrs
 
     def save(self):
         transport = self.context['transport']
         shipping_dto = ShippingDTO(transport=transport)
-        TransportService(shipping_dto).transport_start(self.data.get('driver_uuid', None))
+        TransportService(shipping_dto).transport_start(
+            self.data.get('driver_uuid', None))
         return transport
 
     def to_representation(self, instance):
@@ -163,12 +175,7 @@ class ShippingTransportCompleteSerializer(serializers.Serializer):
     def validate(self, attrs):
         transport = self.context['transport']
         if transport.completed:
-            raise serializers.ValidationError("ShippingTransport already completed")
-        if not (transport.distribution_center_code_source
-                and transport.distribution_center_code_destination):
-            raise serializers.ValidationError("ShippingTransport distribution center not assigned")
-        if ShippingBatch.objects.filter(shipping_transport=transport).count() == 0:
-            raise serializers.ValidationError("No Batch assigned to transport.")
+            raise ShippingTransportCompletedException()
         return attrs
 
     def save(self):

@@ -71,3 +71,15 @@ class ServiceUnavailable(APIException):
     status_code = 503
     default_detail = 'Service temporarily unavailable, try again later.'
     default_code = 'service_unavailable'
+
+
+class CustomTextAPIException(APIException):
+    def __init__(self, detail=None, code=None, **kwargs):
+        if detail is None:
+            detail = self.default_detail
+        if isinstance(detail, str):
+            detail = detail.format(kwargs)
+
+        if code is None:
+            code = self.default_code
+        self.detail = _get_error_details(detail, code)
