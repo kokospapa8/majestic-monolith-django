@@ -8,7 +8,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework_api_key.permissions import HasAPIKey
 
 from core.permissions import IsStaff
-from core.views import ListDataCreateAPIView
+from core.views import BulkDataPostAPIView
 
 from .models import ShippingItem, ShippingBatch, ShippingTransport
 from .serializers import ShippingItemSerializer, ShippingBatchSerializer, \
@@ -104,7 +104,7 @@ class BatchShippingitemsView(generics.ListAPIView):
         return queryset
 
 
-class TransportBatchesAddView(ListDataCreateAPIView):
+class TransportBatchesAddView(BulkDataPostAPIView):
     permission_classes = [IsStaff | HasAPIKey]
     serializer_class = ShippingBatchAddSerializer
     queryset = ShippingTransport.objects.all()
@@ -143,7 +143,7 @@ class TransportCompleteView(TransportActionBaseView):
     serializer_class = ShippingTransportCompleteSerializer
 
 
-class BatchShippingitemsAddView(ListDataCreateAPIView):
+class BatchShippingitemsAddView(BulkDataPostAPIView):
     permission_classes = [IsStaff | HasAPIKey]
     serializer_class = ShippingItemAddSerializer
     queryset = ShippingBatch.objects.all()

@@ -65,7 +65,7 @@ class RetrieveCreateAPIView(
         return self.create(request, *args, **kwargs)
 
 
-class ListDataCreateAPIView(GenericAPIView):
+class BulkDataPostAPIView(GenericAPIView):
     serializer_class = None
     data_key = None
 
@@ -100,8 +100,11 @@ class ListDataCreateAPIView(GenericAPIView):
             if serializer.is_valid(raise_exception=False):
                 serializers.append(serializer)
             else:
-                data_key = data.get(self.data_key, None)
-                error_dict = {data_key: serializer.errors}
+                data_value = data.get(self.data_key, None)
+                if data_value:
+                    error_dict = {data_value: serializer.errors}
+                else:
+                    error_dict = serializer.errors
                 errors.append(error_dict)
         if len(errors) > 0:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
