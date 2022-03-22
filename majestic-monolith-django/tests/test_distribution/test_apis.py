@@ -33,7 +33,7 @@ class TestDistributionViewSet:
         client = CustomClient()
         client.force_login(staff_user)
         response = client.get(url)
-        assert len(response.json()['results']) == 1
+        assert len(response.json()['results']) == 2
 
     def test_distribution_create(self, staff_user, new_center_param):
         url = resolve_url('center-list')
@@ -51,7 +51,7 @@ class TestDistributionViewSet:
 
         url = resolve_url('center-list')
         response = client.get(url)
-        assert len(response.json()['results']) == 2
+        assert len(response.json()['results']) == 3
 
         url = resolve_url('center-detail', uuid=uuid)
         response = client.get(url)

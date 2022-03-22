@@ -13,7 +13,7 @@
     "model": "distribution.distributioncenter",
     "pk":2,
     "fields": {
-      "uuid": "48574f05-a29e-4735-a817-839b228c3e82",
+      "uuid": "48574f05-a29e-4735-a817-839b228c3e81",
       "center_code": "ABC002",
       "name": "CENTER-ABC2",
       "staff_members": {}
