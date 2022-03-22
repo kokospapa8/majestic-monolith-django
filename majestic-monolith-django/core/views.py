@@ -81,15 +81,21 @@ class ListDataCreateAPIView(GenericAPIView):
         context.update(self.get_extra_context())
         return context
 
+    def process_serializer(self, serializers):
+        items = []
+        for serializer in serializers:
+            serializer.save()
+            items.append(serializer.validated_data)
+        return items
+
     def post(self, request, *args, **kwargs):
         errors = []
         serializers = []
-        items = []
 
         post_data = self.get_request_data()
         for data in post_data:
             serializer = self.get_serializer(data=data,
-                    context=self.get_serializer_context()
+                                             context=self.get_serializer_context()
                                              )
             if serializer.is_valid(raise_exception=False):
                 serializers.append(serializer)
@@ -100,10 +106,8 @@ class ListDataCreateAPIView(GenericAPIView):
         if len(errors) > 0:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            for serializer in serializers:
-                serializer.save()
-                items.append(serializer.data)
-        return Response(items, status=status.HTTP_200_OK)
+            return_data = self.process_serializer(serializers)
+        return Response(return_data, status=status.HTTP_200_OK)
 
 
 class HealthCheckView(GenericAPIView):
