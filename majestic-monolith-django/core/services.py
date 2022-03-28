@@ -62,7 +62,10 @@ class ApplicationService(Service):
     def __init__(self, dto: Any = None, uow: Any = None):
         super().__init__()
         self.dto = dto
-        self.uow = uow
+        if uow:
+            self.uow = uow
+        else:
+            self.uow = DjangoUnitOfWork()
 
     def sample_service_method(self):
         dto = self.dto
