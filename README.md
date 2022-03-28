@@ -97,6 +97,9 @@ Future updates are listed here.
 
 [Projects](https://github.com/users/kokospapa8/projects/1/views/1)
 
+## Contribution
+I always welcome feedback and contribution. Please help me improve the project.
+
 ## Reference
 - [Majestic monolith](https://m.signalvnoise.com/the-majestic-monolith/)
 - [Majestic Modular Monoliths](https://lukashajdu.com/post/majestic-modular-monolith/)

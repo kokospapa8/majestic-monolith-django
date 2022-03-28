@@ -11,10 +11,9 @@
 
 # settings
 
-
 # logger
 
-
+# app structures
 
 # serializer usage
 - list params
@@ -28,4 +27,6 @@
 # Serializer exception and error
 - exception handler
 - exception with params and details
--
+
+# Async tasks
+# event emitter
