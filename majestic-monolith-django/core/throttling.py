@@ -1,6 +1,5 @@
 """
 Provides various throttling policies.
-https://www.notion.so/Throttling-f316d0c4f8c445a78190fcb4caf27f94
 """
 
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
