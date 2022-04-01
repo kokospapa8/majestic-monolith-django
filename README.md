@@ -43,6 +43,8 @@ CDK incldues following modules
   - Aurora for Mysql
   - ALB
 
+Refer to [infra setup](docs/infra_setup.md)
+
 I will update rest of diagram in the future to support for scalable infrastructure
 SAM
 - API gateway
@@ -87,10 +89,12 @@ refer to [pyproject.toml](/config/app/pyproject.toml)
 
 
 # How to Setup
-Refer to [setup](setup.md)
+Refer to [setup](docs/setup.md)
+Refer to [infra setup](docs/infra_setup.md)
 
-# Convention (WIP)
-Refer to [convention](conventions.md)
+
+# Convention
+Refer to [convention](docs/conventions.md)
 
 ## TODO List
 Future updates are listed here.

@@ -186,7 +186,7 @@
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "/daas/xray",
+          "awslogs-group": "/mmd/xray",
           "awslogs-region": "ap-northeast-2",
           "awslogs-stream-prefix": "xray"
         }

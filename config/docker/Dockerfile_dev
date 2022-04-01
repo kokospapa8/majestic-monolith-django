@@ -30,7 +30,7 @@ EXPOSE 8000
 RUN mkdir /majestic-monolith-django
 WORKDIR /majestic-monolith-django
 ADD majestic-monolith-django /majestic-monolith-django/
-ADD static /static/
+#ADD static /static/
 
 # When container starts, this script will be executed.
 # Note that it is NOT executed during building

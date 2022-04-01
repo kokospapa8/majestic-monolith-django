@@ -5,7 +5,7 @@
         "TargetService": {
           "Type": "AWS::ECS::Service",
           "Properties": {
-            "TaskDefinition": "arn:aws:ecs:ap-northeast-2:<ACCOUNT_ID>:task-definition/AppStackecsstackdaasstageprivateapiecstaskC8AF7E31",
+            "TaskDefinition": "arn:aws:ecs:ap-northeast-2:<ACCOUNT_ID>:task-definition/AppStackecsstackmmdstageprivateapiecstaskC8AF7E31",
             "LoadBalancerInfo": {
               "ContainerName": "nginx",
               "ContainerPort": 80
