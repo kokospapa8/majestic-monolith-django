@@ -130,3 +130,4 @@ static/
 /.idea/
 
 !/static/
+/majestic-monolith-django/testdb.sqlite3

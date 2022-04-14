@@ -3,6 +3,7 @@ import logging
 
 from django.db import models
 from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 
 from .choices import ShippingItemStatus
 from .utils_shipping import generate_batch_alias, generate_tracking_number
@@ -37,6 +38,11 @@ class ShippingItem(models.Model):
 
     def is_available_for_batch(self) -> bool:
         return not self.shipping_batches.filter(completed=False).exists()
+
+    def clean(self):
+        if self.status == ShippingItemStatus.CREATED:
+            if self.timestamp_completed is not None:
+                raise ValidationError("Shipping status CREATED but has timestamp_completed")
 
 
 class ShippingBatch(models.Model):

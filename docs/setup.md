@@ -13,6 +13,14 @@ pyenv virtualenv 3.8.10 majestic-monolith-django
 pyenv activate majestic-monolith-django
 
 ```
+### M1 MAC
+if you are using M1 mac, 3.8.10 might not work use 3.8.13 
+```
+pyenv install 3.8.13
+pyenv virtualenv 3.8.13 majestic-monolith-django
+pyenv activate majestic-monolith-django
+```
+
 ## Poetry
 ```
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
