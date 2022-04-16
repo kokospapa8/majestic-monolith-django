@@ -7,7 +7,7 @@ from django.db.models import QuerySet
 from core.selector import Selector
 
 
-from .models import CustomUser, UserStaff, UserDriver
+from .models import CustomUser, UserStaff
 
 User = get_user_model()
 

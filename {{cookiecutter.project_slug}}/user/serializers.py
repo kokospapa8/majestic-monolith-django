@@ -6,7 +6,7 @@ from rest_framework import serializers
 from core.serializers import ThumbnailSerializer
 from core.utils import convert_empty_string_to_none
 
-from .models import UserProfileStaff, UserProfileDriver
+from .models import UserProfileStaff
 
 User = get_user_model()
 
@@ -82,15 +82,3 @@ class UserProfileStaffSerializer(UserProfileBaseSerializer):
     def get_permission_group(self, obj):
         return obj.user.groups.values_list('name', flat=True)
 
-
-class UserProfileDriverSerializer(UserProfileBaseSerializer):
-    image = ThumbnailSerializer()
-
-    class Meta:
-        model = UserProfileDriver
-        fields = [
-            "user",
-            "fullname"
-            "dob",
-            "image"
-        ]

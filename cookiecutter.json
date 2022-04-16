@@ -1,0 +1,11 @@
+{
+  "project_name": "My Awesome Project",
+  "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
+  "project_new_module": "First app module(e.g. comment)",
+  "user_profile": "Staff",
+  "description": "Behold My Awesome Majestic Monolith Project!",
+  "author_name": "Your-name",
+  "domain_name": "example.com",
+  "email": "{{ cookiecutter.author_name.lower()|replace(' ', '-') }}@example.com",
+  "version": "0.1.0"
+}

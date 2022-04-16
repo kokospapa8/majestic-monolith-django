@@ -49,7 +49,7 @@ class TestAuthPhonenumberCheck:
     #     pass
 
 
-@pytest.mark.urls('majestic-monolith-django.urls')
+@pytest.mark.urls('{{cookiecutter.project_slug}}.urls')
 class TestAuthJWTToken:
     """ TEST JWT TOKEN """
 

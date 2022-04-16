@@ -27,9 +27,9 @@ poetry install --no-dev --no-interaction --no-ansi
 # Open port 8000 to outside world
 EXPOSE 8000
 
-RUN mkdir /majestic-monolith-django
-WORKDIR /majestic-monolith-django
-ADD majestic-monolith-django /majestic-monolith-django/
+RUN mkdir /{{cookiecutter.project_slug}}
+WORKDIR /{{cookiecutter.project_slug}}
+ADD {{cookiecutter.project_slug}} /{{cookiecutter.project_slug}}/
 #ADD static /static/
 
 # When container starts, this script will be executed.

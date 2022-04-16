@@ -1,5 +1,5 @@
 """
-ASGI config for majestic-monolith-django project.
+ASGI config for {{cookiecutter.project_slug}} project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -12,6 +12,6 @@ import os
 from django.core.asgi import get_asgi_application
 
 ENV = os.environ.get("ENV", "local")
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', f'majestic-monolith-django.settings.{ENV}')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', f'{{cookiecutter.project_slug}}.settings.{ENV}')
 
 application = get_asgi_application()

@@ -12,7 +12,7 @@ services:
       dockerfile: config/docker/Dockerfile_test
     hostname: app
     volumes:
-      - ../majestic-monolith-django:/majestic-monolith-django
+      - ../{{cookiecutter.project_slug}}:/{{cookiecutter.project_slug}}
     environment:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY

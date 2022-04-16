@@ -9,12 +9,3 @@ class StaffManager(BaseUserManager):
         CustomUser = get_user_model()
         results = super().get_queryset(*args, **kwargs)
         return results.filter(type=CustomUser.Types.STAFF)
-
-
-class DriverManager(BaseUserManager):
-    def get_queryset(self, *args, **kwargs):
-        # need to import user here since
-        # this module is imported before the model
-        CustomUser = get_user_model()
-        results = super().get_queryset(*args, **kwargs)
-        return results.filter(type=CustomUser.Types.DRIVER)

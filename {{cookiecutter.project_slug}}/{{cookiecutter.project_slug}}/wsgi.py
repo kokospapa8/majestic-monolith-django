@@ -1,5 +1,5 @@
 """
-WSGI config for majestic-monolith-django project.
+WSGI config for {{cookiecutter.project_slug}} project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -13,10 +13,10 @@ from django.core.wsgi import get_wsgi_application
 
 ENV = os.environ.get("ENV", "dev")
 if ENV in ["beta", "prod"]:
-    settings = f"majestic-monolith-django.settings_{ENV}"
+    settings = f"{{cookiecutter.project_slug}}.settings_{ENV}"
 else:
-    settings = "majestic-monolith-django.settings"
+    settings = "{{cookiecutter.project_slug}}.settings"
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'majestic-monolith-django.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', '{{cookiecutter.project_slug}}.settings')
 
 application = get_wsgi_application()

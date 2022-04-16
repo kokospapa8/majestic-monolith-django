@@ -7,7 +7,7 @@ from core.services import Service
 
 from .utils_user import get_proxy_userprofile_model
 from .events import UserEventsEmitter
-from .models import UserProfileStaff, UserProfileDriver
+from .models import UserProfileStaff
 
 User = get_user_model()
 
@@ -24,7 +24,6 @@ class UserDeleteService(Service):
 
         # might have profile for different user type
         UserProfileStaff.objects.filter(user=user).delete()
-        UserProfileDriver.objects.filter(user=user).delete()
 
         # import inline for other module in different domain
         from auth.models import PhonenumberCheck, PhonenumberVerificationLog

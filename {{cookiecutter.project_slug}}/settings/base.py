@@ -24,9 +24,7 @@ INSTALLED_APPS = [
 
     "auth.apps.AuthConfig",
     "user.apps.UserConfig",
-    "distribution.apps.DistributionConfig",
-    "shipping.apps.ShippingConfig",
-
+    "{{cookiecutter.project_new_module}}.apps.{{cookiecutter.project_new_module[0].upper()+cookiecutter.project_new_module[1:]}}Config",
     "django_mysql",
     "corsheaders",
 
@@ -65,7 +63,7 @@ MIDDLEWARE = [
 
 ]
 
-ROOT_URLCONF = "majestic-monolith-django.urls"
+ROOT_URLCONF = "{{cookiecutter.project_slug}}.urls"
 
 TEMPLATES = [
     {
@@ -86,7 +84,7 @@ TEMPLATES = [
     }
 ]
 
-WSGI_APPLICATION = "majestic-monolith-django.wsgi.application"
+WSGI_APPLICATION = "{{cookiecutter.project_slug}}.wsgi.application"
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

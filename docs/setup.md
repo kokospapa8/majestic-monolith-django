@@ -9,16 +9,16 @@ pyenv install 3.8.10
 - [virtualenv](https://github.com/pyenv/pyenv-virtualenv)
 ```
 #after setup
-pyenv virtualenv 3.8.10 majestic-monolith-django
-pyenv activate majestic-monolith-django
+pyenv virtualenv 3.8.10 {{cookiecutter.project_slug}}
+pyenv activate {{cookiecutter.project_slug}}
 
 ```
 ### M1 MAC
 if you are using M1 mac, 3.8.10 might not work use 3.8.13 
 ```
 pyenv install 3.8.13
-pyenv virtualenv 3.8.13 majestic-monolith-django
-pyenv activate majestic-monolith-django
+pyenv virtualenv 3.8.13 {{cookiecutter.project_slug}}
+pyenv activate {{cookiecutter.project_slug}}
 ```
 
 ## Poetry
@@ -53,7 +53,7 @@ export SLACK_TOKEN="" #refer to https://django-slack.readthedocs.io/ for token c
 ### local
 access via `http://localhost:8000/api/v1/shipping/shippingitems/`
 ```bash
-python majestic-monolith-django/manage.py runserver_plus
+python {{cookiecutter.project_slug}}/manage.py runserver_plus
 ```
 ### docker-compose
 access via `http://localhost/api/v1/shipping/shippingitems/`

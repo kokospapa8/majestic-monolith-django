@@ -25,9 +25,9 @@ RUN poetry config virtualenvs.create false &&\
 poetry install --no-interaction --no-ansi
 
 
-RUN mkdir /majestic-monolith-django
-WORKDIR /majestic-monolith-django
-ADD majestic-monolith-django /majestic-monolith-django/
+RUN mkdir /{{cookiecutter.project_slug}}
+WORKDIR /{{cookiecutter.project_slug}}
+ADD {{cookiecutter.project_slug}} /{{cookiecutter.project_slug}}/
 
 # When container starts, this script will be executed.
 # Note that it is NOT executed during building

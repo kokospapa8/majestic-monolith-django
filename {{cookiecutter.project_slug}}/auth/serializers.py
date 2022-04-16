@@ -59,8 +59,6 @@ class BaseSignupSerializer(serializers.Serializer):
 class SignupSerializer(BaseSignupSerializer):
     def create_profile(self, request, user):
         user.profile.fullname = self.validated_data.get('fullname', "")
-        if user.type == CustomUser.Types.DRIVER:
-            user.profile.dob = self.validated_data.get('dob', None)
         user.profile.save()
 
     def save(self, request):

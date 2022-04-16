@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
 
-from .models import UserStaff, UserDriver, \
-    UserProfileStaff, UserProfileDriver
-from .serializers import UserProfileDriverSerializer, \
+from .models import UserStaff, \
+    UserProfileStaff
+from .serializers import \
     UserProfileStaffSerializer
 
 CustomUser = get_user_model()
@@ -12,22 +12,16 @@ CustomUser = get_user_model()
 def get_proxy_user_model(user):
     if user.type == CustomUser.Types.STAFF:
         return UserStaff
-    if user.type == CustomUser.Types.DRIVER:
-        return UserDriver
 
 
 def get_proxy_userprofile_model(user):
     if user.type == CustomUser.Types.STAFF:
         return UserProfileStaff
-    if user.type == CustomUser.Types.DRIVER:
-        return UserProfileDriver
 
 
 def get_proxy_userprofile_serializer(user):
     if user.type == CustomUser.Types.STAFF:
         return UserProfileStaffSerializer
-    if user.type == CustomUser.Types.DRIVER:
-        return UserProfileDriverSerializer
 
 
 def delete_user_profile_cache(uuid):

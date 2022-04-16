@@ -58,9 +58,9 @@ def get_schema_view_from_urlpatterns(urlpatterns, base_path):
 
     return get_schema_view(
         openapi.Info(
-            title="Majestic Monolith Sample API",
+            title="{{cookiecutter.project_slug}} Sample API",
             default_version='',
-            description="Majestic Monolith Sample API",
+            description="{{cookiecutter.project_slug}} Sample API",
             terms_of_service="",
             contact=openapi.Contact(email="kokospapa@delivus.co.kr"),
             license=openapi.License(name=""),

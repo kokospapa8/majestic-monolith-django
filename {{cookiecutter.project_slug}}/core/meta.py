@@ -39,8 +39,6 @@ def get_default(request, meta=None):
     info['title'] = check_key('title', info) or "dmm title"
     info['description'] = check_key(
         'description', info) or "dmm description."
-    info['keywords'] = check_key(
-        'keywords', info) or "majestic, monolith, django"
     info['image_src'] = check_key('og:image', info) or (
         f'{settings.STATIC_URL}{settings.ENV}/img/web/logo.png')
 
@@ -52,7 +50,7 @@ def get_default(request, meta=None):
     # info['fb:app_id'] = settings.FACEBOOK_APP_ID
     info['og:locale'] = check_key('og:locale', info) or get_facebook_locale(request)
     info['og:type'] = check_key('og:type', info) or 'website'
-    info['og:site_name'] = check_key('og:site_name', info) or 'Majestic Monolith django'
+    info['og:site_name'] = check_key('og:site_name', info) or '{{cookiecutter.project_slug}}'
     try:
         locales.remove(info['og:locale'])
     except ValueError:

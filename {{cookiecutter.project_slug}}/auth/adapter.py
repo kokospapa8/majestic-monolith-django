@@ -27,9 +27,6 @@ class AuthAccountAdapter(DefaultAccountAdapter):
         if user_type == CustomUser.Types.STAFF:
             from user.models import UserStaff
             user = UserStaff()
-        if user_type == CustomUser.Types.DRIVER:
-            from user.models import UserDriver
-            user = UserDriver()
 
         return user
 

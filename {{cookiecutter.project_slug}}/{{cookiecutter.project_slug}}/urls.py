@@ -4,19 +4,12 @@ from django.urls import path
 from django.conf.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
 
-from core.docs import get_schema_view_from_urlpatterns
 from core.views import HealthCheckView
-
-# from shop.admin import seller_admin_site
 
 api_urlpatterns_v1 = [
     path("user/", include("user.urls")),
     path("auth/", include("auth.urls")),
-    path("distribution/", include("distribution.urls")),
-    path("shipping/", include("shipping.urls")),
-
 ]
 
 api_urls = [
@@ -38,8 +31,6 @@ urlpatterns = [
 if settings.ENV in ["local", "dev"]:
 
     urlpatterns += [
-
-
         path(r"raise500/", Raise500View.as_view()),
         path(r"logger_test/", LoggerTest.as_view()),
         path(r"flush_cache/", FlushCacheView.as_view()),

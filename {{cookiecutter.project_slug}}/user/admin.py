@@ -4,23 +4,11 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 
 from core.admin_filters import UserIsActiveFilter
-from .models import CustomUser, UserProfileDriver, \
+from .models import CustomUser, \
     UserProfileStaff
 from .services import UserDeleteService, UserDTO
 from .events import UserEventsEmitter
 from .slack_notification import SlackNotificationUser
-
-
-class ProfileDriverModelForm(forms.ModelForm):
-
-    class Meta:
-        model = UserProfileDriver
-        fields = "__all__"
-
-
-class UserProfileDriverInline(admin.StackedInline):
-    model = UserProfileDriver
-    form = ProfileDriverModelForm
 
 
 class ProfileStaffModelForm(forms.ModelForm):
@@ -63,7 +51,7 @@ class CustomUserAdmin(UserAdmin):
     )
     list_filter = ['banned', UserIsActiveFilter, 'type']
 
-    inlines = [UserProfileDriverInline, UserProfileStaffInline]
+    inlines = [UserProfileStaffInline]
 
     def save_model(self, request, obj, form, change):
         super(CustomUserAdmin, self).save_model(request, obj, form, change)

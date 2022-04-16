@@ -15,13 +15,12 @@ from core.utils import UserPathAndRename
 
 from phonenumber_field.modelfields import PhoneNumberField
 
-from .managers import StaffManager, DriverManager
+from .managers import StaffManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     class Types(models.TextChoices):
         STAFF = "STAFF", "Staff"
-        DRIVER = "DRIVER", "Driver"
 
     base_type = Types.STAFF
 
@@ -112,18 +111,6 @@ class UserStaff(CustomUser):
         return self.userprofilestaff
 
 
-class UserDriver(CustomUser):
-    base_type = CustomUser.Types.DRIVER
-    objects = DriverManager()
-
-    class Meta:
-        proxy = True
-
-    @property
-    def profile(self):
-        return self.userprofiledriver
-
-
 class UserProfileStaff(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=True)
     fullname = models.CharField(
@@ -139,21 +126,3 @@ class UserProfileStaff(models.Model):
 
     def __str__(self):
         return f"[Staff]{self.user.username} - {self.fullname}"
-
-
-class UserProfileDriver(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=True)
-    fullname = models.CharField(
-        max_length=settings.USERPROFILE_FULLNAME_MAX_LENGTH,
-        blank=True, default=""
-    )
-    dob = models.DateField(blank=True, null=True, default=None)
-    image = ThumbnailerImageField(
-        upload_to=UserPathAndRename("images/user/driver/"))
-
-    class Meta:
-        app_label = "user"
-        db_table = "user_profile_driver"
-
-    def __str__(self):
-        return f"[Driver]{self.user.username} - {self.fullname}"

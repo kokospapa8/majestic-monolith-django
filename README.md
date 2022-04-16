@@ -1,4 +1,4 @@
-# majestic-monolith-django
+# {{cookiecutter.project_slug}}
 
 ## Introduction
 This project is a starter django repo aiming to achieve majestic monolith architecture.
@@ -67,7 +67,7 @@ Github action
 
 ### pytest
 You can run pytest on CLI:
-```(project_root)/majestic-monolit-django/$ python -m pytest --ds=settings.test```
+```(project_root)/{{cookiecutter.project_slug}}/$ python -m pytest --ds=settings.test```
 You can also run docker-compose to run pytest
 ```(project_root)/$ docker-compose -f docker-compose-test.yml up --build```
 

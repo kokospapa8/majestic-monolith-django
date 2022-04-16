@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "majestic-monolith-django server"
+name = "{{cookiecutter.project_slug}} server"
 version = "0.1.0"
-description = "majestic-monolith-django package init"
-authors = ["jinwookbaek <kokos.papa8@gmail.com>"]
+description = "{{cookiecutter.project_slug}} package init"
+authors = ["{{cookiecutter.author_name}} <{{cookiecutter.email}}>"]
 
 [tool.poetry.dependencies]
 python = "3.8.10"
