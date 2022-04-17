@@ -110,10 +110,16 @@ I always welcome feedback and contribution. Please help me improve the project.
 - [Two Scoops of Django 3.x](https://www.feldroy.com/books/two-scoops-of-django-3-x)
 - [cookie-cutter-django](https://github.com/cookiecutter/cookiecutter-django)
 
+# Cookie-cutter
+Use cookie cutter to start new project
+```
+cookiecutter https://github.com/kokospapa8/majestic-monolith-django.git --checkout cookie-cutter
+```
+
 # Release
 ## version
 - 0.1.0 initial application update with api
+- 0.2.0 cookie cutter
 
 ## release plan
-- 0.2.0 cookie cutter
 - 0.3.0 async support
