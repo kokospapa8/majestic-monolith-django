@@ -19,7 +19,7 @@ If you are the only developer in the team or
 developing ina a relatively small to medium scale architecture, MSA can be overwhelming.
 
 You can reduce cognitive load by following DDD practice.
-With code isolation, data isolation and some cloud architecture hel,
+With code isolation, data isolation and some cloud architecture help,
 majestic monolith django(MMD) can prepare for the scale and bigger team coordination.
 
 ## Sample application

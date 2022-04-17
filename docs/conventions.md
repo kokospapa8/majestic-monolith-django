@@ -46,7 +46,7 @@ class ShippingExampleSerializer(serializers.Serializer)
 ```
 
 ## settings
-![setting_structure](images/settings.png)
+![setting_structure](../images/settings.png)
 Everything should be included in base.py.
 There should be dedicating setting file for each environment importing base file.
 `app.py` consists of application specific settings.
@@ -56,7 +56,7 @@ settings/packages/*.py include 3rdpart specific settings.
 
 ## module structures
 ### modules
-![moduel_structure](images/module_structure.png)
+![moduel_structure](../images/module_structure.png)
 
 Each module consists of following structure
 - admin: django admin
