@@ -2,7 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v4.3.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -10,7 +10,22 @@ repos:
     -   id: check-added-large-files
     -   id: check-json
 
--   repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: '7d14f78422aef2153a90e33373d2515bcc99038d'
+-   repo: https://github.com/pycqa/isort
+    rev: 5.10.1
     hooks:
-    -   id: autopep8
+    -   id: isort
+
+-   repo: https://github.com/psf/black
+    rev: 22.3.0
+    hooks:
+    -   id: black
+        args:
+            - "--line-length=88"
+
+-   repo: https://github.com/pycqa/flake8
+    rev: 4.0.1
+    hooks:
+    -   id: flake8
+        args:
+            - "--ignore=E501, W503, F405, E722, W605"
+        additional_dependencies: [flake8-print]
