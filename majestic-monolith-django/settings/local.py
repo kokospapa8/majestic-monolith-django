@@ -85,10 +85,10 @@ CACHES = {
 }
 
 # this only for development
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR.parent, "static"),  # docker
-    # os.path.join(BASE_DIR, "static") # use this if collect static locally
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR.parent, "static"),  # docker
+#     # os.path.join(BASE_DIR, "static") # use this if collect static locally
+# ]
 
 # if you don't already have this in settings
 DEFAULT_FROM_EMAIL = "server@exammple.com"
@@ -99,7 +99,7 @@ AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
 
 # LOCALStorages
 STATIC_URL = "/static/"
-STATIC_ROOT = f"{BASE_DIR}/static"
+STATIC_ROOT = os.path.join(BASE_DIR, "..", "static")
 DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
@@ -131,3 +131,4 @@ REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"] = (
 TESTING = ENV == "test"
 
 THUMBNAIL_DEFAULT_STORAGE = "easy_thumbnails.storage.ThumbnailFileSystemStorage"
+REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "drf_spectacular.openapi.AutoSchema"

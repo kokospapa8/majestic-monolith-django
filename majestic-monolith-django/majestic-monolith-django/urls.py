@@ -3,6 +3,11 @@ from django.conf.urls import include
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 
 from core.views import HealthCheckView
 from core.views_test import FlushCacheView, LoggerTest, Raise500View
@@ -29,17 +34,39 @@ urlpatterns = [
     path(r"flush_cache/", FlushCacheView.as_view()),
 ]
 
+spectacular_url_patterns = [
+    path("auth/", include("auth.urls")),
+]
+spectacular_urls = [path("api/spectacular/", include(spectacular_url_patterns))]
+
 
 if settings.ENV in ["local", "dev"]:
+    # we need to import this somewhere in the code so that swagger can parse our
+    # authentication class
+    import auth.auth_schema  # noqa: F401
 
     urlpatterns += [
         path(r"raise500/", Raise500View.as_view()),
         path(r"logger_test/", LoggerTest.as_view()),
         path(r"flush_cache/", FlushCacheView.as_view()),
+        path(
+            "api/spectacular/schema/",
+            SpectacularAPIView.as_view(urlconf=spectacular_urls),
+            name="spectacular-schema",
+        ),
+        path(
+            "api/spectacular/schema/swagger-ui/",
+            SpectacularSwaggerView.as_view(url_name="spectacular-schema"),
+            name="spectacular-swagger-ui",
+        ),
+        path(
+            "api/spectacular/schema/redoc/",
+            SpectacularRedocView.as_view(url_name="spectacular-schema"),
+            name="spectacular-redoc",
+        ),
     ]
-    from .urls_doc import doc_urlpatterns
 
-    urlpatterns += doc_urlpatterns
+    urlpatterns += spectacular_urls
 
     urlpatterns += [
         path("api-auth/", include("rest_framework.urls")),

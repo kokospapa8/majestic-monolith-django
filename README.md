@@ -54,7 +54,7 @@ SAM
 ## Features
 - cache : REDIS
 - authentication : JWT
-- drf-yasg
+- drf-spectacular: api doc
 
 
 ### CI/CD

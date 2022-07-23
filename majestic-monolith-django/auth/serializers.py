@@ -203,3 +203,35 @@ class SignoutTokenRefreshSerializer(TokenRefreshSerializer):
             #     pass
 
         return data
+
+
+class TokenResponseSerializer(serializers.Serializer):
+    access = serializers.CharField(read_only=True, help_text="Access token.")
+    refresh = serializers.CharField(read_only=True, help_text="Refresh token.")
+
+
+class TokenHeartbeatResponseSerializer(serializers.Serializer):
+    delete_count = serializers.ListField(help_text="How many tokens were deleted.")
+
+
+class TokenRefreshResponseSerializer(serializers.Serializer):
+    access = serializers.CharField(read_only=True, help_text="Access token.")
+
+
+class TimestampExpiresResponseSerializer(serializers.Serializer):
+    timestamp_expires = serializers.DateTimeField(
+        format="%Y-%m-%dT%H:%M:%S.%fZ",
+        read_only=True,
+        help_text="Timestamp when the token expires.",
+    )
+
+
+class UserProfileRiderResponseSerializer(serializers.Serializer):
+    type = CustomUser.Types.DRIVER
+    username = serializers.CharField(
+        read_only=True,
+        max_length=15,
+        help_text="Driver's username.",
+    )
+    uuid = serializers.UUIDField(read_only=True, help_text="Driver's uuid.")
+    phonenumber = PhoneNumberField(read_only=True, help_text="Rider's phone number.")

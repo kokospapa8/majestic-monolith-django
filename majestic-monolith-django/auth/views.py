@@ -3,6 +3,7 @@ from allauth.account.utils import complete_signup
 from django.conf import settings
 from django.contrib.auth import get_user_model, logout
 from django.utils import timezone
+from drf_spectacular.utils import extend_schema
 from rest_auth.registration.views import LoginView, RegisterView
 from rest_framework import generics, permissions, status
 from rest_framework.generics import get_object_or_404
@@ -10,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 from auth.caches import PhonenumberVerificationCache
+from core.serializers import BlankSerializer
 from core.throttling import (
     AnonDefaultThrottle,
     AnonSuppressedThrottle,
@@ -17,14 +19,15 @@ from core.throttling import (
     SMSRequestThrottle,
 )
 
-from .docs import (
-    doc_auth_check_phonenumber,
-    doc_auth_signout,
-    doc_auth_singin,
-    doc_auth_singin_token_confirm,
-    doc_auth_singin_token_request,
-    doc_auth_singup,
-    doc_auth_unregister,
+from .drf_schema import (
+    auth_phonenumber_check_view_schema,
+    auth_signin_token_confirm_view_schema,
+    auth_signin_token_request_view_schema,
+    auth_signin_view_schema,
+    auth_signout_view_schema,
+    auth_signup_view_schema,
+    auth_token_hearbeat_view_schema,
+    auth_unregister_view_schema,
 )
 from .models import PhonenumberCheck, PhonenumberVerificationLog
 from .serializers import (
@@ -48,7 +51,7 @@ class PhonenumberCheckView(generics.GenericAPIView):
         AuthCheckThrottle,
     ]
 
-    @doc_auth_check_phonenumber
+    @extend_schema(**auth_phonenumber_check_view_schema)
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -98,7 +101,7 @@ class BaseSignupView(RegisterView):
 
 
 class SignupView(BaseSignupView):
-    @doc_auth_singup
+    @extend_schema(**auth_signup_view_schema)
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
@@ -128,7 +131,7 @@ class SigninView(LoginView):
         response = Response(serializer.validated_data, status=status.HTTP_200_OK)
         return response
 
-    @doc_auth_singin
+    @extend_schema(**auth_signin_view_schema)
     def post(self, request, *args, **kwargs):
         self.request = request
         self.serializer = self.get_serializer(
@@ -147,7 +150,7 @@ class SigninTokenRequestView(generics.GenericAPIView):
         SMSRequestThrottle,
     ]
 
-    @doc_auth_singin_token_request
+    @extend_schema(**auth_signin_token_request_view_schema)
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -194,7 +197,7 @@ class SigninTokenConfirmView(LoginView):
         ]
     )
 
-    @doc_auth_singin_token_confirm
+    @extend_schema(**auth_signin_token_confirm_view_schema)
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 
@@ -228,7 +231,7 @@ class UnregisterView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = SignoutTokenRefreshSerializer
 
-    @doc_auth_unregister
+    @extend_schema(**auth_unregister_view_schema)
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         # black list token
@@ -249,7 +252,7 @@ class SignoutView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = SignoutTokenRefreshSerializer
 
-    @doc_auth_signout
+    @extend_schema(**auth_signout_view_schema)
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         # black list token
@@ -259,4 +262,29 @@ class SignoutView(generics.GenericAPIView):
             pass
 
         logout(request)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class TokenHeartbeatView(generics.GenericAPIView):
+    serializer_class = BlankSerializer
+
+    @extend_schema(**auth_token_hearbeat_view_schema)
+    def post(self, request, *args, **kwargs):
+        """
+        Delete expired tokens and return their count.
+        """
+        from rest_framework_simplejwt.settings import api_settings
+
+        if (
+            api_settings.BLACKLIST_AFTER_ROTATION
+            and "rest_framework_simplejwt.token_blacklist" in settings.INSTALLED_APPS
+        ):
+            from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
+            from rest_framework_simplejwt.utils import aware_utcnow
+
+            delete_count = OutstandingToken.objects.filter(
+                expires_at__lte=aware_utcnow()
+            ).delete()
+            return Response({"delete_count": delete_count}, status=status.HTTP_200_OK)
+
         return Response(status=status.HTTP_204_NO_CONTENT)

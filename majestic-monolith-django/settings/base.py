@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "rest_framework_api_key",
     "rest_framework_word_filter",
     "drf_yasg",
+    "drf_spectacular",
     "allauth",
     "allauth.account",
     "phonenumber_field",

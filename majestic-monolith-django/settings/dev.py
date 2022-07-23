@@ -120,3 +120,4 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGIN_REGEXES = [r"^http://localhost:3000$"]
 INSTALLED_APPS.append("rest_framework_simplejwt.token_blacklist")
+REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "drf_spectacular.openapi.AutoSchema"
