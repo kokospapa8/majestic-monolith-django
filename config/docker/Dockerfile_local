@@ -36,4 +36,4 @@ ADD static /static/
 
 # When container starts, this script will be executed.
 # Note that it is NOT executed during building
-CMD ["sh", "/config/django.sh"]
+CMD ["sh", "/config/django_local.sh"]

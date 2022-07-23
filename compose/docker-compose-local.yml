@@ -49,8 +49,10 @@ services:
       - MYSQL_PASSWORD=password
       - MYSQL_DATABASE=mmd
       - MYSQL_ROOT_HOST="%"
-    logging:
-      driver: none
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+#    logging:
+#      driver: none
+
   nginx:
     image: nginx
     hostname: nginx
