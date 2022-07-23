@@ -1,24 +1,23 @@
 from threading import local
 
-from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
 
 _stash = local()
 
 
 class AuthenticationBackend(ModelBackend):
-
     def authenticate(self, request, **credentials):
         ret = self._authenticate_by_phonenumber(**credentials)
         return ret
 
     def _authenticate_by_phonenumber(self, **credentials):
-        phonenumber = credentials.get('phonenumber')
-        password = credentials.get('password')
+        phonenumber = credentials.get("phonenumber")
+        password = credentials.get("password")
 
         if phonenumber:
             # import module from different domain
             from user.selectors import user_selector
+
             for user in user_selector.filter_users_by_phonenumber(phonenumber):
                 if self._check_password(user, password):
                     return user
@@ -56,7 +55,7 @@ class AuthenticationBackend(ModelBackend):
         account inactive page.
         """
         global _stash
-        ret = getattr(_stash, 'user', None)
+        ret = getattr(_stash, "user", None)
         _stash.user = user
         return ret
 
@@ -66,7 +65,6 @@ class AuthenticationBackend(ModelBackend):
 
 
 class PasswordlessAuthenticationBackend(AuthenticationBackend):
-
     def authenticate(self, request, phonenumber, verification_success: bool):
         if phonenumber and verification_success:
             from user.selectors import user_selector

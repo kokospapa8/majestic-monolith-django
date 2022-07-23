@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 import sys
-import logging
 
-from django.conf import settings
 from django import VERSION as django_version
 from django.http import HttpResponse
 from django.utils.deprecation import MiddlewareMixin
-
 from django.views.debug import technical_500_response
 from request_logging.middleware import LoggingMiddleware
-
 
 IS_DJANGO_VERSION_GTE_3_2_0 = django_version >= (3, 2, 0, "final", 0)
 
@@ -28,11 +24,12 @@ class UserBasedExceptionMiddleware(object):
 
 
 class MMDLoggingMiddleware(LoggingMiddleware):
-
     def _log_request_headers(self, request, logging_context, log_level):
         if IS_DJANGO_VERSION_GTE_3_2_0:
-            headers = {k: v if k not in self.sensitive_headers else "*****" for k,
-                       v in request.headers.items()}
+            headers = {
+                k: v if k not in self.sensitive_headers else "*****"
+                for k, v in request.headers.items()
+            }
         else:
             headers = {
                 k: v if k not in self.sensitive_headers else "*****"
@@ -41,20 +38,19 @@ class MMDLoggingMiddleware(LoggingMiddleware):
             }
 
         request_data = {}
-        request_data['method'] = getattr(request, "method", "-")
-        request_data['path_info'] = getattr(request, "path_info", "-")
-        user = getattr(request, 'user', None)
+        request_data["method"] = getattr(request, "method", "-")
+        request_data["path_info"] = getattr(request, "path_info", "-")
+        user = getattr(request, "user", None)
         if user and not user.is_anonymous:
-            request_data['username'] = user.username
-            request_data['uuid'] = str(user.uuid)
+            request_data["username"] = user.username
+            request_data["uuid"] = str(user.uuid)
         else:
-            request_data['username'] = '-'
-            request_data['uuid'] = '-'
+            request_data["username"] = "-"
+            request_data["uuid"] = "-"
 
         data = {
             "headers": headers,
             "request": request_data,
-
         }
 
         if headers:

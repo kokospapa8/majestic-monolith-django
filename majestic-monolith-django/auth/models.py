@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-import json
 import datetime
-import boto3
 from random import randint
 
 from django.conf import settings
@@ -18,7 +16,8 @@ class PhonenumberCheck(models.Model):
     timestamp_requested = models.DateTimeField(auto_now_add=True)
     timestamp_verified = models.DateTimeField(null=True)
     token = models.CharField(
-        max_length=settings.PHONENUMBER_VERIFICATION_TOKEN_LENGTH, null=True)
+        max_length=settings.PHONENUMBER_VERIFICATION_TOKEN_LENGTH, null=True
+    )
 
     class Meta:
         app_label = "mmd_auth"
@@ -38,6 +37,7 @@ class PhonenumberCheck(models.Model):
         self.save()
 
         from auth.caches import PhonenumberVerificationCache
+
         PhonenumberVerificationCache().incr(str(self.phonenumber))
 
     def confirm_verification(self, token):
@@ -52,7 +52,9 @@ class PhonenumberCheck(models.Model):
         return self.get_expiration_time() < timezone.now()
 
     def get_expiration_time(self):
-        return self.timestamp_requested + datetime.timedelta(minutes=settings.PHONENUMBER_EXPIRATION)
+        return self.timestamp_requested + datetime.timedelta(
+            minutes=settings.PHONENUMBER_EXPIRATION
+        )
 
     def __str__(self):
         return f"{self.phonenumber}: verified: {self.verified}"
@@ -60,8 +62,8 @@ class PhonenumberCheck(models.Model):
 
 class PhonenumberVerificationLog(models.Model):
     class VerificationType(models.TextChoices):
-        SIGNIN = 'I', 'Signin'
-        SIGNUP = 'U', 'Signup'
+        SIGNIN = "I", "Signin"
+        SIGNUP = "U", "Signup"
 
     phonenumber = PhoneNumberField()
     type = models.CharField(choices=VerificationType.choices, max_length=1)

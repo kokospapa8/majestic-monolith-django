@@ -1,18 +1,13 @@
 # -*- coding: utf-8 -*-
-from rest_framework.fields import CharField
-
-from easy_thumbnails.fields import ThumbnailerField
-from easy_thumbnails import files
-
-from phonenumber_field.modelfields import PhoneNumberField
-
 from django.db.models.fields.files import ImageField
+from easy_thumbnails import files
+from easy_thumbnails.fields import ThumbnailerField
+from phonenumber_field.modelfields import PhoneNumberField
+from rest_framework.fields import CharField
 
 
 class PhonenumberField(CharField):
-    default_error_messages = {
-        'invalid': 'Enter a valid phone number.'
-    }
+    default_error_messages = {"invalid": "Enter a valid phone number."}
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -34,12 +29,13 @@ class ThumbnailerImageField(ThumbnailerField, ImageField):
         ThumbnailerImageField(
             ..., resize_source=dict(size=(100, 100), sharpen=True))
     """
+
     attr_class = files.ThumbnailerImageFieldFile
 
     def __init__(self, *args, db_collation=None, **kwargs):
         # Arguments not explicitly defined so that the normal ImageField
         # positional arguments can be used.
-        self.resize_source = kwargs.pop('resize_source', None)
+        self.resize_source = kwargs.pop("resize_source", None)
         self.db_collation = db_collation
 
         super().__init__(*args, **kwargs)

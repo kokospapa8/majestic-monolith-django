@@ -10,62 +10,188 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='ShippingBatch',
+            name="ShippingBatch",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uuid', models.UUIDField(db_index=True, default=uuid.uuid4, editable=False)),
-                ('alias', models.CharField(default=shipping.utils_shipping.generate_batch_alias, max_length=20, unique=True)),
-                ('completed', models.BooleanField(db_index=True, default=False)),
-                ('timestamp_created', models.DateTimeField(auto_now_add=True, db_index=True, null=True)),
-                ('timestamp_transport_assigned', models.DateTimeField(blank=True, null=True)),
-                ('timestamp_completed', models.DateTimeField(blank=True, null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "uuid",
+                    models.UUIDField(db_index=True, default=uuid.uuid4, editable=False),
+                ),
+                (
+                    "alias",
+                    models.CharField(
+                        default=shipping.utils_shipping.generate_batch_alias,
+                        max_length=20,
+                        unique=True,
+                    ),
+                ),
+                ("completed", models.BooleanField(db_index=True, default=False)),
+                (
+                    "timestamp_created",
+                    models.DateTimeField(auto_now_add=True, db_index=True, null=True),
+                ),
+                (
+                    "timestamp_transport_assigned",
+                    models.DateTimeField(blank=True, null=True),
+                ),
+                ("timestamp_completed", models.DateTimeField(blank=True, null=True)),
             ],
             options={
-                'db_table': 'shipping_shippingbatch',
+                "db_table": "shipping_shippingbatch",
             },
         ),
         migrations.CreateModel(
-            name='ShippingTransport',
+            name="ShippingTransport",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uuid', models.UUIDField(db_index=True, default=uuid.uuid4, editable=False)),
-                ('completed', models.BooleanField(db_index=True, default=False)),
-                ('distribution_center_code_source', models.CharField(blank=True, help_text="No FK since it's in different domain", max_length=16, null=True)),
-                ('distribution_center_code_destination', models.CharField(blank=True, help_text="No FK since it's in different domain", max_length=16, null=True)),
-                ('driver_uuid', models.UUIDField(blank=True, help_text="user_id, No FK since it's in different domain", null=True)),
-                ('timestamp_created', models.DateTimeField(auto_now_add=True, db_index=True, null=True)),
-                ('timestamp_departed', models.DateTimeField(blank=True, db_index=True, null=True)),
-                ('timestamp_arrived', models.DateTimeField(blank=True, db_index=True, null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "uuid",
+                    models.UUIDField(db_index=True, default=uuid.uuid4, editable=False),
+                ),
+                ("completed", models.BooleanField(db_index=True, default=False)),
+                (
+                    "distribution_center_code_source",
+                    models.CharField(
+                        blank=True,
+                        help_text="No FK since it's in different domain",
+                        max_length=16,
+                        null=True,
+                    ),
+                ),
+                (
+                    "distribution_center_code_destination",
+                    models.CharField(
+                        blank=True,
+                        help_text="No FK since it's in different domain",
+                        max_length=16,
+                        null=True,
+                    ),
+                ),
+                (
+                    "driver_uuid",
+                    models.UUIDField(
+                        blank=True,
+                        help_text="user_id, No FK since it's in different domain",
+                        null=True,
+                    ),
+                ),
+                (
+                    "timestamp_created",
+                    models.DateTimeField(auto_now_add=True, db_index=True, null=True),
+                ),
+                (
+                    "timestamp_departed",
+                    models.DateTimeField(blank=True, db_index=True, null=True),
+                ),
+                (
+                    "timestamp_arrived",
+                    models.DateTimeField(blank=True, db_index=True, null=True),
+                ),
             ],
             options={
-                'db_table': 'shipping_shippingtransport',
+                "db_table": "shipping_shippingtransport",
             },
         ),
         migrations.CreateModel(
-            name='ShippingItem',
+            name="ShippingItem",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uuid', models.UUIDField(db_index=True, default=uuid.uuid4, editable=False)),
-                ('tracking_number', models.CharField(blank=True, db_index=True, default=shipping.utils_shipping.generate_tracking_number, editable=False, max_length=20, unique=True)),
-                ('sku', models.CharField(blank=True, max_length=20)),
-                ('status', models.CharField(blank=True, choices=[('CREATED', 'Created'), ('MOVING', 'Moving'), ('COMPLETED', 'Completed'), ('DAMAGED', 'Damaged'), ('LOST', 'Lost')], db_index=True, default='CREATED', max_length=24)),
-                ('current_distribution_center_code', models.CharField(blank=True, help_text="No FK since it's in different domain", max_length=16, null=True)),
-                ('timestamp_created', models.DateTimeField(auto_now_add=True, db_index=True, null=True)),
-                ('timestamp_completed', models.DateTimeField(blank=True, null=True)),
-                ('shipping_batches', models.ManyToManyField(blank=True, help_text='can assign multiple shipping batches', to='shipping.ShippingBatch')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "uuid",
+                    models.UUIDField(db_index=True, default=uuid.uuid4, editable=False),
+                ),
+                (
+                    "tracking_number",
+                    models.CharField(
+                        blank=True,
+                        db_index=True,
+                        default=shipping.utils_shipping.generate_tracking_number,
+                        editable=False,
+                        max_length=20,
+                        unique=True,
+                    ),
+                ),
+                ("sku", models.CharField(blank=True, max_length=20)),
+                (
+                    "status",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("CREATED", "Created"),
+                            ("MOVING", "Moving"),
+                            ("COMPLETED", "Completed"),
+                            ("DAMAGED", "Damaged"),
+                            ("LOST", "Lost"),
+                        ],
+                        db_index=True,
+                        default="CREATED",
+                        max_length=24,
+                    ),
+                ),
+                (
+                    "current_distribution_center_code",
+                    models.CharField(
+                        blank=True,
+                        help_text="No FK since it's in different domain",
+                        max_length=16,
+                        null=True,
+                    ),
+                ),
+                (
+                    "timestamp_created",
+                    models.DateTimeField(auto_now_add=True, db_index=True, null=True),
+                ),
+                ("timestamp_completed", models.DateTimeField(blank=True, null=True)),
+                (
+                    "shipping_batches",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="can assign multiple shipping batches",
+                        to="shipping.ShippingBatch",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'shipping_shippingitem',
+                "db_table": "shipping_shippingitem",
             },
         ),
         migrations.AddField(
-            model_name='shippingbatch',
-            name='shipping_transport',
-            field=models.ForeignKey(blank=True, help_text='assigned to single batch', null=True, on_delete=django.db.models.deletion.PROTECT, to='shipping.shippingtransport'),
+            model_name="shippingbatch",
+            name="shipping_transport",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="assigned to single batch",
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to="shipping.shippingtransport",
+            ),
         ),
     ]

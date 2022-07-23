@@ -10,11 +10,13 @@ class RedshiftStack(cdk.NestedStack):
 
         # env
         infra_env = config["INFRA_ENV"]
-        ssm_redshift_password = ssm.StringParameter.from_secure_string_parameter_attributes(
-            self,
-            "/Secure/REDSHIFT_PASSWORD",
-            version=1,
-            parameter_name="/Secure/REDSHIFT_PASSWORD",
+        ssm_redshift_password = (
+            ssm.StringParameter.from_secure_string_parameter_attributes(
+                self,
+                "/Secure/REDSHIFT_PASSWORD",
+                version=1,
+                parameter_name="/Secure/REDSHIFT_PASSWORD",
+            )
         )
         redshift_paasword = ssm_redshift_password.string_value
 

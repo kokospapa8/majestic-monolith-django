@@ -12,6 +12,8 @@ import os
 from django.core.asgi import get_asgi_application
 
 ENV = os.environ.get("ENV", "local")
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', f'majestic-monolith-django.settings.{ENV}')
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE", f"majestic-monolith-django.settings.{ENV}"
+)
 
 application = get_asgi_application()

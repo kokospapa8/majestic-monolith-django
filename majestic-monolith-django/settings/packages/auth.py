@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta
+
 ACCOUNT_AUTHENTICATION_METHOD = "username"
 
 AUTHENTICATION_BACKENDS = (
@@ -7,7 +8,6 @@ AUTHENTICATION_BACKENDS = (
     # "core.auth_backends.AppleAuthenticationBackend",
     "core.auth_backends.PasswordlessAuthenticationBackend",
     "django.contrib.auth.backends.ModelBackend",
-
     # "allauth.account.auth_backends.AuthenticationBackend",
 )
 

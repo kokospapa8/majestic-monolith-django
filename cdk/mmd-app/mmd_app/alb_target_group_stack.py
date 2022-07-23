@@ -1,8 +1,6 @@
 import aws_cdk as cdk
 import aws_cdk.aws_ec2 as ec2
 import aws_cdk.aws_elasticloadbalancingv2 as elb_v2
-import aws_cdk.aws_route53 as route53
-import aws_cdk.aws_route53_targets as route53_targets
 from constructs import Construct
 
 
@@ -74,7 +72,7 @@ class AlbTargetGroupStack(cdk.NestedStack):
         )
 
         # Add 80 Listener (API ALB)
-        mmd_api_alb_add_listener = mmd_api_alb.add_listener(
+        mmd_api_alb_add_listener = mmd_api_alb.add_listener(  # noqa: F841
             f"mmd-{infra_env}-api-alb-add-listener-80",
             protocol=elb_v2.ApplicationProtocol.HTTP,
             port=80,
@@ -146,7 +144,7 @@ class AlbTargetGroupStack(cdk.NestedStack):
         )
 
         # Add 8080 Listener (API ALB) - for blue green deployment
-        mmd_api_alb_add_listener_8080 = mmd_api_alb.add_listener(
+        mmd_api_alb_add_listener_8080 = mmd_api_alb.add_listener(  # noqa: F841
             f"mmd-{infra_env}-api-alb-add-listener-8080",
             protocol=elb_v2.ApplicationProtocol.HTTP,
             port=8080,

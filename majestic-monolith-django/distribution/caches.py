@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings
-from core.caches import ModelCacheBase, CacheBase
 
-from .serializers import DistributionCenterSerializer
+from core.caches import ModelCacheBase
+
 from .models import DistributionCenter
+from .serializers import DistributionCenterSerializer
 
 
 class DistributionCenterCache(ModelCacheBase):
     expire_duration = 60 * 60 * 24 * 30
     serializer_class = DistributionCenterSerializer
-    key_prefix = 'center'
+    key_prefix = "center"
 
     def get_from_db(self, key, *args, **kwargs):
         try:

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from rest_framework.exceptions import _get_error_details
-from rest_framework.exceptions import APIException
+from rest_framework.exceptions import APIException, _get_error_details
 
 
 class CacheGetException(Exception):
@@ -49,7 +48,7 @@ class ParamNotGivenException(APIException):
 class ConflictException(APIException):
     status_code = 409
     default_detail = "This response is sent when a request conflicts with the current state of the server"
-    default_code = 'conflict'
+    default_code = "conflict"
 
     def __init__(self, detail=None, code=None):
         if detail is None:
@@ -69,8 +68,8 @@ class ConflictException(APIException):
 
 class ServiceUnavailable(APIException):
     status_code = 503
-    default_detail = 'Service temporarily unavailable, try again later.'
-    default_code = 'service_unavailable'
+    default_detail = "Service temporarily unavailable, try again later."
+    default_code = "service_unavailable"
 
 
 class CustomTextAPIException(APIException):

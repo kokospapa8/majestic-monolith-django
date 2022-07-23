@@ -17,6 +17,6 @@ if ENV in ["beta", "prod"]:
 else:
     settings = "majestic-monolith-django.settings"
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'majestic-monolith-django.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "majestic-monolith-django.settings")
 
 application = get_wsgi_application()

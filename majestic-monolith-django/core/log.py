@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 import copy
+from logging import CRITICAL, DEBUG, ERROR, FATAL, INFO, NOTSET, WARNING, Formatter
 
 from django.conf import settings
-from django_slack.log import SlackExceptionHandler
 from django.views.debug import ExceptionReporter
+from django_slack.log import SlackExceptionHandler
 
-from logging import Handler, CRITICAL, ERROR, WARNING, INFO, FATAL, DEBUG, NOTSET, Formatter
-
-
-ERROR_COLOR = 'danger'  # color name is built in to Slack API
-WARNING_COLOR = 'warning'  # color name is built in to Slack API
-INFO_COLOR = '#439FE0'
+ERROR_COLOR = "danger"  # color name is built in to Slack API
+WARNING_COLOR = "warning"  # color name is built in to Slack API
+INFO_COLOR = "#439FE0"
 
 COLORS = {
     CRITICAL: ERROR_COLOR,
@@ -22,7 +20,7 @@ COLORS = {
     NOTSET: INFO_COLOR,
 }
 
-DEFAULT_EMOJI = ':heavy_exclamation_mark:'
+DEFAULT_EMOJI = ":heavy_exclamation_mark:"
 
 
 class NoStacktraceFormatter(Formatter):
@@ -41,17 +39,20 @@ class DmmSlackExceptionHandler(SlackExceptionHandler):
         try:
             request = record.request
 
-            internal = 'internal' if request.META.get('REMOTE_ADDR') in \
-                settings.INTERNAL_IPS else 'EXTERNAL'
+            internal = (
+                "internal"
+                if request.META.get("REMOTE_ADDR") in settings.INTERNAL_IPS
+                else "EXTERNAL"
+            )
 
-            subject = '[{}]{} ({} IP): {}'.format(
+            subject = "[{}]{} ({} IP): {}".format(
                 settings.ENV_ALIAS,
                 record.levelname,
                 internal,
                 record.getMessage(),
             )
         except Exception:
-            subject = '[{}]{}: {}'.format(
+            subject = "[{}]{}: {}".format(
                 settings.ENV_ALIAS,
                 record.levelname,
                 record.getMessage(),
@@ -78,26 +79,27 @@ class DmmSlackExceptionHandler(SlackExceptionHandler):
             tb = "(An exception occured when getting the traceback text)"
 
             if reporter.exc_type:
-                tb = "{} (An exception occured when rendering the " \
-                    "traceback)".format(reporter.exc_type.__name__)
+                tb = "{} (An exception occured when rendering the " "traceback)".format(
+                    reporter.exc_type.__name__
+                )
 
         message = "{}\n\n{}".format(self.format(no_exc_record), tb)
 
         colors = {
-            'ERROR': 'danger',
-            'WARNING': 'warning',
-            'INFO': 'good',
+            "ERROR": "danger",
+            "WARNING": "warning",
+            "INFO": "good",
         }
 
         attachments = {
-            'title': subject,
-            'text': message,
-            'color': colors.get(record.levelname, '#AAAAAA'),
+            "title": subject,
+            "text": message,
+            "color": colors.get(record.levelname, "#AAAAAA"),
         }
 
         attachments.update(self.kwargs)
         self.send_message(
             self.template,
-            {'text': subject, 'channel': settings.SLACK_ERROR_CHANNEL},
+            {"text": subject, "channel": settings.SLACK_ERROR_CHANNEL},
             self.generate_attachments(**attachments),
         )

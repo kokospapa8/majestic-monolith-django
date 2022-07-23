@@ -1,8 +1,6 @@
-from django.core.exceptions import (
-    ValidationError,
-)
-
-from django.utils.translation import gettext as _, ngettext
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
 
 
 class MaximumLengthValidator:
@@ -19,18 +17,18 @@ class MaximumLengthValidator:
                 ngettext(
                     "This password is too long. It must contain less than %(max_length)d character.",
                     "This password is too long. It must contain less than %(max_length)d characters.",
-                    self.max_length
+                    self.max_length,
                 ),
-                code='password_too_long',
-                params={'max_length': self.max_length},
+                code="password_too_long",
+                params={"max_length": self.max_length},
             )
 
     def get_help_text(self):
         return ngettext(
             "Your password must contain less than %(min_length)d character.",
             "Your password must contain less than %(min_length)d characters.",
-            self.max_length
-        ) % {'min_length': self.max_length}
+            self.max_length,
+        ) % {"min_length": self.max_length}
 
 
 class AlphaNumericPasswordValidator:
@@ -42,7 +40,7 @@ class AlphaNumericPasswordValidator:
         if not password.isalnum():
             raise ValidationError(
                 _("This password must be alphanumeric."),
-                code='password_not_alphanumeric',
+                code="password_not_alphanumeric",
             )
 
     def get_help_text(self):

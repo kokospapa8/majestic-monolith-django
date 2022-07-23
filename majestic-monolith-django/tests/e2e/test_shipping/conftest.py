@@ -6,7 +6,7 @@ def existing_shipping_item():
     return {
         "uuid": "48574f05-a29e-4735-a817-839b228c3e82",
         "tracking_number": "202201011234",
-        "sku": "123211"
+        "sku": "123211",
     }
 
 

@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from rest_framework import mixins, permissions, serializers, status, views
+from rest_framework import permissions, status
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.generics import GenericAPIView
-from rest_framework.response import Response
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer
-from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from core.serializers import BlankSerializer
 
@@ -19,6 +18,7 @@ class FlushCacheView(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         from django.core.cache import cache
+
         cache.clear()
         return Response({"message": "cache flushed"}, status=status.HTTP_201_CREATED)
 
@@ -29,6 +29,7 @@ class Raise500View(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         from user.models import CustomUser
+
         CustomUser.objects.filter(qwdqwd=1)
         return Response({})
 
@@ -39,7 +40,7 @@ class LoggerTest(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         logger = logging.getLogger(__name__)
-        print(__name__)
+        print(__name__)  # noqa: T201
         logger.debug("general logger debug")
         logger.info("general logger info")
         logger.warning("general logger warning")

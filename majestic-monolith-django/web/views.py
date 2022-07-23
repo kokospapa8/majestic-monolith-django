@@ -13,4 +13,4 @@ class IndexRedirectView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         # this is api server no need to pass query param
-        return HttpResponseRedirect('https://www.youtube.com/watch?v=BOvxJaklcr0')
+        return HttpResponseRedirect("https://www.youtube.com/watch?v=BOvxJaklcr0")

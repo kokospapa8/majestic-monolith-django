@@ -1,14 +1,13 @@
 import abc
-
 from typing import Any
 
 from django.db import transaction
 
-'''
+"""
 DomainService: services used within same module
 ApplicationService: cross module services (uses uow for aotmic transaction)
 
-'''
+"""
 
 # https://www.cosmicpython.com/book/appendix_django.html
 
@@ -68,7 +67,7 @@ class ApplicationService(Service):
             self.uow = DjangoUnitOfWork()
 
     def sample_service_method(self):
-        dto = self.dto
+        # dto = self.dto
         uow = self.uow
         with uow:
             pass  # do something()

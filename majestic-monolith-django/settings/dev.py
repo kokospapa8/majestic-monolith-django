@@ -1,15 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from .app import *
-from .base import *
-from .packages.auth import *
-from .packages.email import *
-from .packages.push import *
-from .packages.swagger import *
-from .packages.rest import *
-from .secrets import *
-from .packages.logger import *
-from .packages.slack import *
+from .base import *  # noqa: F403, F401
+from .packages.auth import *  # noqa: F403, F401
+from .packages.logger import *  # noqa: F403, F401
+from .packages.rest import *  # noqa: F403, F401
+from .secrets import *  # noqa: F403, F401
 
 logger = logging.getLogger("django.debuglogger")
 
@@ -50,7 +45,7 @@ ALLOWED_HOSTS = ["*"]
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": f"mmd",
+        "NAME": "mmd",
         "USER": DB_USERNAME,
         "PASSWORD": DB_PASSWORD,
         "HOST": DB_HOST,  # Or an IP Address that your DB is hosted on
@@ -74,14 +69,12 @@ CACHES = {
             "CLIENT_CLASS": "core.redis_client.CustomRedisCluster",
             "IGNORE_EXCEPTION": True,  # needed for redis is only cache
             "PARSER_CLASS": "redis.connection.HiredisParser",
-            'CONNECTION_POOL_CLASS': 'rediscluster.connection.ClusterConnectionPool',
-            'CONNECTION_POOL_KWARGS': {
-                'skip_full_coverage_check': True  # AWS ElasticCache has disabled CONFIG commands
-            }
+            "CONNECTION_POOL_CLASS": "rediscluster.connection.ClusterConnectionPool",
+            "CONNECTION_POOL_KWARGS": {
+                "skip_full_coverage_check": True  # AWS ElasticCache has disabled CONFIG commands
+            },
         },
-
         # 'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-
     }
 }
 
@@ -109,7 +102,7 @@ AWS_DEFAULT_ACL = "public-read"
 MIDDLEWARE.extend(["django.middleware.csrf.CsrfViewMiddleware"])
 
 REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = (
-    'rest_framework.renderers.JSONRenderer',
+    "rest_framework.renderers.JSONRenderer",
     "rest_framework.renderers.BrowsableAPIRenderer",
 )
 
@@ -120,7 +113,5 @@ REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"] = (
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^http://localhost:3000$"
-]
-INSTALLED_APPS.append('rest_framework_simplejwt.token_blacklist')
+CORS_ALLOWED_ORIGIN_REGEXES = [r"^http://localhost:3000$"]
+INSTALLED_APPS.append("rest_framework_simplejwt.token_blacklist")

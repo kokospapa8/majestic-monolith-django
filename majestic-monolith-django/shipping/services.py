@@ -1,14 +1,12 @@
-from typing import Any, Optional
-
 from dataclasses import dataclass
 
 from django.utils import timezone
 
 from core.services import DomainService
 
-from .events import ShippingEventsEmitter
-from .models import ShippingItem, ShippingBatch, ShippingTransport
 from .choices import ShippingItemStatus
+from .events import ShippingEventsEmitter
+from .models import ShippingBatch, ShippingItem, ShippingTransport
 
 
 @dataclass
@@ -27,11 +25,8 @@ class ShippingBatchService(DomainService):
         batch.timestamp_transport_assigned = timezone.now()
         batch.save()
 
-        ShippingEventsEmitter().\
-            batch_added_to_transport({
-                "transport_uuid": self.dto.transport.uuid.hex,
-                "batch_alias": batch.alias
-            }
+        ShippingEventsEmitter().batch_added_to_transport(
+            {"transport_uuid": self.dto.transport.uuid.hex, "batch_alias": batch.alias}
         )
         return batch
 
@@ -45,10 +40,11 @@ class ShippingItemService(DomainService):
         if item.status == ShippingItemStatus.CREATED:
             item.status = ShippingItemStatus.MOVING
         item.save()
-        ShippingEventsEmitter().item_added_to_batch({
-            "item_tracking_number": item.tracking_number,
-            "batch_alias": self.dto.batch.alias
-        }
+        ShippingEventsEmitter().item_added_to_batch(
+            {
+                "item_tracking_number": item.tracking_number,
+                "batch_alias": self.dto.batch.alias,
+            }
         )
         return item
 
@@ -76,9 +72,8 @@ class TransportService(DomainService):
         transport.timestamp_arrived = timezone.now()
         transport.save()
 
-        ShippingEventsEmitter().transport_complete({
-            "transport_uuid": transport.uuid.hex
-        }
+        ShippingEventsEmitter().transport_complete(
+            {"transport_uuid": transport.uuid.hex}
         )
 
 

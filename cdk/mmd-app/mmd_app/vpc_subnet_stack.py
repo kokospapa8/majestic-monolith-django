@@ -1,7 +1,5 @@
 import aws_cdk as cdk
 import aws_cdk.aws_ec2 as ec2
-import aws_cdk.cloudformation_include as cloudformation
-from aws_cdk import aws_kms as kms
 from constructs import Construct
 
 
@@ -104,7 +102,7 @@ class VpcSubnetStack(cdk.NestedStack):
         )
 
         # Attachment Internet Gateway
-        attachment_internet_gateway = ec2.CfnVPCGatewayAttachment(
+        attachment_internet_gateway = ec2.CfnVPCGatewayAttachment(  # noqa: F841
             self,
             f"mmd-{infra_env}-attachmentvpc-internetgateway",
             vpc_id=vpc.ref,
@@ -124,14 +122,14 @@ class VpcSubnetStack(cdk.NestedStack):
         route_table_pulbic_subnet_1 = ec2.CfnRouteTable(
             self, f"mmd-{infra_env}-vpc-route-table-public-1", vpc_id=vpc.ref
         )
-        route_pulbic_subnet_1 = ec2.CfnRoute(
+        route_pulbic_subnet_1 = ec2.CfnRoute(  # noqa: F841
             self,
             f"mmd-{infra_env}-vpc-route-public-1",
             route_table_id=route_table_pulbic_subnet_1.ref,
             gateway_id=internet_gateway.ref,
             destination_cidr_block="0.0.0.0/0",
         )
-        route_attach_pulbic_subnet_1 = ec2.CfnSubnetRouteTableAssociation(
+        route_attach_pulbic_subnet_1 = ec2.CfnSubnetRouteTableAssociation(  # noqa: F841
             self,
             f"mmd-{infra_env}-vpc-routeattach-public-1",
             route_table_id=route_table_pulbic_subnet_1.ref,
@@ -142,14 +140,14 @@ class VpcSubnetStack(cdk.NestedStack):
         route_table_pulbic_subnet_2 = ec2.CfnRouteTable(
             self, f"mmd-{infra_env}-vpc-route-table-public-2", vpc_id=vpc.ref
         )
-        route_pulbic_subnet_2 = ec2.CfnRoute(
+        route_pulbic_subnet_2 = ec2.CfnRoute(  # noqa: F841
             self,
             f"mmd-{infra_env}-vpc-route-public-2",
             route_table_id=route_table_pulbic_subnet_2.ref,
             gateway_id=internet_gateway.ref,
             destination_cidr_block="0.0.0.0/0",
         )
-        route_attach_pulbic_subnet_2 = ec2.CfnSubnetRouteTableAssociation(
+        route_attach_pulbic_subnet_2 = ec2.CfnSubnetRouteTableAssociation(  # noqa: F841
             self,
             f"mmd-{infra_env}-vpc-routeattach-public-2",
             route_table_id=route_table_pulbic_subnet_2.ref,
@@ -160,14 +158,14 @@ class VpcSubnetStack(cdk.NestedStack):
         route_table_pulbic_subnet_3 = ec2.CfnRouteTable(
             self, f"mmd-{infra_env}-vpc-route-table-public-3", vpc_id=vpc.ref
         )
-        route_pulbic_subnet_3 = ec2.CfnRoute(
+        route_pulbic_subnet_3 = ec2.CfnRoute(  # noqa: F841
             self,
             f"mmd-{infra_env}-vpc-route-public-3",
             route_table_id=route_table_pulbic_subnet_3.ref,
             gateway_id=internet_gateway.ref,
             destination_cidr_block="0.0.0.0/0",
         )
-        route_attach_pulbic_subnet_3 = ec2.CfnSubnetRouteTableAssociation(
+        route_attach_pulbic_subnet_3 = ec2.CfnSubnetRouteTableAssociation(  # noqa: F841
             self,
             f"mmd-{infra_env}-vpc-routeattach-public-3",
             route_table_id=route_table_pulbic_subnet_3.ref,
@@ -178,14 +176,14 @@ class VpcSubnetStack(cdk.NestedStack):
         route_table_pulbic_subnet_4 = ec2.CfnRouteTable(
             self, f"mmd-{infra_env}-vpc-route-table-public-4", vpc_id=vpc.ref
         )
-        route_pulbic_subnet_4 = ec2.CfnRoute(
+        route_pulbic_subnet_4 = ec2.CfnRoute(  # noqa: F841
             self,
             f"mmd-{infra_env}-vpc-route-public-4",
             route_table_id=route_table_pulbic_subnet_4.ref,
             gateway_id=internet_gateway.ref,
             destination_cidr_block="0.0.0.0/0",
         )
-        route_attach_pulbic_subnet_4 = ec2.CfnSubnetRouteTableAssociation(
+        route_attach_pulbic_subnet_4 = ec2.CfnSubnetRouteTableAssociation(  # noqa: F841
             self,
             f"mmd-{infra_env}-vpc-routeattach-public-4",
             route_table_id=route_table_pulbic_subnet_4.ref,
@@ -282,26 +280,50 @@ class VpcSubnetStack(cdk.NestedStack):
 
         # 반복문 사용하면 될 것 같음
         cdk.CfnOutput(
-            self, "pulbic-subnet-1", value=pulbic_subnet_1.ref, export_name="pulbic-subnet-1-id"
+            self,
+            "pulbic-subnet-1",
+            value=pulbic_subnet_1.ref,
+            export_name="pulbic-subnet-1-id",
         )
         cdk.CfnOutput(
-            self, "private-subnet-1", value=private_subnet_1.ref, export_name="private-subnet-1-id"
+            self,
+            "private-subnet-1",
+            value=private_subnet_1.ref,
+            export_name="private-subnet-1-id",
         )
         cdk.CfnOutput(
-            self, "pulbic-subnet-2", value=pulbic_subnet_2.ref, export_name="pulbic-subnet-2-id"
+            self,
+            "pulbic-subnet-2",
+            value=pulbic_subnet_2.ref,
+            export_name="pulbic-subnet-2-id",
         )
         cdk.CfnOutput(
-            self, "private-subnet-2", value=private_subnet_2.ref, export_name="private-subnet-2-id"
+            self,
+            "private-subnet-2",
+            value=private_subnet_2.ref,
+            export_name="private-subnet-2-id",
         )
         cdk.CfnOutput(
-            self, "pulbic-subnet-3", value=pulbic_subnet_3.ref, export_name="pulbic-subnet-3-id"
+            self,
+            "pulbic-subnet-3",
+            value=pulbic_subnet_3.ref,
+            export_name="pulbic-subnet-3-id",
         )
         cdk.CfnOutput(
-            self, "private-subnet-3", value=private_subnet_3.ref, export_name="private-subnet-3-id"
+            self,
+            "private-subnet-3",
+            value=private_subnet_3.ref,
+            export_name="private-subnet-3-id",
         )
         cdk.CfnOutput(
-            self, "pulbic-subnet-4", value=pulbic_subnet_4.ref, export_name="pulbic-subnet-4-id"
+            self,
+            "pulbic-subnet-4",
+            value=pulbic_subnet_4.ref,
+            export_name="pulbic-subnet-4-id",
         )
         cdk.CfnOutput(
-            self, "private-subnet-4", value=private_subnet_4.ref, export_name="private-subnet-4-id"
+            self,
+            "private-subnet-4",
+            value=private_subnet_4.ref,
+            export_name="private-subnet-4-id",
         )

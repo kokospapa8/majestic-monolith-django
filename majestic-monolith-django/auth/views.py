@@ -1,47 +1,42 @@
-from .docs import (
-    doc_auth_check_phonenumber,
-    doc_auth_singup,
-    doc_auth_singin_token_request,
-    doc_auth_singin_token_confirm,
-    doc_auth_unregister,
-    doc_auth_singin,
-    doc_auth_signout
-)
-from .models import PhonenumberCheck
-from django.apps import apps
-from django.conf import settings
-from django.contrib.auth import get_user_model
-from django.contrib.auth import logout
-
-from django.utils import timezone
-
 from allauth.account import app_settings as allauth_settings
 from allauth.account.utils import complete_signup
-
-from rest_auth.registration.views import (
-    LoginView,
-    RegisterView
-)
-from rest_framework import permissions, status, generics
+from django.conf import settings
+from django.contrib.auth import get_user_model, logout
+from django.utils import timezone
+from rest_auth.registration.views import LoginView, RegisterView
+from rest_framework import generics, permissions, status
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
-from rest_framework_api_key.permissions import HasAPIKey
 
 from auth.caches import PhonenumberVerificationCache
-from core.throttling import AnonSuppressedThrottle, SMSRequestThrottle, \
-    AuthCheckThrottle, AnonBurstThrottle, AnonDefaultThrottle
+from core.throttling import (
+    AnonDefaultThrottle,
+    AnonSuppressedThrottle,
+    AuthCheckThrottle,
+    SMSRequestThrottle,
+)
+
+from .docs import (
+    doc_auth_check_phonenumber,
+    doc_auth_signout,
+    doc_auth_singin,
+    doc_auth_singin_token_confirm,
+    doc_auth_singin_token_request,
+    doc_auth_singup,
+    doc_auth_unregister,
+)
+from .models import PhonenumberCheck, PhonenumberVerificationLog
 from .serializers import (
-    TokenObtainPairFromUserSerializer,
     PhonenumberCheckSerializer,
-    SignupSerializer,
-    SigninTokenRequestSerializer,
-    SigninTokenConfirmSerializer,
     SigninSerializer,
-    SignoutTokenRefreshSerializer
+    SigninTokenConfirmSerializer,
+    SigninTokenRequestSerializer,
+    SignoutTokenRefreshSerializer,
+    SignupSerializer,
+    TokenObtainPairFromUserSerializer,
 )
 from .utils_auth import bypass_token_request
-from .models import PhonenumberVerificationLog
 
 USER = get_user_model()
 
@@ -49,14 +44,16 @@ USER = get_user_model()
 class PhonenumberCheckView(generics.GenericAPIView):
     serializer_class = PhonenumberCheckSerializer
     permission_classes = [permissions.AllowAny]
-    throttle_classes = [AuthCheckThrottle, ]
+    throttle_classes = [
+        AuthCheckThrottle,
+    ]
 
     @doc_auth_check_phonenumber
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        if USER.objects.filter(phonenumber=serializer.data['phonenumber']).exists():
+        if USER.objects.filter(phonenumber=serializer.data["phonenumber"]).exists():
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.data, status=status.HTTP_404_NOT_FOUND)
@@ -82,11 +79,12 @@ class BaseSignupView(RegisterView):
 
         ret = dict()
         from user.caches import UserProfileCache
+
         up = UserProfileCache().get(user.uuid)
 
-        ret['uuid'] = user.uuid
+        ret["uuid"] = user.uuid
 
-        ret['user_profile'] = up
+        ret["user_profile"] = up
         ret.update(serializer.validated_data)
         return ret
 
@@ -95,12 +93,11 @@ class BaseSignupView(RegisterView):
         complete_signup(
             self.request._request, user, allauth_settings.EMAIL_VERIFICATION, None
         )
-        up = {'uuid': user.uuid, 'fullname': user.profile.fullname}
+        up = {"uuid": user.uuid, "fullname": user.profile.fullname}  # noqa: F841
         return user
 
 
 class SignupView(BaseSignupView):
-
     @doc_auth_singup
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
@@ -109,7 +106,9 @@ class SignupView(BaseSignupView):
 class SigninView(LoginView):
     serializer_class = SigninSerializer
     permission_classes = [permissions.AllowAny]
-    throttle_classes = [AuthCheckThrottle, ]
+    throttle_classes = [
+        AuthCheckThrottle,
+    ]
 
     def login(self):
         self.user = self.serializer.validated_data["user"]
@@ -132,8 +131,9 @@ class SigninView(LoginView):
     @doc_auth_singin
     def post(self, request, *args, **kwargs):
         self.request = request
-        self.serializer = self.get_serializer(data=self.request.data,
-                                              context={'request': request})
+        self.serializer = self.get_serializer(
+            data=self.request.data, context={"request": request}
+        )
         self.serializer.is_valid(raise_exception=True)
 
         self.login()
@@ -143,28 +143,42 @@ class SigninView(LoginView):
 class SigninTokenRequestView(generics.GenericAPIView):
     serializer_class = SigninTokenRequestSerializer
     permission_classes = [permissions.AllowAny]
-    throttle_classes = [SMSRequestThrottle, ]
+    throttle_classes = [
+        SMSRequestThrottle,
+    ]
 
     @doc_auth_singin_token_request
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        phonenumber = serializer.data['phonenumber']
+        phonenumber = serializer.data["phonenumber"]
 
         if not bypass_token_request(phonenumber):
             phonenumber_check, created = PhonenumberCheck.objects.get_or_create(
-                phonenumber=phonenumber)
+                phonenumber=phonenumber
+            )
             verification_success_count = PhonenumberVerificationCache().get(phonenumber)
             verification_success_count = int(verification_success_count or 0)
             # print(verification_success_count)
             if verification_success_count >= settings.PHONENUMBER_DAILY_SIGNIN_LIMIT:
-                return Response('This number is blocked for 24 hours', status=status.HTTP_429_TOO_MANY_REQUESTS)
+                return Response(
+                    "This number is blocked for 24 hours",
+                    status=status.HTTP_429_TOO_MANY_REQUESTS,
+                )
 
             phonenumber_check.attempt_verification()
-            PhonenumberVerificationLog.objects.create(phonenumber=phonenumber,
-                                                      type=PhonenumberVerificationLog.VerificationType.SIGNIN)
-            timestamp_expires = None if phonenumber_check is None else phonenumber_check.get_expiration_time()
-            return Response({"timestamp_expires": timestamp_expires}, status=status.HTTP_200_OK)
+            PhonenumberVerificationLog.objects.create(
+                phonenumber=phonenumber,
+                type=PhonenumberVerificationLog.VerificationType.SIGNIN,
+            )
+            timestamp_expires = (
+                None
+                if phonenumber_check is None
+                else phonenumber_check.get_expiration_time()
+            )
+            return Response(
+                {"timestamp_expires": timestamp_expires}, status=status.HTTP_200_OK
+            )
 
         else:
             return Response({}, status=status.HTTP_200_OK)
@@ -172,7 +186,13 @@ class SigninTokenRequestView(generics.GenericAPIView):
 
 class SigninTokenConfirmView(LoginView):
     serializer_class = SigninTokenConfirmSerializer
-    throttle_classes = [] if settings.TESTING else [AnonDefaultThrottle, ]
+    throttle_classes = (
+        []
+        if settings.TESTING
+        else [
+            AnonDefaultThrottle,
+        ]
+    )
 
     @doc_auth_singin_token_confirm
     def post(self, request, *args, **kwargs):
@@ -214,7 +234,7 @@ class UnregisterView(generics.GenericAPIView):
         # black list token
         try:
             serializer.is_valid(raise_exception=True)
-        except TokenError as e:
+        except TokenError as e:  # noqa: F841
             pass
 
         user = request.user
@@ -235,7 +255,7 @@ class SignoutView(generics.GenericAPIView):
         # black list token
         try:
             serializer.is_valid(raise_exception=True)
-        except TokenError as e:
+        except TokenError as e:  # noqa: F841
             pass
 
         logout(request)

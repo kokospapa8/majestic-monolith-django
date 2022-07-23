@@ -21,11 +21,13 @@ class AppIamRoleStack(cdk.NestedStack):
             f"mmd-{infra_env}-app-ecsservertask-iam-role",
             assumed_by=iam.ServicePrincipal("ecs-tasks.amazonaws.com"),
             role_name=f"mmd-{infra_env}-app-ecsservertask-iam-role",
-            inline_policies=[iam.PolicyDocument(
-                statements=[get_policy_ecs_server_task_policy()])],
+            inline_policies=[
+                iam.PolicyDocument(statements=[get_policy_ecs_server_task_policy()])
+            ],
             managed_policies=[
                 iam.ManagedPolicy.from_aws_managed_policy_name(
-                    "AWSXRayDaemonWriteAccess")
+                    "AWSXRayDaemonWriteAccess"
+                )
             ],
         )
 
@@ -34,8 +36,9 @@ class AppIamRoleStack(cdk.NestedStack):
             f"mmd-{infra_env}-app-ecsserverexecution-iam-role",
             assumed_by=iam.ServicePrincipal("ecs-tasks.amazonaws.com"),
             role_name=f"mmd-{infra_env}-app-ecsserverexecution-iam-role",
-            inline_policies=[iam.PolicyDocument(
-                statements=[get_policy_ecs_execution_policy()])],
+            inline_policies=[
+                iam.PolicyDocument(statements=[get_policy_ecs_execution_policy()])
+            ],
             managed_policies=[
                 iam.ManagedPolicy.from_managed_policy_arn(
                     self,
@@ -45,13 +48,14 @@ class AppIamRoleStack(cdk.NestedStack):
             ],
         )
 
-        bastion_instance_role = iam.Role(
+        bastion_instance_role = iam.Role(  # noqa: F841
             self,
             f"mmd-{infra_env}-app-bastioninstance-iam-role",
             assumed_by=iam.ServicePrincipal("ec2.amazonaws.com"),
             role_name=f"mmd-{infra_env}-app-bastioninstance-iam-role",
-            inline_policies=[iam.PolicyDocument(
-                statements=[get_policy_bastion_instance()])],
+            inline_policies=[
+                iam.PolicyDocument(statements=[get_policy_bastion_instance()])
+            ],
         )
 
         ecs_code_deploy_role = iam.Role(
@@ -59,8 +63,7 @@ class AppIamRoleStack(cdk.NestedStack):
             f"mmd-{infra_env}-app-codedeploy-iam-role",
             assumed_by=iam.ServicePrincipal("codedeploy.amazonaws.com"),
             role_name=f"mmd-{infra_env}-app-codedeploy-iam-role",
-            inline_policies=[iam.PolicyDocument(
-                statements=[get_policy_code_deploy()])],
+            inline_policies=[iam.PolicyDocument(statements=[get_policy_code_deploy()])],
             managed_policies=[
                 iam.ManagedPolicy.from_managed_policy_arn(
                     self,

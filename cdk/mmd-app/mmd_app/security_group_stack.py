@@ -1,6 +1,5 @@
 import aws_cdk as cdk
 import aws_cdk.aws_ec2 as ec2
-from attr import s
 from constructs import Construct
 
 
@@ -39,7 +38,10 @@ class SecurityGroupStack(cdk.NestedStack):
             vpc_id=cdk.Fn.import_value("vpc-id"),
             security_group_ingress=[
                 ec2.CfnSecurityGroup.IngressProperty(
-                    ip_protocol="tcp", source_security_group_id=alb_sg.ref, from_port=80, to_port=80
+                    ip_protocol="tcp",
+                    source_security_group_id=alb_sg.ref,
+                    from_port=80,
+                    to_port=80,
                 )
             ],
         )
@@ -218,12 +220,14 @@ class SecurityGroupStack(cdk.NestedStack):
 
         cdk.CfnOutput(self, "alb-sg", value=alb_sg.ref, export_name="alb-sg")
         cdk.CfnOutput(self, "ecs-sg", value=ecs_sg.ref, export_name="ecs-sg")
-        cdk.CfnOutput(self, "bastion_sg", value=bastion_sg.ref,
-                      export_name="bastion-sg")
         cdk.CfnOutput(
-            self, "retool_bastion_sg", value=retool_bastion_sg.ref, export_name="retool-bastion-sg"
+            self, "bastion_sg", value=bastion_sg.ref, export_name="bastion-sg"
         )
-        cdk.CfnOutput(self, "redis-sg", value=redis_sg.ref,
-                      export_name="redis-sg")
-        cdk.CfnOutput(self, "mysql-sg", value=mysql_sg.ref,
-                      export_name="mysql-sg")
+        cdk.CfnOutput(
+            self,
+            "retool_bastion_sg",
+            value=retool_bastion_sg.ref,
+            export_name="retool-bastion-sg",
+        )
+        cdk.CfnOutput(self, "redis-sg", value=redis_sg.ref, export_name="redis-sg")
+        cdk.CfnOutput(self, "mysql-sg", value=mysql_sg.ref, export_name="mysql-sg")

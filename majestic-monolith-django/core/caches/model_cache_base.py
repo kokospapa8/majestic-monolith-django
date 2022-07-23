@@ -1,4 +1,5 @@
 from django.db.models.query import QuerySet
+
 from .cache_base import CacheBase
 
 
@@ -19,7 +20,8 @@ class ModelCacheBase(CacheBase):
         if serializer_class is None:
             raise TypeError(
                 f"{self.__class__.__name__} should either include a 'serializer_class' attribute,"
-                "or override the 'get_serializer_class()' method")
+                "or override the 'get_serializer_class()' method"
+            )
 
         if isinstance(data, QuerySet) or isinstance(data, list):
             return serializer_class(data, many=True)

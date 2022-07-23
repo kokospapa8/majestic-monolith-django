@@ -6,32 +6,32 @@ from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 
 
 class AnonDefaultThrottle(AnonRateThrottle):
-    scope = 'anon-default'
+    scope = "anon-default"
 
 
 class AnonBurstThrottle(AnonRateThrottle):
-    scope = 'anon-burst'
+    scope = "anon-burst"
 
 
 class AnonSuppressedThrottle(AnonRateThrottle):
-    scope = 'anon-suppressed'
+    scope = "anon-suppressed"
 
 
 class UserDefaultThrottle(UserRateThrottle):
-    scope = 'user-default'
+    scope = "user-default"
 
 
 class UserBurstThrottle(UserRateThrottle):
-    scope = 'user-burst'
+    scope = "user-burst"
 
 
 class UserSuppressedThrottle(UserRateThrottle):
-    scope = 'user-suppressed'
+    scope = "user-suppressed"
 
 
 class AuthCheckThrottle(AnonRateThrottle):
-    scope = 'auth-check'
+    scope = "auth-check"
 
 
 class SMSRequestThrottle(AnonRateThrottle):
-    scope = 'sms-request'
+    scope = "sms-request"

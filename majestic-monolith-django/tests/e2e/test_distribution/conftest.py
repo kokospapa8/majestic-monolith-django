@@ -6,9 +6,7 @@ def new_center_param():
     return {
         "center_code": "NEWYORK001",
         "name": "NewYork 001",
-        "staff_members": {
-            "uuid": ['b77a1d4f921d460a9eb179d45ba56f51']
-        }
+        "staff_members": {"uuid": ["b77a1d4f921d460a9eb179d45ba56f51"]},
     }
 
 

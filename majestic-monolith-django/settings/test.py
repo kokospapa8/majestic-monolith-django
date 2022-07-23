@@ -1,5 +1,6 @@
 from aws_xray_sdk.core import xray_recorder
-from .local import *
+
+from .local import *  # noqa: F403, F401
 
 # TEST_DB_USER = get_env_variable("TEST_DB_USER")  # root
 # TEST_DB_PASSWORD = get_env_variable("TEST_DB_PASSWORD")  # password
@@ -38,20 +39,20 @@ from .local import *
 # }
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'testdb.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "testdb.sqlite3",
     }
 }
-REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {
-    'anon-default': '100/minute',
-    'anon-burst': '100/minute',
-    'anon-suppressed': '100/minute',
-    'user-default': '100/minute',
-    'user-burst': '100/minute',
-    'user-suppressed': '100/minute',
-    'auth-check': '30/minute',
-    'sms-request': '30/minute',
+REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {
+    "anon-default": "100/minute",
+    "anon-burst": "100/minute",
+    "anon-suppressed": "100/minute",
+    "user-default": "100/minute",
+    "user-burst": "100/minute",
+    "user-suppressed": "100/minute",
+    "auth-check": "30/minute",
+    "sms-request": "30/minute",
 }
 
 ENV = "test"
@@ -59,17 +60,17 @@ ENV_ALIAS = ENV
 
 AWS_LOCATION = "test"
 
-TESTING = (ENV == "test")
+TESTING = ENV == "test"
 
 # MIDDLEWARE.remove('aws_xray_sdk.ext.django.middleware.XRayMiddleware')
 # INSTALLED_APPS.remove('aws_xray_sdk.ext.django')
 
 XRAY_RECORDER = {
-    'AUTO_INSTRUMENT': False,
-    'AWS_XRAY_CONTEXT_MISSING': 'LOG_ERROR',
-    'SAMPLING': False,
+    "AUTO_INSTRUMENT": False,
+    "AWS_XRAY_CONTEXT_MISSING": "LOG_ERROR",
+    "SAMPLING": False,
     # the segment name for segments generated from incoming requests
-    'AWS_XRAY_TRACING_NAME': "MMD API"
+    "AWS_XRAY_TRACING_NAME": "MMD API",
 }
 
 xray_recorder.configure(sampling=False)

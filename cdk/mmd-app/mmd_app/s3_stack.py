@@ -26,7 +26,7 @@ class S3Stack(cdk.NestedStack):
         )
 
         # Create public S3 (mmd_images)
-        public_mmd_images_s3 = s3.Bucket(
+        public_mmd_images_s3 = s3.Bucket(  # noqa: F841
             self,
             f"mmd-{infra_env}-pubilc-s3-mmd-images",
             block_public_access=s3.BlockPublicAccess(
@@ -35,7 +35,7 @@ class S3Stack(cdk.NestedStack):
                 ignore_public_acls=False,
                 restrict_public_buckets=False,
             ),
-            public_read_access=True
+            public_read_access=True,
         )
 
         # Add Cors Rule (Public S3)
@@ -61,12 +61,17 @@ class S3Stack(cdk.NestedStack):
             effect=iam.Effect.ALLOW,
             principals=[iam.ArnPrincipal(ecs_task_role_arn)],
             resources=[public_s3.arn_for_objects("*")],
-            actions=["s3:PutObject", "s3:GetObject",
-                     "s3:DeleteObject", "s3:PutObjectAcl"],
+            actions=[
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:DeleteObject",
+                "s3:PutObjectAcl",
+            ],
         )
 
         # Add Policy_2 (Public S3)
         public_s3.add_to_resource_policy(public_s3_policy_2)
 
-        cdk.CfnOutput(self, "s3-stack-name",
-                      value=self.artifact_id, export_name="s3-stack-name")
+        cdk.CfnOutput(
+            self, "s3-stack-name", value=self.artifact_id, export_name="s3-stack-name"
+        )

@@ -1,13 +1,8 @@
 import datetime
-import logging
 import re
 
-
-import jwt
-from cryptography.hazmat.primitives import serialization  # pragma: no cover
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from jwt.algorithms import RSAAlgorithm  # pragma: no cover
 
 from core.utils import tokey
 

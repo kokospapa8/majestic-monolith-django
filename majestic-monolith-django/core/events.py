@@ -1,6 +1,7 @@
-import boto3
 import json
 import logging
+
+import boto3
 from botocore.exceptions import ClientError
 from django.conf import settings
 
@@ -11,7 +12,7 @@ events = boto3.client("events")
 class BaseEventsEmitter:
     SOURCE = None
     EVENT_BUS = None
-    TARGET = ['eventbridge']
+    TARGET = ["eventbridge"]
 
     def __init__(self):
         self.EVENT_BUS = settings.EVENT_BUS_PUSHOPS

@@ -1,5 +1,4 @@
 import aws_cdk as cdk
-import aws_cdk.aws_codedeploy as code_deploy
 import aws_cdk.aws_ec2 as ec2
 import aws_cdk.aws_ecr as ecr
 import aws_cdk.aws_ecs as ecs
@@ -31,28 +30,37 @@ class EcsStack(cdk.NestedStack):
             self, "ecs_stack_sg", security_group_id=cdk.Fn.import_value("ecs-sg")
         )
         ecs_private_subnet_1 = ec2.Subnet.from_subnet_id(
-            self, "ecs_stack_private_subnet_1", subnet_id=cdk.Fn.import_value("private-subnet-1-id")
+            self,
+            "ecs_stack_private_subnet_1",
+            subnet_id=cdk.Fn.import_value("private-subnet-1-id"),
         )
         ecs_private_subnet_2 = ec2.Subnet.from_subnet_id(
-            self, "ecs_stack_private_subnet_2", subnet_id=cdk.Fn.import_value("private-subnet-2-id")
+            self,
+            "ecs_stack_private_subnet_2",
+            subnet_id=cdk.Fn.import_value("private-subnet-2-id"),
         )
         ecs_private_subnet_3 = ec2.Subnet.from_subnet_id(
-            self, "ecs_stack_private_subnet_3", subnet_id=cdk.Fn.import_value("private-subnet-3-id")
+            self,
+            "ecs_stack_private_subnet_3",
+            subnet_id=cdk.Fn.import_value("private-subnet-3-id"),
         )
         ecs_private_subnet_4 = ec2.Subnet.from_subnet_id(
-            self, "ecs_stack_private_subnet_4", subnet_id=cdk.Fn.import_value("private-subnet-4-id")
-        )
-        ecs_application_target_group = elb_v2.ApplicationTargetGroup.from_target_group_attributes(
             self,
-            "ecs_stack_application_target_group",
-            target_group_arn=cdk.Fn.import_value("alb-target-group-arn"),
+            "ecs_stack_private_subnet_4",
+            subnet_id=cdk.Fn.import_value("private-subnet-4-id"),
         )
-        ecs_application_target_group_8080 = (
+        ecs_application_target_group = (
+            elb_v2.ApplicationTargetGroup.from_target_group_attributes(
+                self,
+                "ecs_stack_application_target_group",
+                target_group_arn=cdk.Fn.import_value("alb-target-group-arn"),
+            )
+        )
+        ecs_application_target_group_8080 = (  # noqa: F841
             elb_v2.ApplicationTargetGroup.from_target_group_attributes(
                 self,
                 "ecs_stack_application_target_group_8080",
-                target_group_arn=cdk.Fn.import_value(
-                    "alb-target-group-arn-8080"),
+                target_group_arn=cdk.Fn.import_value("alb-target-group-arn-8080"),
             )
         )
         ecs_server_task_role = iam.Role.from_role_arn(
@@ -143,7 +151,8 @@ class EcsStack(cdk.NestedStack):
         mmd_ecs_nginx_container = mmd_ecs_api_task_definition.add_container(
             f"mmd-{infra_env}-private-nginx-ecs-container",
             image=ecs.ContainerImage.from_registry(
-                f"{ecr_nginx_container.repository_uri}"),
+                f"{ecr_nginx_container.repository_uri}"
+            ),
             container_name="nginx",
             memory_limit_mib=512,
             port_mappings=[
@@ -155,7 +164,9 @@ class EcsStack(cdk.NestedStack):
             logging=ecs.LogDriver.aws_logs(
                 stream_prefix="ecs",
                 log_group=logs.LogGroup.from_log_group_name(
-                    self, f"mmd-{infra_env}-nginx-loggroup", log_group_name="/ecs/mmd-nginx"
+                    self,
+                    f"mmd-{infra_env}-nginx-loggroup",
+                    log_group_name="/ecs/mmd-nginx",
                 ),
             ),
         )
@@ -185,7 +196,8 @@ class EcsStack(cdk.NestedStack):
         mmd_ecs_mmd_server_container = mmd_ecs_api_task_definition.add_container(
             f"mmd-{infra_env}-private-api-ecs-container",
             image=ecs.ContainerImage.from_registry(
-                f"{ecr_mmd_server_container.repository_uri}"),
+                f"{ecr_mmd_server_container.repository_uri}"
+            ),
             container_name="api",
             memory_limit_mib=1024,
             port_mappings=[
@@ -197,7 +209,9 @@ class EcsStack(cdk.NestedStack):
             logging=ecs.LogDriver.aws_logs(
                 stream_prefix="ecs",
                 log_group=logs.LogGroup.from_log_group_name(
-                    self, f"mmd-{infra_env}-mmd-api-loggroup", log_group_name="/ecs/mmd-api"
+                    self,
+                    f"mmd-{infra_env}-mmd-api-loggroup",
+                    log_group_name="/ecs/mmd-api",
                 ),
             ),
             health_check=ecs.HealthCheck(
@@ -228,8 +242,7 @@ class EcsStack(cdk.NestedStack):
             container=mmd_ecs_mmd_server_container,
             condition=ecs.ContainerDependencyCondition.HEALTHY,
         )
-        mmd_ecs_nginx_container.add_container_dependencies(
-            mmd_ecs_container_dependency)
+        mmd_ecs_nginx_container.add_container_dependencies(mmd_ecs_container_dependency)
         # mmd_ecs_xray_container.add_container_dependencies(mmd_ecs_container_dependency)
 
         # Create ECS Service

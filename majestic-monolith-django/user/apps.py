@@ -6,4 +6,4 @@ class UserConfig(AppConfig):
     name = "user"
 
     def ready(self):
-        admin.site.disable_action('delete_selected')
+        admin.site.disable_action("delete_selected")

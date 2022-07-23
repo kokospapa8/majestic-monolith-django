@@ -1,15 +1,14 @@
-from rest_framework import serializers
-from rest_framework import exceptions as rest_exceptions
-
 from django.core.exceptions import ValidationError
+from rest_framework import exceptions as rest_exceptions
+from rest_framework import serializers
 
 
 def create_serializer_class(name, fields):
-    return type(name, (serializers.Serializer, ), fields)
+    return type(name, (serializers.Serializer,), fields)
 
 
 def inline_serializer(*, fields, data=None, **kwargs):
-    serializer_class = create_serializer_class(name='', fields=fields)
+    serializer_class = create_serializer_class(name="", fields=fields)
 
     if data is not None:
         return serializer_class(data=data, **kwargs)
@@ -26,12 +25,12 @@ def get_first_matching_attr(obj, *attrs, default=None):
 
 
 def get_error_message(exc):
-    if hasattr(exc, 'message_dict'):
+    if hasattr(exc, "message_dict"):
         return exc.message_dict
-    error_msg = get_first_matching_attr(exc, 'message', 'messages')
+    error_msg = get_first_matching_attr(exc, "message", "messages")
 
     if isinstance(error_msg, list):
-        error_msg = ', '.join(error_msg)
+        error_msg = ", ".join(error_msg)
 
     if error_msg is None:
         error_msg = str(exc)
@@ -44,10 +43,11 @@ class ApiErrorsMixin:
     Mixin that transforms Django and Python exceptions into rest_framework ones.
     without the mixin, they return 500 status code which is not desired.
     """
+
     expected_exceptions = {
         ValueError: rest_exceptions.ValidationError,
         ValidationError: rest_exceptions.ValidationError,
-        PermissionError: rest_exceptions.PermissionDenied
+        PermissionError: rest_exceptions.PermissionDenied,
     }
 
     def handle_exception(self, exc):

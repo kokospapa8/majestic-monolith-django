@@ -34,11 +34,10 @@ class Ec2Stack(cdk.NestedStack):
         )
 
         # Create EIP (ec2_app_instance_1)
-        ec2_app_instance_1_eip = ec2.CfnEIP(
-            self, f"mmd-{infra_env}-app-instance1-eip")
+        ec2_app_instance_1_eip = ec2.CfnEIP(self, f"mmd-{infra_env}-app-instance1-eip")
 
         # EIP Association (ec2_app_instance_1)
-        ec2_app_instance_1_eip_asso = ec2.CfnEIPAssociation(
+        ec2_app_instance_1_eip_asso = ec2.CfnEIPAssociation(  # noqa: F841
             self,
             f"mmd-{infra_env}-app-instance1-eip-asso",
             eip=ec2_app_instance_1_eip.ref,
@@ -59,11 +58,10 @@ class Ec2Stack(cdk.NestedStack):
         )
 
         # Create EIP (ec2_app_instance_2)
-        ec2_app_instance_2_eip = ec2.CfnEIP(
-            self, f"mmd-{infra_env}-app-instance2-eip")
+        ec2_app_instance_2_eip = ec2.CfnEIP(self, f"mmd-{infra_env}-app-instance2-eip")
 
         # EIP Association (ec2_app_instance_2)
-        ec2_app_instance_2_eip_asso = ec2.CfnEIPAssociation(
+        ec2_app_instance_2_eip_asso = ec2.CfnEIPAssociation(  # noqa: F841
             self,
             f"mmd-{infra_env}-app-instance2-eip-asso",
             eip=ec2_app_instance_2_eip.ref,

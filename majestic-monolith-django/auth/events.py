@@ -1,6 +1,7 @@
 import logging
 
 from core.events import BaseEventsEmitter
+
 logger = logging.getLogger("django.eventlogger")
 
 
@@ -11,9 +12,6 @@ class AuthEventsEmitter(BaseEventsEmitter):
     def send_verification_code(self, token, phonenumber):
         kwargs = {
             "event_name": "verification_attempt",
-            "params": {
-                "token": token,
-                "phonenumber": phonenumber
-            }
+            "params": {"token": token, "phonenumber": phonenumber},
         }
         self.emit_eventbridge(**kwargs)

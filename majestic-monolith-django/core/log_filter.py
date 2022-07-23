@@ -53,7 +53,7 @@ class SkipLoggingPath(logging.Filter):
         # print(record)
         # print(dir(record.request))
         # print(record.request.path)
-        if not hasattr(record, 'request'):
+        if not hasattr(record, "request"):
             return True
         if record.request.path in settings.SKIP_LOGGING_PATH:
             return False

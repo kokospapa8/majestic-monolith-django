@@ -1,5 +1,5 @@
-import uuid
 import logging
+import uuid
 
 from django.db import models
 
@@ -11,8 +11,9 @@ class DistributionCenter(models.Model):
     center_code = models.CharField(max_length=16, db_index=True, unique=True)
     name = models.CharField(max_length=64, db_index=True)
     # use Arrayfield if using postgresql
-    staff_members = models.JSONField(default=dict, blank=True, null=True,
-                                     help_text="{'uuid': ['uuid','uuid']}")
+    staff_members = models.JSONField(
+        default=dict, blank=True, null=True, help_text="{'uuid': ['uuid','uuid']}"
+    )
 
     class Meta:
         app_label = "distribution"

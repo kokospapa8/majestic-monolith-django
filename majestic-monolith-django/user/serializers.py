@@ -1,12 +1,10 @@
-from django.apps import apps
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from core.serializers import ThumbnailSerializer
 from core.utils import convert_empty_string_to_none
 
-from .models import UserProfileStaff, UserProfileDriver
+from .models import UserProfileDriver, UserProfileStaff
 
 User = get_user_model()
 
@@ -21,7 +19,6 @@ class BaseUserPublicSerializer(serializers.ModelSerializer):
 
 
 class BaseUserReadonlySerializer(BaseUserPublicSerializer):
-
     class Meta:
         model = User
         fields = [
@@ -36,14 +33,7 @@ class BaseUserReadonlySerializer(BaseUserPublicSerializer):
 class BaseUserSerializer(BaseUserPublicSerializer):
     class Meta:
         model = User
-        fields = [
-            "uuid",
-            "phonenumber",
-            "username",
-            "type",
-            "is_active",
-            "banned"
-        ]
+        fields = ["uuid", "phonenumber", "username", "type", "is_active", "banned"]
         read_only_fields = ("uuid", "locale", "username", "type")
 
 
@@ -52,9 +42,7 @@ class UserProfileBaseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = None
-        fields = [
-            "user"
-        ]
+        fields = ["user"]
 
     def to_representation(self, obj):
         representation = super().to_representation(obj)
@@ -72,15 +60,10 @@ class UserProfileStaffSerializer(UserProfileBaseSerializer):
 
     class Meta:
         model = UserProfileStaff
-        fields = [
-            "user",
-            "fullname",
-            "image",
-            "permission_group"
-        ]
+        fields = ["user", "fullname", "image", "permission_group"]
 
     def get_permission_group(self, obj):
-        return obj.user.groups.values_list('name', flat=True)
+        return obj.user.groups.values_list("name", flat=True)
 
 
 class UserProfileDriverSerializer(UserProfileBaseSerializer):
@@ -88,9 +71,4 @@ class UserProfileDriverSerializer(UserProfileBaseSerializer):
 
     class Meta:
         model = UserProfileDriver
-        fields = [
-            "user",
-            "fullname"
-            "dob",
-            "image"
-        ]
+        fields = ["user", "fullname" "dob", "image"]

@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-import json
 
-from django.apps import apps
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import F
-from django.http import Http404
 
-from core.caches import ModelCacheBase, CacheBase, NewBadgeCache
+from core.caches import ModelCacheBase
+
 from .utils_user import get_proxy_userprofile_model, get_proxy_userprofile_serializer
 
 User = get_user_model()
@@ -16,7 +12,7 @@ User = get_user_model()
 class UserProfileCache(ModelCacheBase):
     expire_duration = 60 * 60 * 24
     serializer_class = None
-    key_prefix = 'up'
+    key_prefix = "up"
     user_instance = None
 
     def get_serializer_class(self):
@@ -32,6 +28,7 @@ class UserProfileCache(ModelCacheBase):
         if not user.is_active:
             return None
         proxy_profile = get_proxy_userprofile_model(user)
-        profile, created = proxy_profile.objects.select_related('user') \
-            .get_or_create(user__uuid=key, defaults={'user': user})
+        profile, created = proxy_profile.objects.select_related("user").get_or_create(
+            user__uuid=key, defaults={"user": user}
+        )
         return profile

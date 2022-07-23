@@ -2,10 +2,9 @@
 import logging
 
 from allauth.account.adapter import DefaultAccountAdapter
-from allauth.account.utils import user_email, user_field, user_username
+from allauth.account.utils import user_username
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.sites.shortcuts import get_current_site
 
 from user.utils_user import get_proxy_userprofile_model
 
@@ -14,7 +13,6 @@ logger = logging.getLogger("django.eventlogger")
 
 
 class AuthAccountAdapter(DefaultAccountAdapter):
-
     def new_user(self, request, user_type=CustomUser.Types.STAFF):
         """
         Instantiates a new User instance.
@@ -22,13 +20,16 @@ class AuthAccountAdapter(DefaultAccountAdapter):
         """
 
         from user.models import UserStaff
+
         user = UserStaff()
 
         if user_type == CustomUser.Types.STAFF:
             from user.models import UserStaff
+
             user = UserStaff()
         if user_type == CustomUser.Types.DRIVER:
             from user.models import UserDriver
+
             user = UserDriver()
 
         return user
@@ -40,7 +41,7 @@ class AuthAccountAdapter(DefaultAccountAdapter):
         # convert phonenumber to username (this is unique)
         try:
             # username = f"0{phonenumber.national_number}"
-            username = phonenumber.phonenumber.replace('+', '')
+            username = phonenumber.phonenumber.replace("+", "")
 
         except Exception as e:
             logger.debug(f"{phonenumber} national error: {e}")
@@ -61,7 +62,8 @@ class AuthAccountAdapter(DefaultAccountAdapter):
 
             # create profile on new user
             proxy_profile = get_proxy_userprofile_model(user)
-            profile, created = proxy_profile.objects.select_related('user') \
-                .get_or_create(user__uuid=user.uuid, defaults={'user': user})
+            profile, created = proxy_profile.objects.select_related(
+                "user"
+            ).get_or_create(user__uuid=user.uuid, defaults={"user": user})
 
         return user

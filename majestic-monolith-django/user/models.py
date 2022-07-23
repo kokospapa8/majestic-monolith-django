@@ -2,20 +2,16 @@ import uuid
 
 from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.auth.models import (
-    PermissionsMixin,
-    UserManager
-)
+from django.contrib.auth.models import PermissionsMixin, UserManager
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from phonenumber_field.modelfields import PhoneNumberField
 
 from core.fields import ThumbnailerImageField
 from core.utils import UserPathAndRename
 
-from phonenumber_field.modelfields import PhoneNumberField
-
-from .managers import StaffManager, DriverManager
+from .managers import DriverManager, StaffManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -27,7 +23,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)
     phonenumber = PhoneNumberField(unique=True, blank=False, db_index=True, null=True)
-    phonenumber_meta = models.CharField(max_length=32, blank=True, db_index=True, help_text="Flag for banned user")
+    phonenumber_meta = models.CharField(
+        max_length=32, blank=True, db_index=True, help_text="Flag for banned user"
+    )
 
     username = models.CharField(
         _("username"),
@@ -41,8 +39,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         error_messages={"unique": _("A user with that username already exists.")},
     )
 
-    type = models.CharField("Type", max_length=10,
-                            choices=Types.choices, default=Types.STAFF)
+    type = models.CharField(
+        "Type", max_length=10, choices=Types.choices, default=Types.STAFF
+    )
 
     email = models.EmailField(_("email address"), blank=True, unique=False, null=True)
     is_staff = models.BooleanField(
@@ -127,11 +126,9 @@ class UserDriver(CustomUser):
 class UserProfileStaff(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=True)
     fullname = models.CharField(
-        max_length=settings.USERPROFILE_FULLNAME_MAX_LENGTH,
-        blank=True, default=""
+        max_length=settings.USERPROFILE_FULLNAME_MAX_LENGTH, blank=True, default=""
     )
-    image = ThumbnailerImageField(
-        upload_to=UserPathAndRename("images/user/staff/"))
+    image = ThumbnailerImageField(upload_to=UserPathAndRename("images/user/staff/"))
 
     class Meta:
         app_label = "user"
@@ -144,12 +141,10 @@ class UserProfileStaff(models.Model):
 class UserProfileDriver(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=True)
     fullname = models.CharField(
-        max_length=settings.USERPROFILE_FULLNAME_MAX_LENGTH,
-        blank=True, default=""
+        max_length=settings.USERPROFILE_FULLNAME_MAX_LENGTH, blank=True, default=""
     )
     dob = models.DateField(blank=True, null=True, default=None)
-    image = ThumbnailerImageField(
-        upload_to=UserPathAndRename("images/user/driver/"))
+    image = ThumbnailerImageField(upload_to=UserPathAndRename("images/user/driver/"))
 
     class Meta:
         app_label = "user"

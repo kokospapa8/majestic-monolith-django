@@ -1,5 +1,5 @@
-from django.urls import path
 from django.conf.urls import include
+from django.urls import path
 from django.views.generic import TemplateView
 
 from core.docs import get_schema_view_from_urlpatterns
@@ -37,7 +37,6 @@ api_urlpatterns_v1 = [
     path("auth/", include("auth.urls")),
     path("distribution/", include("distribution.urls")),
     path("shipping/", include("shipping.urls")),
-
 ]
 
 api_doc_view_v1 = get_schema_view_from_urlpatterns(
@@ -47,18 +46,35 @@ api_doc_view_v1 = get_schema_view_from_urlpatterns(
 
 # API DOC
 doc_urlpatterns = [
-    path('api/docs/redoc/auth/', api_doc_view_v1_auth.with_ui('redoc', cache_timeout=0),
-         name='api_redoc_auth'),
-    path('api/docs/redoc/shipping/', api_doc_view_v1_shipping.with_ui('redoc', cache_timeout=0),
-         name='api_redoc_shipping'),
-    path('api/docs/redoc/user/', api_doc_view_v1_user.with_ui('redoc', cache_timeout=0),
-         name='api_redoc_user'),
-    path('api/docs/redoc/distribution/', api_doc_view_v1_distribution.with_ui('redoc', cache_timeout=0),
-         name='api_redoc_distribution'),
-    path('api/docs/swagger', api_doc_view_v1.with_ui('swagger', cache_timeout=0),
-         name='api_swagger_v1'),
-    path('api/docs/redoc', api_doc_view_v1.with_ui('redoc', cache_timeout=0),
-         name='api_redoc_v1'),
-    path('api/docs/', TemplateView.as_view(template_name="doc/index.html")),
-
+    path(
+        "api/docs/redoc/auth/",
+        api_doc_view_v1_auth.with_ui("redoc", cache_timeout=0),
+        name="api_redoc_auth",
+    ),
+    path(
+        "api/docs/redoc/shipping/",
+        api_doc_view_v1_shipping.with_ui("redoc", cache_timeout=0),
+        name="api_redoc_shipping",
+    ),
+    path(
+        "api/docs/redoc/user/",
+        api_doc_view_v1_user.with_ui("redoc", cache_timeout=0),
+        name="api_redoc_user",
+    ),
+    path(
+        "api/docs/redoc/distribution/",
+        api_doc_view_v1_distribution.with_ui("redoc", cache_timeout=0),
+        name="api_redoc_distribution",
+    ),
+    path(
+        "api/docs/swagger",
+        api_doc_view_v1.with_ui("swagger", cache_timeout=0),
+        name="api_swagger_v1",
+    ),
+    path(
+        "api/docs/redoc",
+        api_doc_view_v1.with_ui("redoc", cache_timeout=0),
+        name="api_redoc_v1",
+    ),
+    path("api/docs/", TemplateView.as_view(template_name="doc/index.html")),
 ]

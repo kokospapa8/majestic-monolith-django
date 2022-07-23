@@ -4,4 +4,3 @@
 class SampleConstantClass:
     foo = "foo"
     bar = "bar"
-

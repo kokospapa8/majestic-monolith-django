@@ -1,7 +1,7 @@
-from django.core.cache import cache, caches
 from django.conf import settings
+from django.core.cache import cache, caches
 
-DEFAULT_CACHE_ALIAS = 'default'
+DEFAULT_CACHE_ALIAS = "default"
 
 
 def _get_cache(cache_alias):
@@ -14,14 +14,14 @@ def _get_cache(cache_alias):
 
 
 class CacheBase:
-    key_prefix = ''
+    key_prefix = ""
     cache_alias = DEFAULT_CACHE_ALIAS
     single_key = False
     expire_duration = settings.CACHE_EXPIRATION_DURATION
 
     @classmethod
     def _set_default_key_prefix(cls):
-        if cls.key_prefix == '':
+        if cls.key_prefix == "":
             cls.key_prefix = cls.__name__
 
     def __init__(self):
@@ -35,7 +35,7 @@ class CacheBase:
         elif isinstance(key, tuple) or isinstance(key, list):
             return f'{self.key_prefix}:{"-".join(str(k) for k in key)}'
         else:
-            return f'{self.key_prefix}:{key}'
+            return f"{self.key_prefix}:{key}"
 
     def _args_format_key_list(self, *args):
         return [self._format_key(key) for key in args]
@@ -103,7 +103,6 @@ class NewBadgeCache(CacheBase):
 
 
 class SimpleGetCache(CacheBase):
-
     def get(self, key=None, force_db=False, *args, **kwargs):
         data = None
 

@@ -1,6 +1,5 @@
 import aws_cdk as cdk
 import aws_cdk.aws_rds as rds
-import aws_cdk.aws_s3 as s3
 import aws_cdk.aws_ssm as ssm
 from constructs import Construct
 
@@ -19,14 +18,14 @@ class RdsStack(cdk.NestedStack):
             parameter_name="/Secure/DB_PASSWORD",
         )
         rds_password = ssm_db_password.string_value
-        print(rds_password)
+        # print(rds_password)
         # rds_password = config["DB_PASSWORD"]
 
         # Create Subnet Group
         rds_subnet_group = rds.CfnDBSubnetGroup(
             self,
             f"mmd-{infra_env}-app-aurora-cluster-subnetgroup",
-            db_subnet_group_description=f"mmd aurora cluster subnetgroup",
+            db_subnet_group_description="mmd aurora cluster subnetgroup",
             subnet_ids=[
                 cdk.Fn.import_value("private-subnet-1-id"),
                 cdk.Fn.import_value("private-subnet-2-id"),
@@ -59,7 +58,8 @@ class RdsStack(cdk.NestedStack):
             self,
             f"mmd-{infra_env}-app-aurora-cluster",
             associated_roles=[
-                rds.CfnDBCluster.DBClusterRoleProperty(role_arn=rds_role)],
+                rds.CfnDBCluster.DBClusterRoleProperty(role_arn=rds_role)
+            ],
             engine="aurora-mysql",
             engine_mode="provisioned",
             backtrack_window=0,

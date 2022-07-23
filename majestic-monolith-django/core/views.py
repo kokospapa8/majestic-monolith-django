@@ -3,10 +3,10 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.cache import cache
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse, NoReverseMatch
+from django.urls import NoReverseMatch, reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
-from rest_framework import mixins, status, permissions
+from rest_framework import mixins, permissions, status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
@@ -94,9 +94,9 @@ class BulkDataPostAPIView(GenericAPIView):
 
         post_data = self.get_request_data()
         for data in post_data:
-            serializer = self.get_serializer(data=data,
-                                             context=self.get_serializer_context()
-                                             )
+            serializer = self.get_serializer(
+                data=data, context=self.get_serializer_context()
+            )
             if serializer.is_valid(raise_exception=False):
                 serializers.append(serializer)
             else:
@@ -128,10 +128,10 @@ class DMMWebView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = kwargs
-        if 'view' not in context:
-            context['view'] = self
+        if "view" not in context:
+            context["view"] = self
         meta = self.get_override_meta()
-        context['meta'] = get_default(self.request, meta)
+        context["meta"] = get_default(self.request, meta)
         return context
 
     def get_override_meta(self):
@@ -142,7 +142,8 @@ class DMMWebView(TemplateView):
 
         try:
             reversed_url = reverse(
-                self.MOBILE_REVERSE_FOR_PC, args=self.args, kwargs=kwargs)
+                self.MOBILE_REVERSE_FOR_PC, args=self.args, kwargs=kwargs
+            )
         except NoReverseMatch:
             reversed_url = self.MOBILE_REVERSE_FOR_PC.format(**kwargs)
 
@@ -151,32 +152,36 @@ class DMMWebView(TemplateView):
     def get(self, request, *args, **kwargs):
         if self.IS_MOBILE_ONLY:
             if self.MOBILE_REVERSE_FOR_PC is None:
-                raise NotImplemented("please set MOBILE_REVERSE_FOR_PC")
+                raise NotImplementedError("please set MOBILE_REVERSE_FOR_PC")
             if not request.user_agent.is_mobile:
                 self.redirect_to_motile_page()
 
         return super().get(request, *args, **kwargs)
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required, name="dispatch")
 class AdminOnlyTemplateView(TemplateView):
     pass
 
 
 def control_admin_cache(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = AdminCacheQueryForm(request.POST)
         if form.is_valid():
-            key_prefix = form.cleaned_data['key_prefix']
-            key_list = cache.keys(f'{key_prefix}:*')
-            return render(request, "admin/cache.html", {"key_list": key_list, "query": True})
+            key_prefix = form.cleaned_data["key_prefix"]
+            key_list = cache.keys(f"{key_prefix}:*")
+            return render(
+                request, "admin/cache.html", {"key_list": key_list, "query": True}
+            )
 
-        if 'key_list' in request.POST:
-            key_list_str = request.POST['key_list']
+        if "key_list" in request.POST:
+            key_list_str = request.POST["key_list"]
             key_list = key_list_str.split("'")
             key_list = [key for key in key_list[1::2]]
             cache.delete_many(key_list)
-            return render(request, "admin/cache.html", {"key_list": key_list, "query": False})
+            return render(
+                request, "admin/cache.html", {"key_list": key_list, "query": False}
+            )
 
     form = AdminCacheQueryForm()
     return render(request, "admin/cache.html", {"form": form})

@@ -1,15 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from .app import *
-from .base import *
-from .packages.auth import *
-from .packages.email import *
-from .packages.push import *
-from .packages.swagger import *
-from .packages.rest import *
-from .secrets import *
-from .packages.logger import *
-from .packages.slack import *
+from .base import *  # noqa: F403, F401
+from .packages.auth import *  # noqa: F403, F401
+from .packages.logger import *  # noqa: F403, F401
+from .packages.rest import *  # noqa: F403, F401
+from .secrets import *  # noqa: F403, F401
 
 logger = logging.getLogger("django.debuglogger")
 
@@ -48,9 +43,9 @@ logger.debug(f"Base DIR: {BASE_DIR}")
 ALLOWED_HOSTS = ["*"]
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 #
@@ -80,16 +75,15 @@ CACHES = {
         #     "IGNORE_EXCEPTION": True,  # needed for redis is only cache
         #     "PARSER_CLASS": "redis.connection.HiredisParser",
         # },
-
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-
+        "BACKEND": "django.core.cache.backends.dummy.DummyCache",
     }
 }
 
 # this only for development
-STATICFILES_DIRS = [os.path.join(BASE_DIR.parent, "static"),  # docker
-                    # os.path.join(BASE_DIR, "static") # use this if collect static locally
-                    ]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR.parent, "static"),  # docker
+    # os.path.join(BASE_DIR, "static") # use this if collect static locally
+]
 
 # if you don't already have this in settings
 DEFAULT_FROM_EMAIL = "server@exammple.com"
@@ -120,7 +114,7 @@ INSTALLED_APPS.extend(["django_extensions"])
 MIDDLEWARE.extend(["django.middleware.csrf.CsrfViewMiddleware"])
 
 REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = (
-    'rest_framework.renderers.JSONRenderer',
+    "rest_framework.renderers.JSONRenderer",
     "rest_framework.renderers.BrowsableAPIRenderer",
 )
 
@@ -131,5 +125,4 @@ REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"] = (
 
 TESTING = ENV == "test"
 
-THUMBNAIL_DEFAULT_STORAGE = (
-    'easy_thumbnails.storage.ThumbnailFileSystemStorage')
+THUMBNAIL_DEFAULT_STORAGE = "easy_thumbnails.storage.ThumbnailFileSystemStorage"

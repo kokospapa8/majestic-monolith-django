@@ -15,7 +15,7 @@ class EcrStack(cdk.NestedStack):
             self,
             f"mmd-{infra_env}-private-api-ecr",
             image_tag_mutability="MUTABLE",
-            repository_name=f"mmd-server",
+            repository_name="mmd-server",
         )
 
         # Create Nginx API
@@ -23,7 +23,7 @@ class EcrStack(cdk.NestedStack):
             self,
             f"mmd-{infra_env}-private-nginx-ecr",
             image_tag_mutability="MUTABLE",
-            repository_name=f"nginx",
+            repository_name="nginx",
         )
 
         # Create Xray
@@ -31,7 +31,7 @@ class EcrStack(cdk.NestedStack):
             self,
             f"mmd-{infra_env}-private-xray-ecr",
             image_tag_mutability="MUTABLE",
-            repository_name=f"xray",
+            repository_name="xray",
         )
 
         cdk.CfnOutput(

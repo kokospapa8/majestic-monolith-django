@@ -24,5 +24,6 @@ class EventBridgeStack(cdk.NestedStack):
             description=f"mmd-{infra_env}-events-pushops",
             retention=cdk.Duration.days(90),
             event_pattern=events.EventPattern(
-                account=[EventBridgeStack.of(self).account]),
+                account=[EventBridgeStack.of(self).account]
+            ),
         )
