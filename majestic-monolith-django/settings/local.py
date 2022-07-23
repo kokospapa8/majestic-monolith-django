@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 
+from .app import *  # noqa: F403, F401
 from .base import *  # noqa: F403, F401
 from .packages.auth import *  # noqa: F403, F401
+from .packages.email import *  # noqa: F403, F401
 from .packages.logger import *  # noqa: F403, F401
+from .packages.push import *  # noqa: F403, F401
 from .packages.rest import *  # noqa: F403, F401
+from .packages.slack import *  # noqa: F403, F401
+from .packages.swagger import *  # noqa: F403, F401
 from .secrets import *  # noqa: F403, F401
 
 logger = logging.getLogger("django.debuglogger")
