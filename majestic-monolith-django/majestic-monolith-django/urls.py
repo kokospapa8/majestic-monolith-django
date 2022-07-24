@@ -37,6 +37,8 @@ urlpatterns = [
 spectacular_url_patterns = [
     path("auth/", include("auth.urls")),
     path("user/", include("user.urls")),
+    path("distribution/", include("distribution.urls")),
+    path("shipping/", include("shipping.urls")),
 ]
 spectacular_urls = [path("api/spectacular/", include(spectacular_url_patterns))]
 

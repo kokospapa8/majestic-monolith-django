@@ -80,7 +80,7 @@ Here are some of django packages used
 - django-storages
 - django-request-logging
 - djangorestframework-simplejwt
-- drf-yasg
+- drf-spectacular
 - django-guid
 - easy-thumbnails
 - django-daterangefilter

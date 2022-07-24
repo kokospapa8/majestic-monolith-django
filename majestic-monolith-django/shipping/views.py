@@ -1,4 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import generics, status, viewsets
 from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
@@ -7,7 +8,17 @@ from rest_framework_api_key.permissions import HasAPIKey
 from core.permissions import IsStaff
 from core.views import BulkDataPostAPIView
 
-from .docs import doc_batch_items, doc_transport_batches
+from .drf_schema import (
+    shipping_batch_item_add_schema,
+    shipping_batch_item_list_schema,
+    shipping_batch_viewset_schema,
+    shipping_item_viewset_schema,
+    shipping_transport_batch_add_schema,
+    shipping_transport_batch_list_schema,
+    shipping_transport_end_schema,
+    shipping_transport_start_schema,
+    shipping_transport_viewset_schema,
+)
 from .models import ShippingBatch, ShippingItem, ShippingTransport
 from .serializers import (
     ShippingBatchAddSerializer,
@@ -20,6 +31,7 @@ from .serializers import (
 )
 
 
+@extend_schema_view(**shipping_transport_viewset_schema)
 class ShippingTransportViewSet(viewsets.ModelViewSet):
     serializer_class = ShippingTransportSerializer
     queryset = ShippingTransport.objects.all()
@@ -35,6 +47,7 @@ class ShippingTransportViewSet(viewsets.ModelViewSet):
     lookup_field = "uuid"
 
 
+@extend_schema_view(**shipping_batch_viewset_schema)
 class ShippingBatchViewSet(viewsets.ModelViewSet):
     serializer_class = ShippingBatchSerializer
     queryset = ShippingBatch.objects.all()
@@ -45,6 +58,7 @@ class ShippingBatchViewSet(viewsets.ModelViewSet):
     lookup_field = "alias"
 
 
+@extend_schema_view(**shipping_item_viewset_schema)
 class ShippingItemViewSet(viewsets.ModelViewSet):
     serializer_class = ShippingItemSerializer
     queryset = ShippingItem.objects.all()
@@ -64,7 +78,7 @@ class TransportBatchesView(generics.ListAPIView):
     ordering_fields = ["timestamp_created", "timestamp_completed"]
     lookup_url_kwarg = "uuid"
 
-    @doc_transport_batches
+    @extend_schema(**shipping_transport_batch_list_schema)
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
@@ -87,7 +101,7 @@ class BatchShippingitemsView(generics.ListAPIView):
     ordering_fields = ["timestamp_created", "timestamp_completed"]
     lookup_url_kwarg = "alias"
 
-    @doc_batch_items
+    @extend_schema(**shipping_batch_item_list_schema)
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
@@ -113,6 +127,10 @@ class TransportBatchesAddView(BulkDataPostAPIView):
         )
         return {"transport": transport}
 
+    @extend_schema(**shipping_transport_batch_add_schema)
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
 
 class TransportActionBaseView(generics.GenericAPIView):
     permission_classes = [IsStaff | HasAPIKey]
@@ -134,9 +152,17 @@ class TransportActionBaseView(generics.GenericAPIView):
 class TransportStartView(TransportActionBaseView):
     serializer_class = ShippingTransportStartSerializer
 
+    @extend_schema(**shipping_transport_start_schema)
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
 
 class TransportCompleteView(TransportActionBaseView):
     serializer_class = ShippingTransportCompleteSerializer
+
+    @extend_schema(**shipping_transport_end_schema)
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
 
 
 class BatchShippingitemsAddView(BulkDataPostAPIView):
@@ -151,6 +177,7 @@ class BatchShippingitemsAddView(BulkDataPostAPIView):
         batch = generics.get_object_or_404(ShippingBatch.objects.all(), **filter_kwargs)
         return {"batch": batch}
 
+    @extend_schema(**shipping_batch_item_add_schema)
     def post(self, request, *args, **kwargs):
         errors = []
         serializers = []
