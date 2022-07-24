@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
 
 from core.serializers import ThumbnailSerializer
@@ -72,3 +73,14 @@ class UserProfileDriverSerializer(UserProfileBaseSerializer):
     class Meta:
         model = UserProfileDriver
         fields = ["user", "fullname" "dob", "image"]
+
+
+class UserProfileDriverResponseSerializer(serializers.Serializer):
+    type = User.Types.DRIVER
+    username = serializers.CharField(
+        read_only=True,
+        max_length=15,
+        help_text="Driver's username.",
+    )
+    uuid = serializers.UUIDField(read_only=True, help_text="Driver's uuid.")
+    phonenumber = PhoneNumberField(read_only=True, help_text="Rider's phone number.")

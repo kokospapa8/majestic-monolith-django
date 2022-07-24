@@ -2,6 +2,7 @@
 import logging
 
 from django.contrib.auth import get_user_model
+from drf_spectacular.utils import extend_schema
 from rest_framework import permissions
 from rest_framework.response import Response
 
@@ -11,6 +12,7 @@ from core.views import RetrievePatchOnlyAPIView
 from user.serializers import UserProfileBaseSerializer
 
 from .docs import doc_user_self_get, doc_user_self_patch
+from .drf_schema import user_profile_detail_view_schema, user_profile_patch_view_schema
 from .utils_user import (
     delete_user_profile_cache,
     get_proxy_userprofile_model,
@@ -41,6 +43,7 @@ class UserSelfView(RetrievePatchOnlyAPIView):
         return super().get_throttles()
 
     @doc_user_self_get
+    @extend_schema(**user_profile_detail_view_schema)
     def get(self, request, *args, **kwargs):
         from .caches import UserProfileCache
 
@@ -48,6 +51,7 @@ class UserSelfView(RetrievePatchOnlyAPIView):
         return Response(profile_cache)
 
     @doc_user_self_patch
+    @extend_schema(**user_profile_patch_view_schema)
     def patch(self, request, *args, **kwargs):
         userprofile_model = get_proxy_userprofile_model(request.user)
         instance = userprofile_model.objects.get(user=request.user)

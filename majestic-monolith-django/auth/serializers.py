@@ -224,14 +224,3 @@ class TimestampExpiresResponseSerializer(serializers.Serializer):
         read_only=True,
         help_text="Timestamp when the token expires.",
     )
-
-
-class UserProfileRiderResponseSerializer(serializers.Serializer):
-    type = CustomUser.Types.DRIVER
-    username = serializers.CharField(
-        read_only=True,
-        max_length=15,
-        help_text="Driver's username.",
-    )
-    uuid = serializers.UUIDField(read_only=True, help_text="Driver's uuid.")
-    phonenumber = PhoneNumberField(read_only=True, help_text="Rider's phone number.")

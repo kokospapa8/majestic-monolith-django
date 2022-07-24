@@ -120,6 +120,7 @@ cookiecutter https://github.com/kokospapa8/majestic-monolith-django.git --checko
 ## version
 - 0.1.0 initial application update with api
 - 0.2.0 cookie cutter
+- 0.2.1 drf-spectacular
 
 ## release plan
 - 0.3.0 async support

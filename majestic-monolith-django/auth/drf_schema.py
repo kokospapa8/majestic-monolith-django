@@ -1,6 +1,7 @@
 from drf_spectacular.utils import OpenApiResponse, PolymorphicProxySerializer
 
 from core.serializers import DetailErrorSerializer, ErrorListSerializer
+from user.serializers import UserProfileDriverResponseSerializer
 
 from .serializers import (
     PhonenumberCheckSerializer,
@@ -12,7 +13,6 @@ from .serializers import (
     TimestampExpiresResponseSerializer,
     TokenHeartbeatResponseSerializer,
     TokenResponseSerializer,
-    UserProfileRiderResponseSerializer,
 )
 
 auth_phonenumber_check_view_schema = {
@@ -32,7 +32,7 @@ auth_signup_view_schema = {
     "tags": ["auth"],
     "request": SignupSerializer,
     "responses": {
-        200: UserProfileRiderResponseSerializer,
+        200: UserProfileDriverResponseSerializer,
         400: PolymorphicProxySerializer(
             component_name="SigninError",
             serializers=[ErrorListSerializer, DetailErrorSerializer],
